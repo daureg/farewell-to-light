@@ -1,0 +1,37 @@
+%********************************************************************
+% Frontmatter
+%*******************************************************
+% \include{FrontBackmatter/DirtyTitlepage}
+\include{FrontBackmatter/Titlepage}
+% \include{FrontBackmatter/Titleback}
+% \cleardoublepage\include{FrontBackmatter/Dedication}
+% \cleardoublepage\include{FrontBackmatter/Foreword}
+%\cleardoublepage\include{FrontBackmatter/Abstract}
+% \cleardoublepage\include{FrontBackmatter/Publication}
+%\cleardoublepage\include{FrontBackmatter/Acknowledgments}
+\pagestyle{scrheadings}
+% \cleardoublepage\include{FrontBackmatter/Contents}
+%********************************************************************
+% Mainmatter
+%*******************************************************
+\pagenumbering{arabic}
+%\setcounter{page}{90}
+% use \cleardoublepage here to avoid problems with pdfbookmark
+%\cleardoublepage
+\include{Chapters/Chapter01}
+% \cleardoublepage
+% \include{Chapters/Chapter02}
+%\include{Chapters/Chapter03}
+% ********************************************************************
+% Backmatter
+%*******************************************************
+\appendix
+% \cleardoublepage
+%\include{Chapters/Chapter0A}
+%********************************************************************
+% Other Stuff in the Back
+%*******************************************************
+%\cleardoublepage
+\include{FrontBackmatter/Bibliography}
+%\cleardoublepage\include{FrontBackmatter/Colophon}
+% \cleardoublepage\include{FrontBackmatter/Declaration}

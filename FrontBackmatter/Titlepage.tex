@@ -1,0 +1,59 @@
+%*******************************************************
+% Titlepage
+%*******************************************************
+\begin{titlepage}
+	% if you want the titlepage to be centered, uncomment and fine-tune the line below (KOMA classes environment)
+	\begin{addmargin}[-1cm]{-3cm}
+    \begin{center}
+        \large  
+
+        \hfill
+
+        \vfill
+
+        \begingroup
+            \color{Maroon}
+	    \spacedallcaps{\myTitle} \\ \medskip
+	    \mySubtitle \\ \medskip   
+        \endgroup
+
+	\vspace{2\baselineskip}
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Géraud Le Falher\\
+% {\footnotesize\url{geraud.lefalher@aalto.fi}}
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisors:}\\
+\myProf\\%[\baselineskip]
+	% {\footnotesize\url{aristides.gionis@aalto.fi}}
+\mySupervisor
+	% {\footnotesize\url{michael.mathioudakis@hiit.fi}}
+\end{flushright}
+\end{minipage}
+        % \spacedlowsmallcaps{Géraud Le Falher}
+		% \myName{}
+
+        \vfill
+
+        \includegraphics[width=0.4\textwidth]{gfx/helsinki} \quad
+	\includegraphics[width=0.4\textwidth]{gfx/barca.jpg}
+	\vspace{3\baselineskip}
+        \vfill
+
+        \myDegree \\
+        \myDepartment \\                            
+        \myFaculty \\
+        \myUni \\ \bigskip
+
+        % \myTime\ -- \myVersion
+
+        \vfill                      
+
+    \end{center}  
+  \end{addmargin}       
+\end{titlepage}   
