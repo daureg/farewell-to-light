@@ -3,91 +3,73 @@
 
 \section{Motivation}
 
-An increasing share of the world population is living in
-cities\footnote{\enquote{Between 2011 and 2050, the world population is
-		expected to increase by 2.3 billion, passing from 7.0 billion
-		to 9.3 billion. At the same time, the population living in
-urban areas is projected to gain 2.6 billion, passing from 3.6 billion in 2011
-to 6.3 billion in 2050.},
-\href{http://esa.un.org/unup/pdf/WUP2011_Highlights.pdf}{UN report}.}.
-Meanwhile, the rise of ubiquitous computing lets urban dwellers share
-spatio-temporal information at an unprecedented scale
-\autocite{SpatialComputing12}. The easiest modality is the use of so-called
-Location Based Social Networks. The most popular one in 2014 -- Foursquare --
-has even been adopted on Mars\footnote{By the \emph{Curiosity} rover:
-	\href{http://www.nasa.gov/mission_pages/msl/news/msl20121003.html}%
-{http://www.nasa.gov/mission\_pages/msl/news/msl20121003.html}}.\marginpar{Give
-more examples, along with references.} Such data enables countless
-applications, ranging from personalized recommendation, through urban
-planning, to making cities smarter. Besides this actionable side, it also
-provides a wealth of insight into human mobility and dynamics.
-
-\medskip
-
-In this work, we devised a similarity measure between urban areas that
-fulfills these two objectives. It provide recommendation to travelling users,
-as well as comparison different cities and their organization. First we
-motivate the need for such a measure through its major use case, before giving
-a more precise problem statement.
+Many people live in cities and nowadays, a lot of them share their
+spatio-temporal whereabout on social networks \autocite{SpatialComputing12}.
+Such data enables useful applications as well as it provides new insights into
+human dynamics. We seize this opportunity to devised a similarity measure
+between urban areas that fulfills these two objectives. It gives
+recommendation to travelling users, while letting us compare different cities
+and their organization. First we motivate the need for such a measure through
+its major use case, before giving a more precise problem statement.
 
 \medskip
 
 Let us say you have lived in a city for the last years. During this time, you
--- with the potential help of your friends -- have acquired urban knowledge
-that you can leverage to find relevant locations where to perform various
-tasks. In less awkward words, whether you want to buy milk, listen to loud
-music or exhibit your athletic skills, you know where to go and in some cases
-why. Yet life is full of surprises and you may be spending a few days in a new
-town. Fair enough, but you do not want to renounce to your wide range of
-outside activities. This is where our application comes in handy. You select a
-location or an area in your familiar city and it returns a place or a zone
-sharing similar characteristics in your surrounding. Thus you can boldly
-venture into distant shores, reassured that a part of your home will always
-travels with you.
+have acquired urban knowledge that you can leverage to find relevant locations
+where to perform various tasks. In simpler words, whether you want to buy
+milk, listen to loud music or exhibit your athletic skills, you know where to
+go and in some cases why. Yet life is full of surprises and you may be
+spending a few days in a new town. Fair enough, but you do not want to
+renounce to your wide range of outside activities. This is where our
+application comes in handy. You select a location or an area in your familiar
+city and it returns a place or a zone sharing similar characteristics in your
+surrounding. Thus you can boldly venture into distant shores, reassured that a
+part of your home will always travels with you.
 
 \section{Problem definition}
 \label{sec:problem}
 
-Let us define formerly this problem. We have a set of cities $\mathcal{C} =
+Let us define formally this problem. We have a set of cities $\mathcal{C} =
 \{c_1, c_2, \ldots, c_n\}$, each of them defined by a enclosing rectangle
 $R_{c_i} \subseteq \mathbb{R}^2$. Furthermore, each city $c_i$ contains a
 subset $V_{c_i} \subseteq \mathcal{V}$, where $\mathcal{V}$ is a set of
 \emph{venues}. A \emph{venue} is an uniquely identified location that can be
 visited by individuals. It includes for instance restaurants, shops, airports,
 monuments and parks. Finally, each city $c_i$ is described by another subset
-$A_{c_i} \subseteq \mathcal{A}$,\marginpar{There is probably a better name
-for this (though digital fingerprint is a bit long)} where $\mathcal{A}$ is a
-set of \emph{artefacts}. By \emph{artefact}, we refer to a user contributed
-discrete point in space and time that can carry an additional payload. Here,
-we exploit Flickr photos (with tags) and Foursquare check-ins as type of
-artefact\footnote{But it should be possible to extend this definition to other
-	kind of data. For instance, a tweet can be seen as point in time and
-	space (along with the sentiment it conveys). Or we can consider noise
-	and pollution measurements, the number of cars in a given intersection
-	during a one minute window, Yelp reviews, etc. Stretching the concept,
-	we may even imagine gathering anonymized customer receipts from
-	grocery shops.  The payload could then be the proportion in which
-	different kind of goods are consumed. Indeed, even for two shops of
-	the same company in the same city, it would give information about the
-neighboring population.}.
+$I_{c_i} \subseteq \mathcal{I}$, where $\mathcal{I}$ is a set of \emph{items}.
+These \emph{items} are user contributed discrete points in space and time
+that can have additional attributes. Here, we exploit Flickr photos (with
+tags) and Foursquare check-ins as type of item\footnote{But it should be
+	possible to extend this definition to other kind of data. For
+	instance, a tweet can be seen as point in time and space (along with
+	the sentiment it conveys). Or we can consider noise and pollution
+	measurements, the number of cars in a given intersection during a one
+	minute window, Yelp reviews, etc. Stretching the concept, we may even
+	imagine gathering anonymized customer receipts from grocery shops.
+	The payload could then be the proportion in which different kind of
+	goods are consumed. Indeed, even for two shops of the same company in
+the same city, it would give information about the neighboring population.}.
+Items are associated with venues, either directly, like check-ins, or
+indirectly, like photos. In the latter case, the relationship between venues
+and items is based on spatial distance for instance.
 
-Using this information, we want to devise a similarity measure over the venues
-$\mathcal{V}$, namely
- $s: \mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. This would
-provide a building block for another measure of similarity between two spatial
-regions. More precisely, after choosing a home city $c_h$ and a target city
-$c_t$\footnote{$t$ can also stand for travel or tourist.}, we want
-$s': R_{c_h} \times R_{c_t} \rightarrow \llbracket 0, 1 \rrbracket$.
+By combining venues own characteristics and their associated items, we want to
+devise a similarity measure over the venues $\mathcal{V}$, namely $s:
+\mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. This provides a
+building block for another measure of similarity between two spatial regions.
+More precisely, after choosing a home city $c_h$ and a target city
+$c_t$\footnote{$t$ can also stand for travel or tourist.}, we want to
+construct $s': R_{c_h} \times R_{c_t} \rightarrow \llbracket 0, 1 \rrbracket$.
 These two functions answer the following queries:
 
 \begin{enumerate}
-\item In the target town, find the venue most similar to a venue $v$ known by
-	the user in its home city, that is $\argmax_{v' \in V_{c_t}} s(v,
-	v')$.\label{q:point}
-\item Instead of a single venue, users may ask for a larger area $r$ matching a
-	neighborhood\footnote{or any other kind of subdivision.} from their home
-	city, in which case we are looking for $\argmax_{r' \subseteq V_{c_t}}
-	s'(r, r')$.\label{q:space}
+\item When users pick a venue $v$ in their home city, find the venue in the
+	target town that is the most similar to it. Formally, we compute
+	$\argmax_{v' \in V_{c_t}} s(v, v')$.\label{q:point}
+\item Instead of a single venue, users ask for a larger area $r$, for instance
+	covering a neighborhood\footnote{or any other meaningful subdivision.}
+	from their home city. In that case we also return an area:
+	$\argmax_{r' \subseteq V_{c_t}} s'(r, r')$.\label{q:space}
 \end{enumerate}
 
 \section{Contributions}
@@ -95,15 +77,17 @@ These two functions answer the following queries:
 
 \begin{itemize}
 	\item Collect and compute relevant features describing venues.
-	\item Seamlessly incorporate heterogeneous \emph{artefacts}.
-	\item Deliver interpretable results, which enable principled comparison
-		of cities and more user friendly output (it can also potentially
-		explain why no sensible result were found for some queries).
-		Furthermore, this would address recent concerns about
-		Algorithmic Accountability \autocite{Accountability13}. For instance,
-		\textcite{Discrimination13} showed that in case of online advertisement
-		discrimination, algorithms' opacity makes it difficult to find and
-		sanction those responsible.
+	\item Seamlessly incorporate heterogeneous \emph{items}.
+	\item Deliver interpretable results. Beyond a single number, the
+		similarity, or absence thereof, must be motivated. It enables
+		principled comparison of cities and more user friendly output
+		(as well as justifying why no sensible result were found for
+		some queries). Furthermore, this would address recent
+		concerns about Algorithmic Accountability
+		\autocite{Accountability13}. For instance,
+		\textcite{Discrimination13} showed that in case of online
+		advertisement discrimination, opacity of the algorithms makes
+		it difficult to find and sanction those responsible.
 	\item Efficient search in $\mathbb{R}^2$ instead of brute force for
 		the query~\ref{q:space}.
 	\item Compare results with existing methods and evaluate them against
