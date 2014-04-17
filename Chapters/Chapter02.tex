@@ -1,25 +1,248 @@
 \chapter{Dataset}
 \label{chap:dataset}
 
-biased user distribution\autocite{Weird10}, heavy tail
+There are many ways to obtain information about places. The most
+straightforward is to ask directly people. For instance, \textcite{Curated14}
+\marginpar{describe better} asked residents of Pittsburgh to build a city
+guide by sharing their opinion about locations they know well.
+Mine text, like yelp review \autocite{YelpReview14}
+Image analysis to describe place atmosphere
+Transportation data to see which place are connected
+
+In this work, we choose to focus on trace of human activity. Namely we
+collected Foursquare check-ins and Flickr photos' metadata. The first step of
+this process was to choose a fixed number of cities.
+
+According to \href{http://www.4sqstat.com/}{4sqstat.com}, we first selected
+the ten cities in the US with the highest number of check-ins: New York,
+Washington, San Francisco, Atlanta, Indianapolis, Los Angeles, Seattle,
+Houston, St. Louis and Chicago. We did something similar in Europe,
+resulting in the selection of London, Paris, Berlin, Rome, Prague, Moscow,
+Amsterdam, Helsinki, Stockholm and Barcelona. This is admittedly a choice
+biased by our own history and the ease to gather user input. Indeed, Rio
+de Janeiro or Tokyo are more active than Helsinki or Stockholm, but less
+familiar, making results more difficult to interpret.
 
 \section{Foursquare}
 
-describe collecting and processing
 Why people use 4SQ\autocite{FSMotivation11}
 
-old from ICWSM\autocite{dataset11}, new one from twitter.
+\subsection{Check-ins}
 
-weaknesses
-fake checkin\autocite{FakeCheckins12,ValidateCheckin13,FindingFake14}, bias in
-twitter\autocite{TwitterBias14}
-privacy concern\autocite{Privacy11}
-fixed categories instead of infered LDA semantics\autocite{PlaceSemantic14}
+Foursquare check-ins are not available publicly for free, thus one has to
+find other way to get them. The easiest one was to reuse an existing dataset.
+Between September 2010 and January 2011, \textcite{dataset11} collected
+\numprint{22387930} check-ins  from various LBSN.
 
-link to public available files on figshare
+A typical check-in looks like this:
+\begin{verbatim}
+41418752    19459464870    38.931834    -77.028256
+2010-07-25 01:19:02    a95cd7e5e0eddaad
+I'm at Meridian Pint (, ) w/ 7 others. http://4sq.com/9GoW57
+\end{verbatim}
+
+where we can find the twitter user id, the tweet id, the
+latitude and longitude, the local time, a place id and the tweet's text
+\footnote{a more thorough description can be found online
+at\href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
+{\url{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}}.}.
+
+After filtering tweet originating from our twenty cities, we were left with
+\numprint{2133752}. However, there is no easy way to map twitter place id to
+Foursquare venue id\footnote{It even seems that there is not one to one
+correspondence between them.}. Therefore, we had to follow the short links
+appearing in the tweets to recover those id. But as the dataset is rather old,
+some links are dead. At the end, we found \numprint{1296505} exploitable
+check-ins, as showed in \autoref{tab:dataset}.
+
+\medskip
+
+Another way to access check-ins is to use Twitter. Some applications publish
+tweets regarding check-in on the behalf of user. Furthermore, Twitter allows
+anyone to access a small sample of public tweets\footnote{Using their Public
+    streams API described here:
+    \href{https://dev.twitter.com/docs/streaming-apis/streams/public}%
+{\url{https://dev.twitter.com/docs/streaming-apis/streams/public}}.}.
+\marginpar{refactor script to clean dependencies} Therefore we set up our own
+collection process from March to July 2014\footnote{The code can be found on
+    github: \href{https://github.com/daureg/illalla}%
+{\url{https://github.com/daureg/illalla}}.} by selecting tweets with
+\url{4sq.com} links, retaining those located in the target cities and that
+leads to real check-ins. It adds \numprint{351365} tweets. The format,
+described in \autoref{tab:checkinfields}, is rather similar to the previous
+one:
+
+\begin{verbatim}
+ _id : 533bae24498eea4314f699e1?s=aDw52maNIBKg8_vmChduwSKDm3I
+ lid : "4d56bccecff7721ea778b9f5"
+ uid : 9037626
+ loc : {"type": "Point",
+        "coordinates": [2.3979855, 48.85740119]}
+ city: "paris"
+ time: "2014-04-02T13:28:52Z"
+ tid : "451244858809012224"
+ tuid: "824282623"
+ msg : "Should be forgotten (@ Kingdom of Paradise)
+        http://t.co/2CFVAZL1wq"
+\end{verbatim}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        field & description \\
+        \midrule
+        \texttt{\_id} & Check-in id and its public signature, which can be used
+        to get more information using Foursquare API. \\
+        \texttt{lid} & Foursquare venue id \\
+        \texttt{uid} & Numerical Foursquare user id \\
+        \texttt{loc} & GeoJSON location of the tweet \\
+        \texttt{city} & Corresponding city \\
+        \texttt{time} & Local time at which the check-in took place (this may differ from the time of the tweet) \\
+        \texttt{tid} & Tweet id \\
+        \texttt{tuid} & Twitter user id \\
+        \texttt{msg} & Textual content of the tweet \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Check-in format]{Description of the fields of the check-in
+    object.\label{tab:checkinfields}}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
+    alias/old/.initial={2010 check-ins},
+    alias/new/.initial={2014 check-ins},
+    columns/city/.style={string type,column type=l},
+    every head row/.style={before row=\toprule,after row=\midrule},
+    every last row/.style={before row=\midrule,after row=\bottomrule}]{%
+    city          & 2010 check-ins & 2014 check-ins & photos  & venues \\
+    New York      & 408584  & 75635  & 1654289 & 49818  \\
+    Los Angeles   & 165463  & 30155  & 743314  & 25110  \\
+    Chicago       & 133822  & 28176  & 575306  & 18333  \\
+    San Francisco & 104363  & 16241  & 932568  & 12152  \\
+    London        & 72674   & 24608  & 1562858 & 16534  \\
+    Washington    & 75984   & 17627  & 610263  & 9481   \\
+    Seattle       & 51574   & 6744   & 504210  & 7587   \\
+    Amsterdam     & 35339   & 4673   & 134459  & 6538   \\
+    Houston       & 41037   & 11241  & 32459   & 9080   \\
+    Atlanta       & 40798   & 9466   & 215178  & 5766   \\
+    Paris         & 32952   & 14296  & 159969  & 11025  \\
+    Stockholm     & 10501   & 1768   & 26540   & 3121   \\
+    Indianapolis  & 30955   & 5943   & 23740   & 5427   \\
+    Moscow        & 17577   & 74134  & 52821   & 21626  \\
+    Barcelona     & 21448   & 9273   & 98730   & 7032   \\
+    Berlin        & 15098   & 7806   & 193556  & 6430   \\
+    St.~Louis     & 17491   & 3415   & 23520   & 2498   \\
+    Rome          & 9364    & 5068   & 142113  & 4311   \\
+    Prague        & 4757    & 3610   & 41395   & 2943   \\
+    Helsinki      & 6724    & 1486   & 21333   & 1956   \\
+    total         & 1296505 & 351365 & 7748621 & 226768 \\
+}
+\caption[Dataset number]{Count of objects in the dataset\label{tab:dataset}}
+\end{table}
+
+\subsection{Venues}
+
+Each of these check-ins is associated with a venue. Thus, the second part of
+the collection process was to gather information about all of those
+\numprint{226768} that appear in at least on check-in. This was done by calling the
+appropriate Foursquare API, with result showed in \autoref{tab:venue}.
+
+link to dataset on figshare or \url{http://academictorrents.com}
+\subsection{Limitations}
+
+fake checkin\autocite{FakeCheckins12} (although this can be corrected
+\autocite{ValidateCheckin13,FindingFake14}
+
+bias in twitter\autocite{TwitterBias14}
+
+situation where people are reluctant to check-in\autocite{Privacy11}
+
+fixed categories instead of inferred LDA semantics\autocite{PlaceSemantic14}
 
 \section{Flickr}
 
-\input{../report/data}
+% \input{../report/data}
 
-% \enlargethispage{2cm}
+\section{Exploration}
+Besides their own issues, these two datasets suffers from
+biased user distribution\autocite{Weird10}, heavy tail (half of twitter users
+have never tweet
+\href{http://twopcharts.com/twitteractivitymonitor}{\url{http://twopcharts.com/twitteractivitymonitor}}
+
+\section{Chosen representation}
+Based on the insights gained by exploring the dataset, we settle to represents
+each venues by the numerical vector presented in \autoref{tab:venuefeatures}:
+
+\clearpage
+
+% ['likes', 'users', 'checkins', 'publicness', 'density',
+%             'category', 'art', 'education', 'food', 'night', 'recreation',
+%             'shop', 'professional', 'residence', 'transport', 'focus',
+%             'photogenicity', 'weekend'
+% CATS = ['Arts & Entertainment', 'College & University', 'Food',
+%         'Nightlife Spot', 'Outdoors & Recreation', 'Shop & Service',
+%         'Professional & Other Places', 'Residence', 'Travel & Transport']
+%     var labels = ['1 to 5','5 to 9','9 to 13','13 to 17','17 to 21','21 to 1'];
+\begin{table}[p]
+    \centering
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        index & description \\
+        \midrule
+        0 & Number of likes \\
+        1 & Number of unique users \\
+        2 & Number of total check-ins \\
+        \rowcolor{DodgerBlue}
+        3 & User entropy \\
+        4 & Venue density \\
+        5 & Venue top level category \\
+        6 & \enquote{Arts \& Entertainment} venues around \\
+        7 & \enquote{College \& University} venues around \\
+        8 & \enquote{Food} venues around \\
+        9 & \enquote{Nightlife Spot} venues around \\
+        10 & \enquote{Outdoors \& Recreation} venues around \\
+        11 & \enquote{Shop \& Service} venues around \\
+        12 & \enquote{Professional \& Other Places} venues around \\
+        13 & \enquote{Residence} venues around \\
+        14 & \enquote{Travel \& Transport} venues around \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Venue features]{Feature representation of Foursquare venue,
+        taking surrounding into account.\label{tab:venuefeatures}}
+\end{table}
+
+\newgeometry{hmargin=0.5cm}
+\begin{table}[p]
+    \centering
+    \begin{tabularx}{\textwidth}{lXX}
+        \toprule
+        field & description & example \\
+        \midrule
+\texttt{\_id}          & Foursquare venue id                             & "4ba22d4cf964a5207ce137e3" \\
+\texttt{name}          & Name of the venue                               & "Ravintola Oiva" \\
+\texttt{loc}           & GeoJSON location according to Foursquare        & {"type" : "Point", "coordinates": [24.951011, 60.181716084480286]} \\
+\texttt{cat}           & id of the primary category                      & "4bf58dd8d48988d11b941735" \\
+\texttt{cats}          & Potential additional categories                 & ["4bf58dd8d48988d1c4941735", "4bf58dd8d48988d143941735"] \\
+\texttt{checkinsCount} & Total number of check-ins in Foursquare         & 2556 \\
+\texttt{usersCount}    & Number of unique user in Foursquare             & 1321 \\
+\texttt{tipCount}      & Number of tip left by users                     & 13 \\
+\texttt{price}         & Price range, from 1 to 4                        & 2 \\
+\texttt{rating}        & Rating over 10                                  & 7.82 \\
+\texttt{createdAt}     & Time at which the venue was added to Foursquare & ISODate("2010-03-18T15:40:28Z") \\
+\texttt{mayor}         & User id of the mayor at the time of collection  & 18123276 \\
+\texttt{tags}          & User contributed tags                           & ["karaoke"] \\
+\texttt{shortUrl}      & Short URL appearing in tweets                   & "\url{http://4sq.com/bV8IRQ}" \\
+\texttt{canonicalUrl}  & Full URL                                        & "\url{https://foursquare.com/v/ravintola-oiva/4ba22d4cf964a5207ce137e3}" \\
+\texttt{likes}         & Total number of like in Foursquare              & 3 \\
+\texttt{likers}        & List of at most ten users liking this venue     & [14695530, 9936722, 37114401] \\
+\texttt{city}          & City name                                       & "helsinki" \\
+\texttt{closed}        & True when Foursquare says the venue is closed   & null \\
+\texttt{hours}         & Always \texttt{null}                            & null \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Venue format]{Description of the fields of the venue
+    object.\label{tab:venue}}
+\end{table}
+\restoregeometry

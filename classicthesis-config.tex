@@ -89,7 +89,11 @@
 \DeclareMathOperator*{\argmax}{argmax}
 % \newcommand{\argmax}[1]{\arg\underset{#1}{\max}\;}
 \usepackage{numprint}
+\usepackage{geometry}
 \usepackage{fancyvrb}
+\PassOptionsToPackage{svgnames}{xcolor}
+\usepackage{colortbl}
+\usepackage{pgfplotstable}
 % ********************************************************************
 % General useful packages
 % ********************************************************************
@@ -186,7 +190,7 @@
 % Hyperreferences
 % ********************************************************************
 \hypersetup{%
-    %draft,    % = no hyperlinking at all (useful in b/w printouts)
+    draft,    % = no hyperlinking at all (useful in b/w printouts)
     colorlinks=true, linktocpage=true, pdfstartpage=3, pdfstartview=FitV,%
     % uncomment the following line if you want to have black links (e.g., for printing)
     %colorlinks=false, linktocpage=false, pdfborder={0 0 0}, pdfstartpage=3, pdfstartview=FitV,%
