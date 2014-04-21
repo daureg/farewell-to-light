@@ -1,0 +1,19 @@
+\begin{tikzpicture}
+	\begin{axis}[xmin=0, xmax=24,
+            unit vector ratio*=1 1.75,
+            ymin=0,
+            title={Check-ins frequency through the day},
+            xlabel={hour},
+            ylabel={percentage},
+            legend style={at={(0.05,0.8)},anchor=west}
+		]
+\addplot[DodgerBlue,thin, smooth]table [x={time}, y={freq}] {helsinki_day.dat};
+\addlegendentry{Helsinki}
+\addplot[FireBrick,thin, smooth]table [x={time}, y={freq}] {paris_day.dat};
+\addlegendentry{Paris}
+\addplot[LimeGreen,thin, smooth]table [x={time}, y={freq}] {barcelona_day.dat};
+\addlegendentry{Barcelona}
+\addplot[LightGray,thin, smooth]table [x={time}, y={freq}] {global_day.dat};
+\addlegendentry{Total}
+\end{axis}
+\end{tikzpicture}
