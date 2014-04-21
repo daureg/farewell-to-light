@@ -24,9 +24,14 @@ de Janeiro or Tokyo are more active than Helsinki or Stockholm, but less
 familiar to us and to many students of Aalto University, making results more
 difficult to interpret.
 
+Besides their own issues explained later, these two datasets suffers from
+biased user distribution\autocite{Weird10}, heavy tail (half of twitter users
+have never tweeted \href{http://twopcharts.com/twitteractivitymonitor}%
+{\url{twopcharts.com/twitteractivitymonitor}}
+
 \section{Foursquare}
 
-Why people use 4SQ\autocite{FSMotivation11}
+Why people use 4SQ\autocite{FSMotivation11}.
 
 \subsection{Check-ins}
 
@@ -108,6 +113,7 @@ one:
     \caption[Check-in format]{Description of the fields of the check-in
     object.\label{tab:checkinfields}}
 \end{table}
+\marginpar{Put those details in Appendix?}
 
 \begin{table}[ht]
     \centering
@@ -159,7 +165,7 @@ link to dataset on
 fake checkin\autocite{FakeCheckins12} (although this can be corrected
 \autocite{ValidateCheckin13,FindingFake14}
 
-bias in twitter\autocite{TwitterBias14}
+bias in twitter sampling\autocite{TwitterBias14}
 
 situation where people are reluctant to check-in\autocite{Privacy11}
 
@@ -170,9 +176,9 @@ fixed categories instead of inferred LDA semantics\autocite{PlaceSemantic14}
 Using the Flickr API, we downloaded metadata\footnote{But no image at all.}
 from every photo satisfying a set of criteria: they contained at least one
 tag, they were located inside one of the chosen city and they have been
-uploaded after January 1\textsuperscript{st}, 2008. This yields \numprint{7748621}
-photos but as showed in \autoref{tab:dataset}, there are a factor of 77
-between figures in New-York and Helsinki.
+uploaded after January 1\textsuperscript{st}, 2008. This yields
+\numprint{7748621} photos but as showed in \autoref{tab:dataset}, there are a
+factor of 77 between figures in New-York and Helsinki.
 
 More precisely, in addition to tags and location, we know when each photos was
 taken and uploaded, by which user and what title was given to it (the title
@@ -300,12 +306,13 @@ not happen at the same time, nor with the same intensity.
 look at high and low focus places.
 
 \section{Chosen representation}
+
 Based on the insights gained by exploring the dataset, we settle to represents
 each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
+The features involving the surrounding (numbered from 6 to 16) were weighted
+by a 2D Gaussian of radius $r=350$ meters.
 
-\clearpage
-
-\begin{table}[p]
+\begin{table}[hb]
     \centering
     \begin{tabularx}{\textwidth}{lX}
         \toprule
@@ -338,11 +345,13 @@ each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
         \bottomrule
     \end{tabularx}
     \caption[Venue features]{Feature representation of Foursquare venues,
-	    taking surrounding into account. \colorbox{Honeydew}{Shaded
-	    features} are provided directly by Foursquare database where the
+	    taking surrounding into account. \colorbox{Moccasin}{Shaded
+	    features} are provided directly by Foursquare database whereas the
 	    others were computed solely based on the partial information
-	    contained in the dataset \label{tab:venuefeatures}}
+	    contained in the dataset.\label{tab:venuefeatures}}
 \end{table}
+
+\clearpage
 
 \newgeometry{hmargin=0.5cm,vmargin=0.6cm}
 \begin{table}[t]
