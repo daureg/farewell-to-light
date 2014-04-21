@@ -21,7 +21,8 @@ resulting in the selection of London, Paris, Berlin, Rome, Prague, Moscow,
 Amsterdam, Helsinki, Stockholm and Barcelona. This is admittedly a choice
 biased by our own history and the ease to gather user input. Indeed, Rio
 de Janeiro or Tokyo are more active than Helsinki or Stockholm, but less
-familiar, making results more difficult to interpret.
+familiar to us and to many students of Aalto University, making results more
+difficult to interpret.
 
 \section{Foursquare}
 
@@ -44,14 +45,14 @@ I'm at Meridian Pint (, ) w/ 7 others. http://4sq.com/9GoW57
 where we can find the twitter user id, the tweet id, the
 latitude and longitude, the local time, a place id and the tweet's text
 \footnote{a more thorough description can be found online
-at\href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
+at \href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
 {\url{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}}.}.
 
-After filtering tweet originating from our twenty cities, we were left with
-\numprint{2133752}. However, there is no easy way to map twitter place id to
-Foursquare venue id\footnote{It even seems that there is not one to one
+After filtering tweets originating from our twenty cities, we were left with
+\numprint{2133752} of them. However, there is no easy way to map twitter place
+id to Foursquare venue id\footnote{It even seems that there is not one to one
 correspondence between them.}. Therefore, we had to follow the short links
-appearing in the tweets to recover those id. But as the dataset is rather old,
+appearing in the tweets to recover those ids. But as the dataset is rather old,
 some links are dead. At the end, we found \numprint{1296505} exploitable
 check-ins, as showed in \autoref{tab:dataset}.
 
@@ -149,7 +150,10 @@ the collection process was to gather information about all of those
 \numprint{226768} that appear in at least on check-in. This was done by calling the
 appropriate Foursquare API, with result showed in \autoref{tab:venue}.
 
-link to dataset on figshare or \url{http://academictorrents.com}
+link to dataset on
+\href{http://figshare.com/authors/G\%C3\%A9raud\%20Le\%20Falher/542931}%
+{\url{figshare.com}} or \url{http://academictorrents.com}
+
 \subsection{Limitations}
 
 fake checkin\autocite{FakeCheckins12} (although this can be corrected
@@ -163,41 +167,79 @@ fixed categories instead of inferred LDA semantics\autocite{PlaceSemantic14}
 
 \section{Flickr}
 
-% \input{../report/data}
+Using the Flickr API, we downloaded metadata\footnote{But no image at all.}
+from every photo satisfying a set of criteria: they contained at least one
+tag, they were located inside one of the chosen city and they have been
+uploaded after January 1\textsuperscript{st}, 2008. This yields \numprint{7748621}
+photos but as showed in \autoref{tab:dataset}, there are a factor of 77
+between figures in New-York and Helsinki.
+
+More precisely, in addition to tags and location, we know when each photos was
+taken and uploaded, by which user and what title was given to it (the title
+was not used except when it contained hashtags, which were converted to tags).
+Thus a typical data point looks like what is described in \autoref{tab:photo}.
+
+\subsection{Limitations}
+
+This retrieval process was naturally not perfect. In addition to some API
+calls returning strange results, the casual nature of the data explains their
+inherent noise.
+
+\begin{itemize}
+	\item While timestamp issued by mobile phones are likely to be correct,
+ as their internal clock is synchronized by internet, this may not
+ always be the case for dedicated cameras. More concerning than usual
+ drift of low quality clock is the situation of tourists coming from
+ different timezone. Yet as I could not think of any simple solution to
+ that problem, I just ignored it and carried on.
+	\item To ensure the quality of the localization, I restricted myself to
+ photos whose precision is deemed \enquote{street level} by Flickr. The
+ potential problem is that it would cost an extra request to know
+ whether this location was given by GPS (in which case the camera
+ position is accurate) or by the user at upload time. In the latter
+ case, in addition to the general imprecision of the method, it is
+ ambiguous whether this location refer the place where the photo was
+ shot or the position of the photo's subject\footnote{Think of a bridge
+ taken from a nearby hill.}.
+	\item Finally, without additional request, the tags obtained are those
+ normalized by Flickr. This normalization is not bijective but it is
+ assumed that two tags with the same normalized form were close in the
+ first place.
+\end{itemize}
+
+\section{Human input}
+
+unsupervised, can't really use history as traditionnal recommender because of
+sparsity (even tough, still need to match restaurants visited in two cities).
+Brief description of the website with a pictures, list of questions and
+categories, number of answers, analysis of the results(?).
 
 \section{Exploration}
+
+\subsection{Time}
 Besides their own issues, these two datasets suffers from
 biased user distribution\autocite{Weird10}, heavy tail (half of twitter users
 have never tweet
-\href{http://twopcharts.com/twitteractivitymonitor}{\url{http://twopcharts.com/twitteractivitymonitor}}
+\href{http://twopcharts.com/twitteractivitymonitor}{\url{twopcharts.com/twitteractivitymonitor}}
 
 \section{Chosen representation}
 Based on the insights gained by exploring the dataset, we settle to represents
-each venues by the numerical vector presented in \autoref{tab:venuefeatures}:
+each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
 
 \clearpage
 
-% ['likes', 'users', 'checkins', 'publicness', 'density',
-%             'category', 'art', 'education', 'food', 'night', 'recreation',
-%             'shop', 'professional', 'residence', 'transport', 'focus',
-%             'photogenicity', 'weekend'
-% CATS = ['Arts & Entertainment', 'College & University', 'Food',
-%         'Nightlife Spot', 'Outdoors & Recreation', 'Shop & Service',
-%         'Professional & Other Places', 'Residence', 'Travel & Transport']
-%     var labels = ['1 to 5','5 to 9','9 to 13','13 to 17','17 to 21','21 to 1'];
 \begin{table}[p]
     \centering
     \begin{tabularx}{\textwidth}{lX}
         \toprule
         index & description \\
         \midrule
-        0 & Number of likes \\
-        1 & Number of unique users \\
-        2 & Number of total check-ins \\
-        \rowcolor{DodgerBlue}
+	\datasetRow{}0 & Number of likes \\
+	\datasetRow{}1 & Number of unique users \\
+	\datasetRow{}2 & Number of total check-ins \\
         3 & User entropy \\
         4 & Venue density \\
-        5 & Venue top level category \\
+	\datasetRow{}5 & Venue top level category \\
         6 & \enquote{Arts \& Entertainment} venues around \\
         7 & \enquote{College \& University} venues around \\
         8 & \enquote{Food} venues around \\
@@ -207,14 +249,49 @@ each venues by the numerical vector presented in \autoref{tab:venuefeatures}:
         12 & \enquote{Professional \& Other Places} venues around \\
         13 & \enquote{Residence} venues around \\
         14 & \enquote{Travel \& Transport} venues around \\
+	15 & Ratio of photos over check-ins \\
+	16 & Ratio of photos associated to the venue over photos linked to other venues \\
+	17 & More than half of the check-ins occurs during the week-end \\
+	18 & Frequency of check-ins between 2 a.m. and 6 a.m. \\
+	19 & Frequency of check-ins between 6 a.m. and 10 a.m. \\
+	20 & Frequency of check-ins between 10 a.m. and 2 p.m. \\
+	21 & Frequency of check-ins between 2 p.m. and 6 p.m. \\
+	22 & Frequency of check-ins between 6 p.m. and 10 p.m. \\
+	23 & Frequency of check-ins between 10 p.m. and 2 a.m. \\
         \bottomrule
     \end{tabularx}
-    \caption[Venue features]{Feature representation of Foursquare venue,
-        taking surrounding into account.\label{tab:venuefeatures}}
+    \caption[Venue features]{Feature representation of Foursquare venues,
+	    taking surrounding into account. \colorbox{Honeydew}{Shaded
+	    features} are provided directly by Foursquare database where the
+	    others were computed solely based on the partial information
+	    contained in the dataset \label{tab:venuefeatures}}
 \end{table}
 
-\newgeometry{hmargin=0.5cm}
-\begin{table}[p]
+\newgeometry{hmargin=0.5cm,vmargin=0.6cm}
+\begin{table}[t]
+	\centering
+	\begin{tabularx}{\textwidth}{lXX}
+		\toprule
+		field & description & example \\
+		\midrule
+		\texttt{\_id}   & Flickr photo id                                    & 12683984675 \\
+		\texttt{loc}    & GeoJSON location of the photo                      & {"type": "Point", "coordinates": [25.009667, 60.227586]} \\
+		\texttt{uid}    & Flickr user id                                     & "40747751@N08" \\
+		\texttt{taken}  & Local time of the shooting according to the camera & ISODate("2014-02-21T18:40:21Z") \\
+		\texttt{title}  & User given title                                   & "One Way to Lock a Bicycle" \\
+		\texttt{hint}   & city name                                          & "helsinki" \\
+		\texttt{tags}   & Normalized user given tags                         & ["bicycle", "lock", "chain", padlock, "locked"] \\
+		\texttt{venue}  & Foursquare venue id                                & null \\
+		\texttt{upload} & UTC time at which the photo was uploaded           & ISODate("2014-02-22T00:28:32Z") \\
+		\texttt{farm}   & Used to obtain a link to the picture file          & 6 \\
+		\texttt{server} & Used to obtain a link to the picture file          & "5506" \\
+		\texttt{secret} & Used to obtain a link to the picture file          & "74fbd5b60a" \\
+		\bottomrule
+	\end{tabularx}
+	\caption[Photo format]{Description of the fields of the photo
+	object.\label{tab:photo}}
+\end{table}
+\begin{table}[b]
     \centering
     \begin{tabularx}{\textwidth}{lXX}
         \toprule
@@ -225,8 +302,8 @@ each venues by the numerical vector presented in \autoref{tab:venuefeatures}:
 \texttt{loc}           & GeoJSON location according to Foursquare        & {"type" : "Point", "coordinates": [24.951011, 60.181716084480286]} \\
 \texttt{cat}           & id of the primary category                      & "4bf58dd8d48988d11b941735" \\
 \texttt{cats}          & Potential additional categories                 & ["4bf58dd8d48988d1c4941735", "4bf58dd8d48988d143941735"] \\
-\texttt{checkinsCount} & Total number of check-ins in Foursquare         & 2556 \\
-\texttt{usersCount}    & Number of unique user in Foursquare             & 1321 \\
+\texttt{checkinsCount} & Total number of check-ins in Foursquare         & \numprint{2556} \\
+\texttt{usersCount}    & Number of unique user in Foursquare             & \numprint{1321} \\
 \texttt{tipCount}      & Number of tip left by users                     & 13 \\
 \texttt{price}         & Price range, from 1 to 4                        & 2 \\
 \texttt{rating}        & Rating over 10                                  & 7.82 \\
