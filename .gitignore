@@ -1,5 +1,7 @@
 *.pdf
 Examples/
+*.dat
+mkfigs/*.dat
 
 # Created by http://gitignore.io
 

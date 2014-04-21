@@ -74,6 +74,10 @@
 % ********************************************************************
 % Packages with options that might require adjustments
 % ********************************************************************
+\usepackage{etoolbox}
+\newtoggle{EXTERNALPGF}
+\toggletrue{EXTERNALPGF}
+% \togglefalse{EXTERNALPGF}
 
 \PassOptionsToPackage{american}{babel}   % change this to your language(s)
  \usepackage{babel}
@@ -97,6 +101,17 @@
 \PassOptionsToPackage{svgnames}{xcolor}
 \usepackage{colortbl}
 \usepackage{pgfplotstable}
+\pgfplotsset{compat=newest,
+    height=8cm,
+    axis x line=bottom, axis y line=left,
+    axis line style={Gray,line width=0.3pt},
+    title style={font=\tiny},
+    xlabel style={font=\tiny},
+    ylabel style={font=\tiny},
+    xticklabel style={font=\tiny},
+    yticklabel style={font=\tiny},
+    legend style={font=\tiny,line width=0.15pt,cells={line width=0.3pt}}
+}
 % ********************************************************************
 % General useful packages
 % ********************************************************************
@@ -164,6 +179,7 @@
 \pdfadjustspacing=1
 % \PassOptionsToPackage{pdftex}{graphicx}
     \usepackage{graphicx}
+\graphicspath{{./gfx/}{./mkfigs/}}
 
 % ********************************************************************
 % Setup the style of the backrefs from the bibliography
