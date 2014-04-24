@@ -280,10 +280,22 @@ discover feature that could characterize places and help cluster them into
 similar group.
 
 \subsection{Time}
-\autocite{UrbanStory12}
-\autocite{TimeCluster13}
+
+The time at which check-ins occur is undoubtedly a important variable. For
+instance, \textcite{UrbanStory12} performed topic modelling from the text of
+check-in tweets and showed that various topics exhibit daily or weekly
+patterns. Likewise, \textcite{TimeCluster13} clustered cells of a rectangular
+grid according to their repartition of check-ins over categories and time of
+day.
+
+Thus we first looked at when check-ins are performed, and how it differed from
+city to city \autoref{fig:time_checkin}. Then we adopted a venue-centric view
+and clustered locations according to which time they are active
+\autoref{fig:day_cluster}, which also depend of the city
+\autoref{fig:time_cluster_size}.
 
 \begin{figure}[hbt]
+    \begin{subfigure}[b]{\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{%
         \includegraphics[width=\textwidth]{daily_checkin}
@@ -296,14 +308,154 @@ when people go to work in the morning, one in the middle of the day and the
 last one at the end of the evening. Yet, depending of the city, these peaks do
 not happen at the same time, nor with the same intensity.
 \label{fig:daily_checkin}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{%
+        \includegraphics[width=\textwidth]{weekly_checkin}
+    }{%
+        \input{mkfigs/weekly_checkin}
+    }
+    \caption[Pattern of check-in during the week]{More difficult to interpret.
+    \label{fig:weekly_checkin}}
+    \end{subfigure}
+    \caption{Check-ins temporal pattern.\label{fig:time_checkin}}
 \end{figure}
+
+\begin{figure}[hbt]
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[width=\textwidth]{day_cluster_3h}}{\input{mkfigs/day_cluster_3h}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[width=\textwidth]{day_cluster_4h}}{\input{mkfigs/day_cluster_4h}}
+    \end{subfigure}
+    \caption[Venues clustered by time of check-ins]{.\label{fig:day_cluster}}
+\end{figure}
+
+\newgeometry{left=0.3cm,right=0.3cm,bottom=0.1cm,top=0.1cm}
+\begin{figure}[hbt]
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl1}}{\input{mkfigs/cluster_day_3h_cl1}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl1}}{\input{mkfigs/cluster_day_4h_cl1}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl2}}{\input{mkfigs/cluster_day_3h_cl2}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl2}}{\input{mkfigs/cluster_day_4h_cl2}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl3}}{\input{mkfigs/cluster_day_3h_cl3}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl3}}{\input{mkfigs/cluster_day_4h_cl3}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl4}}{\input{mkfigs/cluster_day_3h_cl4}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl4}}{\input{mkfigs/cluster_day_4h_cl4}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl5}}{\input{mkfigs/cluster_day_3h_cl5}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl5}}{\input{mkfigs/cluster_day_4h_cl5}}
+    \end{subfigure}
+    \caption{.\label{fig:time_cluster_size}}
+\end{figure}
+\restoregeometry
 
 \subsection{Space}
 
+\begin{figure}[hbtp]
+\includegraphics[width=\textwidth]{density_paris}
+\caption[Venue density in Paris]{.\label{fig:density_paris}}
+\end{figure}
+
+Density picture \autoref{fig:density_paris} (as a pdf?) remote versus central
+location
+
+Explain categories surrounding.
+
 \subsection{User entropy}
 
+Explain why entropy is an interesting measure according to
+\autocite{Entropy10}.
+
+Let $\mathcal{U}$ be the set of users and $\mathcal{V}$ the one of venues. For
+each venue $v \in \mathcal{V}$, we can gather the set of check-ins $c_v$ that
+occurred there as well as the corresponding users $[u_1, u_2, u_2, \ldots,
+u_n]$ (note that the same users can check-in multiple times). Then we
+transform this list to a frequency distribution $f_v$ over $\mathcal{U}$ and
+compute the normalized entropy: \[
+    H(v) = -\frac{1}{\log\left(\left| \mathcal{U}\right|\right)}
+\sum_{u\in \mathcal{U}} f_v(u) \log(f_v(u)) \]
+
+Show example with high and low value in Paris and Barcelona:
+\begin{tabular}{llr}
+	\toprule
+	Name                    & Category            & Entropy \\
+	\midrule
+	Castellers de Barcelona & Non-Profit          & 0.118064 \\
+	Café de la Pompeu       & Café                & 0.146145 \\
+	Ràdio 4                 & Radio Station       & 0.149995 \\
+	La Comarca              & Home (private)      & 0.153078 \\
+	House castellar         & Home (private)      & 0.154076 \\
+	Av Tomas Gimenez        & Bar                 & 0.158411 \\
+	Torre De Barad-Dur      & Building            & 0.163024 \\
+	\midrule
+	Parc de la Ciutadella   & Park                & 4.416021 \\
+	Apple Store             & Electronics Store   & 4.560921 \\
+	Parc Güell              & Park                & 4.815076 \\
+	Plaça de Catalunya      & Plaza               & 4.977019 \\
+	Sagrada Família         & Government Building & 5.356548 \\
+	Sants Estació           & Train Station       & 5.360970 \\
+	Camp Nou                & Stadium             & 5.829855 \\
+	\bottomrule
+\end{tabular}
+
+Compute time entropy and see if there is a link. Not really, some place are
+visited all the day by a very small group of people,
+\autoref{fig:two_entropies}
+
+\begin{figure}[hbtp]
+\includegraphics[width=\textwidth]{two_entropies}
+\caption[short]{long}
+\label{fig:two_entropies}
+\end{figure}
+
+
 \subsection{Photos}
-look at high and low focus places.
+
+Assume that photos are background signal of interest within city. Use exact
+grid algo from [REF] to compute discrepancy with check-ins measurement (and
+conversely). \marginpar{give real examples} More photos in touristic places,
+more check-in in “event” places (railway, stadium)
+
+Look at high and low focus places: not so interesting either. High value are
+for popular places like park or monument whereas low (but not zero) are for
+mundane place (like pizzeria) close to famous locations.
 
 \section{Chosen representation}
 
@@ -353,7 +505,7 @@ by a 2D Gaussian of radius $r=350$ meters.
 
 \clearpage
 
-\newgeometry{hmargin=0.5cm,vmargin=0.6cm}
+\newgeometry{hmargin=1.1cm,vmargin=0.7cm}
 \begin{table}[t]
 	\centering
 	\begin{tabularx}{\textwidth}{lXX}
