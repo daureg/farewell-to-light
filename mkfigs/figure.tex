@@ -1,15 +1,6 @@
 \documentclass[svgnames]{standalone}
 \usepackage{pgfplots}
-\pgfplotsset{compat=newest,
-			axis x line=bottom, axis y line=left,
-            axis line style={Gray,line width=0.3pt},
-			title style={font=\tiny},
-			xlabel style={font=\tiny},
-			ylabel style={font=\tiny},
-			xticklabel style={font=\tiny},
-			yticklabel style={font=\tiny},
-            legend style={font=\tiny,line width=0.15pt,cells={line width=0.3pt}}
-}
+\input{../figure-params.tex}
 \begin{document}
-\input{daily_checkin.tex}
+\input{weekly_checkin.tex} %in
 \end{document}
