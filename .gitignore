@@ -1,3 +1,5 @@
+mkfigs/raw_categories
+mkfigs/figure.tex
 *.pdf
 Examples/
 *.dat

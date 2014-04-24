@@ -1,0 +1,30 @@
+\begin{tikzpicture}
+	\begin{axis}[%
+            title={3 hours Cluster 2 in all cities},
+            xlabel={hour},
+            ylabel={percentage},
+            grid=major,
+            xticklabels={,1--4, 4--7, 7--10, 10--13, 13--16, 16--19, 19--22, 22--1},
+		]
+\addplot[ck1, thin, smooth] table[x index=0, y index=2] {amsterdam_cluster_day_3h.dat};
+\addplot[ck2, thin, smooth,] table[x index=0, y index=2]{atlanta_cluster_day_3h.dat};
+\addplot[ck3, thin, smooth,] table[x index=0, y index=2]{barcelona_cluster_day_3h.dat};
+\addplot[ck4, thin, smooth,] table[x index=0, y index=2]{berlin_cluster_day_3h.dat};
+\addplot[ck5, thin, smooth,] table[x index=0, y index=2]{chicago_cluster_day_3h.dat};
+\addplot[ck6, thin, smooth,] table[x index=0, y index=2]{helsinki_cluster_day_3h.dat};
+\addplot[ck7, thin, smooth,] table[x index=0, y index=2]{houston_cluster_day_3h.dat};
+\addplot[ck8, thin, smooth,] table[x index=0, y index=2]{indianapolis_cluster_day_3h.dat};
+\addplot[ck9, thin, smooth,] table[x index=0, y index=2]{london_cluster_day_3h.dat};
+\addplot[ck10, thin, smooth,] table[x index=0, y index=2]{losangeles_cluster_day_3h.dat};
+\addplot[ck11, thin, smooth,] table[x index=0, y index=2]{moscow_cluster_day_3h.dat};
+\addplot[ck12, thin, smooth,] table[x index=0, y index=2]{newyork_cluster_day_3h.dat};
+\addplot[ck13, thin, smooth,] table[x index=0, y index=2]{paris_cluster_day_3h.dat};
+\addplot[ck14, thin, smooth,] table[x index=0, y index=2]{prague_cluster_day_3h.dat};
+\addplot[ck15, thin, smooth,] table[x index=0, y index=2]{rome_cluster_day_3h.dat};
+\addplot[ck16, thin, smooth,] table[x index=0, y index=2]{sanfrancisco_cluster_day_3h.dat};
+\addplot[ck17, thin, smooth,] table[x index=0, y index=2]{seattle_cluster_day_3h.dat};
+\addplot[ck18, thin, smooth,] table[x index=0, y index=2]{stlouis_cluster_day_3h.dat};
+\addplot[ck19, thin, smooth,] table[x index=0, y index=2]{stockholm_cluster_day_3h.dat};
+\addplot[ck20, thin, smooth,] table[x index=0, y index=2]{washington_cluster_day_3h.dat};
+\end{axis}
+\end{tikzpicture}

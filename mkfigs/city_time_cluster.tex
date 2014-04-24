@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+	\begin{axis}[%
+            title={4 hours time clusters in Paris},
+            xlabel={hour},
+            ylabel={percentage},
+            % legend style={at={(0.05,0.8)},anchor=west},
+            grid=major,
+            xticklabels={,1--4, 4--7, 7--10, 10--13, 13--16, 16--19, 19--22, 22--1},
+		]
+\addplot[DodgerBlue , thin, smooth, mark size={1.5pt}, mark=+ ]table [x index=0, y index=1] {paris_cluster_day_4h.dat};
+\addplot[FireBrick  , thin, smooth, mark size={1.5pt}, mark=o ]table      [x index=0, y index=2] {paris_cluster_day_4h.dat};
+\addplot[Lime       , thin, smooth, mark size={1.5pt}, mark=x ]table [x index=0, y index=3] {paris_cluster_day_4h.dat};
+\addplot[Peru       , thin, smooth, mark size={1.5pt}, mark=square ]table [x index=0, y index=4] {paris_cluster_day_4h.dat};
+\addplot[VioletRed  , thin, smooth, mark size={1.5pt}, mark=triangle      ]table [x index=0, y index=5] {paris_cluster_day_4h.dat};
+\end{axis}
+\end{tikzpicture}
+
