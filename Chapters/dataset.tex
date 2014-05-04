@@ -38,7 +38,7 @@ Why people use 4SQ\autocite{FSMotivation11}.
 Foursquare check-ins are not available publicly for free, thus one has to
 find other way to get them. The easiest one was to reuse an existing dataset.
 Between September 2010 and January 2011, \textcite{dataset11} collected
-\numprint{22387930} check-ins  from various \glspl{lsbn}.
+\numprint{22387930} check-ins from various \glspl{lbsn}.
 
 A typical check-in looks like this:
 \begin{verbatim}
@@ -320,8 +320,8 @@ not happen at the same time, nor with the same intensity.
     }{%
         \input{mkfigs/weekly_checkin}
     }
-    \caption[Pattern of check-in during the week]{More difficult to interpret.
-    \label{fig:weekly_checkin}}
+    \caption[Pattern of check-in during the week]{During the week, patterns
+        are less clear.  \label{fig:weekly_checkin}}
     \end{subfigure}
     \caption{Check-ins temporal pattern.\label{fig:time_checkin}}
 \end{figure}
@@ -336,10 +336,12 @@ not happen at the same time, nor with the same intensity.
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[width=\textwidth]{day_cluster_4h}}{\input{mkfigs/day_cluster_4h}}
     \end{subfigure}
-    \caption[Venues clustered by time of check-ins]{.\label{fig:day_cluster}}
+    \caption[Venues clustered by time of check-ins]{Venues clustered by time
+    of check-ins. \label{fig:day_cluster}}
 \end{figure}
 
 \newgeometry{left=0.3cm,right=0.3cm,bottom=0.1cm,top=0.1cm}
+\begin{center}
 \begin{figure}[hbt]
     \begin{subfigure}[b]{0.4\textwidth}
     \centering
@@ -385,19 +387,23 @@ not happen at the same time, nor with the same intensity.
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl5}}{\input{mkfigs/cluster_day_4h_cl5}}
     \end{subfigure}
-    \caption{.\label{fig:time_cluster_size}}
+    \caption[Venues cluster by time among all the cities]{4 hours time
+    clusters are the same among all cities, whereas it is not the case for 3
+hours clusters. \label{fig:time_cluster_size}}
 \end{figure}
+\end{center}
 \restoregeometry
 
 \subsection{Space}
 
 \begin{figure}[hbtp]
-\includegraphics[width=\textwidth]{density_paris}
-\caption[Venue density in Paris]{.\label{fig:density_paris}}
+\includegraphics[width=\textwidth]{density_paris_venues}
+\caption[Venue density in Paris]{Estimated venues density in Paris.
+\label{fig:density_paris}}
 \end{figure}
 
-Density picture \autoref{fig:density_paris} (as a pdf?) remote versus central
-location
+Density picture \autoref{fig:density_paris} remote versus central
+locations
 
 Explain categories surrounding.
 
@@ -444,8 +450,8 @@ visited all the day by a very small group of people,
 
 \begin{figure}[hbtp]
 \includegraphics[width=\textwidth]{two_entropies}
-\caption[short]{long}
-\label{fig:two_entropies}
+\caption{Venues entropy with respect to user population and time of check-in
+during the day. \label{fig:two_entropies}}
 \end{figure}
 
 
