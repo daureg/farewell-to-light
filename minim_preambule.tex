@@ -1,0 +1,103 @@
+\usepackage{ifxetex}
+\ifxetex{}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\usepackage{xltxtra}
+\setmainfont{Linux Libertine O}
+\fontspec[Numbers={OldStyle}]{Linux Libertine O}
+\DeclareTextCommandDefault{\nobreakspace}{\leavevmode\nobreak\ }
+\usepackage{relsize}
+\makeatletter
+\newdimen\M@ht
+\newcommand*{\fup}[1]{%
+\@ifundefined{@@textsuperscript}%
+{\settoheight{\M@ht}{M}%
+\raisebox{.65\M@ht}{\relscale{.60}{#1}}}%
+{\@@textsuperscript{#1}}}%
+\makeatother
+\else
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\newcommand*{\fup}[1]{\textsuperscript{#1}}
+\fi
+\newcommand*{\texrel}[0]{\ensuremath{\leftrightarrow\;}}
+\newcommand*{\keyfinding}[1]{\textbf{#1}}
+\usepackage[automark]{scrpage2}
+\newcounter{dummy}
+\newcounter{lofdepth}
+\DeclareRobustCommand{\spacedallcaps}[1]{\textls[160]{\MakeTextUppercase{#1}}}%
+\DeclareRobustCommand{\spacedlowsmallcaps}[1]{\textls[80]{\scshape\MakeTextLowercase{#1}}}%
+\usepackage[xindy,style=long,nolist]{glossaries}
+\makeglossaries
+\renewcommand{\glsnamefont}[1]{\spacedlowsmallcaps{#1}}
+\input{glossary}
+\PassOptionsToPackage{style=ieee,sorting=nyt,backend=biber,defernumbers=true}{biblatex}
+\usepackage{biblatex}
+\addbibresource{../../aalto/thesis.bib}
+\PassOptionsToPackage{noautolanguage}{numprint}
+\usepackage{numprint}
+\npstyleenglish
+\newcommand{\datasetRow}{\rowcolor{Moccasin}}
+\usepackage{stmaryrd}
+\DeclareMathOperator*{\argmax}{argmax}
+\usepackage{tabularx} % better tables
+\setlength{\extrarowheight}{3pt} % increase table row height
+\usepackage{etoolbox}
+\newtoggle{EXTERNALPGF}
+\toggletrue{EXTERNALPGF}
+% \togglefalse{EXTERNALPGF}
+\usepackage{colortbl}
+\newcommand{\ie}{i.\,e.}
+\newlength{\beforebibskip}  
+\setlength{\beforebibskip}{0.5em}
+    \newcommand{\tocEntry}[1]{% for bib, etc.
+    	\ifpdf\texorpdfstring{\spacedlowsmallcaps{#1}}{#1}%
+        \else{#1}\fi%
+    }
+
+
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
+\usepackage{changepage}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage[]{numprint}
+\usepackage{wrapfig}
+% \selectlanguage{english}
+\usepackage{balance}
+\usepackage{booktabs}
+\usepackage{caption}
+% \usepackage{chngpage}
+% \usepackage{colortbl}
+\usepackage{graphicx} 
+\graphicspath{{./gfx/}{./mkfigs/}}
+\usepackage{hyperref}
+\usepackage{microtype}
+% \usepackage[numbers,square]{natbib}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\input{figure-params.tex}
+\usepackage[strict]{csquotes}
+\usepackage{subcaption}
+% \usepackage[svgnames]{xcolor}
+\usepackage{varioref}
+\usepackage{fancyvrb}
+\usepackage[hmargin=2.3cm]{geometry}
+
+% \DeclareMathOperator*{\argmax}{argmax}
+% \newcommand{\argmax}[1]{\arg\underset{#1}{\max}\;}
+% \newcommand{\equiv}{ \Leftrightarrow}
+% \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+% \newcommand{\vnorm}[1]{\left|\left|#1\right|\right|}
+% \renewcommand{\thesubsection}{\alph{subsection}}
+
+\usepackage{tikz}
+% \usepackage{xcolor}
+% \usetikzlibrary{positioning,calc}
+\tikzset{cell/.style={shape=rectangle,draw,thin,gray,inner sep=0.0mm,minimum
+	size=19pt,font=\scriptsize}}
+
