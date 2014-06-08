@@ -9,14 +9,25 @@
 \let\cleardoublepage\relax
 
 \chapter*{Abstract}
+
+Large cities are made of smaller regions that serve a few primary functions.
+Here we propose a method to discover such regions in a known city and to find
+matching regions in a target city. Cities are seen as set of discrete venues,
+described by data crawled from Foursquare and Flickr. After feature
+engineering, we pick two metrics and learn their optimal parametrization. We
+then devise heuristics to avoid brute force search. Beside being useful in
+touristic recommendation, these methods apply to similar problem setting.
+
+\comment{An older version:\\
 I collected check-ins from Foursquare and photos metadata from Flickr in 20
 cities. After an extensive exploration of these dataset, I combined them by
 extracting features to describe each cities' venues. Then I used those
-features to match similar venues across cities. Results will compared again
-human input gathered through a website. Finally, I plan to extend this
+features to match similar venues across cities. Results will be compared
+against human input gathered through a website. Finally, I plan to extend this
 matching to neighborhood or whole city, subject to topology preservation and
 homogeneity constraints.
+}
 
-\endgroup			
+\endgroup 
 
 \vfill
