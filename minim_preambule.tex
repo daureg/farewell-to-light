@@ -40,7 +40,6 @@
 \npstyleenglish
 \newcommand{\datasetRow}{\rowcolor{Moccasin}}
 \usepackage{stmaryrd}
-\DeclareMathOperator*{\argmax}{argmax}
 \usepackage{tabularx} % better tables
 \setlength{\extrarowheight}{3pt} % increase table row height
 \usepackage{etoolbox}
@@ -64,7 +63,6 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{stmaryrd}
 \usepackage[]{numprint}
 \usepackage{wrapfig}
 % \selectlanguage{english}
@@ -78,15 +76,15 @@
 \usepackage{hyperref}
 \usepackage{microtype}
 % \usepackage[numbers,square]{natbib}
-\usepackage{pgfplots}
-\usepackage{pgfplotstable}
-\input{figure-params.tex}
+% \usepackage{pgfplots}
+% \usepackage{pgfplotstable}
+% \input{figure-params.tex}
 \usepackage[strict]{csquotes}
 \usepackage{subcaption}
 % \usepackage[svgnames]{xcolor}
 \usepackage{varioref}
 \usepackage{fancyvrb}
-\usepackage[hmargin=2.3cm]{geometry}
+\usepackage[hmargin=4.0cm]{geometry}
 
 % \DeclareMathOperator*{\argmax}{argmax}
 % \newcommand{\argmax}[1]{\arg\underset{#1}{\max}\;}
@@ -95,9 +93,4 @@
 % \newcommand{\vnorm}[1]{\left|\left|#1\right|\right|}
 % \renewcommand{\thesubsection}{\alph{subsection}}
 
-\usepackage{tikz}
-% \usepackage{xcolor}
-% \usetikzlibrary{positioning,calc}
-\tikzset{cell/.style={shape=rectangle,draw,thin,gray,inner sep=0.0mm,minimum
-	size=19pt,font=\scriptsize}}
-
+\input{common-config}

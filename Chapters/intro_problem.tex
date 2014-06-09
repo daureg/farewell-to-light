@@ -1,7 +1,7 @@
 \section{Problem definition}
 \label{sec:problem}
 
-Let us define formally this problem. We have a set of cities $\mathcal{C} =
+We have a set of cities $\mathcal{C} =
 \{c_1, c_2, \ldots, c_n\}$, each of them defined by a enclosing rectangle
 $R_{c_i} \subseteq \mathbb{R}^2$. Furthermore, each city $c_i$ contains a
 subset $V_{c_i} \subseteq \mathcal{V}$, where $\mathcal{V}$ is a set of
@@ -26,12 +26,12 @@ and items is based on spatial distance.
 
 By combining venues own characteristics and their associated items, we want to
 devise a similarity measure over the venues $\mathcal{V}$, namely $\delta:
-\mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. This provides a
-building block for another measure of similarity between two spatial regions.
-More precisely, after choosing a home city $c_h$ and a target city
-$c_t$\footnote{$t$ can also stand for travel or tourist.}, we want to
-construct $\delta': R_{c_h} \times R_{c_t} \rightarrow \llbracket 0, 1 \rrbracket$.
-These two functions answer the following queries:
+\mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. More generally, we want
+another measure of similarity between two spatial regions. That is, after
+choosing a home city $c_h$ and a target city $c_t$\footnote{$t$ can also stand
+for travel or tourist.}, we want to construct $\delta': R_{c_h} \times R_{c_t}
+\rightarrow \llbracket 0, 1 \rrbracket$. These two functions answer the
+following queries:
 
 \begin{enumerate}
 \item When users pick a venue $v$ in their home city, find the venue in the
@@ -44,21 +44,20 @@ These two functions answer the following queries:
 \end{enumerate}
 
 
-% \subsection*{Setup}
-\comment{another way to say it:\\
+\begin{comments}
+another way to say it:\\
 We have two cities, $C_1$ and $C_2$. In each of them lie objects of different
 kind (in our case: photos, check-ins and venues). These objects have a
 position in $\mathbb{R}^2$, along with other attributes like time, tags,
 category or number of visitors.
 
-% \subsection*{Goal}
 As an input, we are given a polygonal region $R$ contained in $C_1$. The
 desired output is the region $R'$ in $C_2$ that is closest to $R$ according
 to the metric $\delta_{\theta}$.
-}
 
-% \subsection*{Problem}
+\end{comments}
 
+Because the second problem has wider scope, let us provide more details.
 A region is represented by the $e'$ main objects it contains (the venues).
 Each of these venues is in turn described by $d$ numerical features. In
 addition, each region have a set of $g$ global features that are not
@@ -78,15 +77,16 @@ $\theta$-parametrized distance
 	&(X, x) , (X', x') \mapsto d_{R,R'}
 \end{align*}
 
-and our our objective is fulfilled by computing, for a given $R \in
-\mathcal{R}(C_1)$
+and as mentioned, our our objective is fulfilled by computing, for a given $R
+\in \mathcal{R}(C_1)$
 \begin{equation}
 	\argmin_{R' \in \mathcal{R}(C_2)}\; \delta_{\theta}
 	\left(\phi(R), \phi(R')\right)
 	\label{e:onetheta}
 \end{equation}
 
-More precisely, $\delta_{\theta}$ is defined as follow. Let $X_i$ (respectively
+More precisely, $\delta_{\theta}$ is defined as follow.\marginpar{Actually,
+that's only one of the possible definition.} Let $X_i$ (respectively
 $X'_i$) be the $i$\textsuperscript{th} column of $X$ ($X'$), $P_i$ ($Q_i$) the
 associated distribution, $D_{\mathrm{KL}}(P \parallel Q) = \sum_j
 P(j)\ln\left(\frac{P(j)}{Q(j)}\right)$ the Kullback--Leibler divergence
@@ -100,80 +100,14 @@ where $M=\frac{1}{2}(P+Q)$. Then
 \]
 
 \subsection*{Additional considerations}
-\subsubsection*{Point Pattern Matching}
-
-A more refined answer would acknowledge that not all regions can be compared in
-the same way and thus solve
-\begin{equation}
-    \argmin_{\theta ,\, R' \in \mathcal{R}(C_2)}\; \delta_{\theta}
-    \left(\phi(R), \phi(R')\right) + cost(\theta)
-    \label{e:manythetas}
-\end{equation}
-where the regularisation of $\theta$ ensures that there is still a common
-ground in the way similarity is computed.
-
-\eqref{e:manythetas} can be casted as a \emph{Point Pattern
-Matching}\footnote{Also known as \emph{Point set registration}.} problem.
-Following \textcite{PointPatternMatching08}, let $P$ be the $e'$ points of
-$\mathbb{R}^d$ that make up $R$, and let $T$ be the $n$ points of
-$\mathbb{R}^d$ lying in $C_2$. The problem asks whether there is a subset $I
-\subseteq T$ such that $\delta_{\theta}\left(P, I\right) \leq \epsilon$. In
-this case, $\theta$ represents a linear transformation applied to $P$. And
-instead of explicit regularisation, it can only be drawn from a fixed class of
-transformations. Another constraint is that $I$ must be restricted to subsets
-of venues that indeed form neighborhood.
-
-\subsubsection*{The choice of $\delta$}
-
-Here are presented some design alternatives for $\delta$ and why the current
-choice was made.
-
-\begin{itemize}
-    \item First, weighting venues, either explicitly or, more likely,
-        implicitly (for instance by their relative popularity in the region)
-        will provide more flexibility. Especially, a fixed fraction of venues
-        may have zero weight because we consider they don't really belong to a
-        given neighborhood.
-    \item There are different distances between two point sets. For instance,
-        the bottleneck distance \autocite{Bottleneck96} (the smallest distance
-        between pairs of farthest point), the sum of the distance of each
-        point to its closest neighbor, or the Hausdorff distance (the largest
-        distance between pairs of closest point) and its variation
-        \autocite{ModifiedHausdorff94}. From what I have seen, these measures
-        have been used mostly in 2 or 3 dimensional space.  Thus it would be
-        interesting to see how they behave in higher dimension.  Especially
-        since linear transformations in $\mathbb{R}^{31}$ are not very
-        intuitive.
-    \item Instead of using euclidean distance to compare global feature, some
-	    histogram distance \autocite{HistogramDistance02} may be more suited,
-        especially to compare the time activity of different regions.
-    \item Likewise, moving past the geometric approach, this could also be
-        tackled by information theoretic distance over some probability
-        distributions, like the Kullback--Leibler divergence\footnote{Or one
-        of the many others distances mentionned on Wikipedia:
-        \href{https://en.wikipedia.org/wiki/Statistical_distance}%
-        {\url{en.wikipedia.org/wiki/Statistical_distance}}}. Or as suggested
-        by the paper from Arto \autocite{InfoMatching10}, by looking at the
-        mutual information between two regions.
-    \item Finally, we could build a graph out of venues. It may for instance
-        contains information about their relation in the original 2D space. Or
-        be tailored to take categories into account \autocite{fitting09}. Then
-        they can be compared using appropriate similarity
-        \autocite{GraphSimilarity14}. The drawback is that it seems somewhat
-        artificial and contrived.
-\end{itemize}
-
-Because the venues dimensions do not share a common semantic (as it is the case
-of the $x$ and $y$ axis of a plane), it feels rather awkward to use a geometric
-approach, whereas the probability distances operate over one dimension at a
-time.
-
-Yet, these three main classes of distance -- and their numerous variations --
-all measure distance between two regions. Therefore, we can consider these
-distances as scores given to a candidate region by different judges and try to
-combine them by weighted vote.
-
-One disadvantage of probabilistic distances is that since they need to
-estimate density, they would probably not perform well when there are not
-enough venues to get reliable estimation.  We also need to choose between
-simple histogram counting or more expensive kernel density estimation.
+\begin{comments}
+    It originally went for more than one page but the main points were:
+    \begin{itemize}
+        \item $\theta$ can varies between query, which is more flexible.
+        \item this can be formulated as Point Pattern Matching problem.
+        \item Venues can be weighted before comparison.
+        \item There are three kind of distances: geometric, probabilistic and
+            graph based.
+        \item We can combine different distances.
+    \end{itemize}
+\end{comments}
