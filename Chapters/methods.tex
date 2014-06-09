@@ -6,11 +6,19 @@
 \subsection{Dimensionality reduction}
 
 \begin{flushright}{\slshape
-	If people could see in high dimensions \\
-	machine learning would not be necessary.
+ If people could see in high dimensions \\
+ machine learning would not be necessary.
 } \\ \medskip
 --- Pedro \Textcite{MLKnowledge12}
 \end{flushright}
+
+A common idea in Machine Learning problems is that data are meaningful.
+Although we fail to distinguish their structure in high dimensional space, we
+assume that data are the result of a principled underlying process and
+therefore that sample points are not randomly distributed in the whole space.
+A fruitful approach to validate this hypothesis is to perform dimensionality
+reduction, with the aim of recovering a low dimensional manifold that embed
+the data.
 
 So far, t-Distributed Stochastic Neighbor Embedding \autocite{tSNE08} seems
 the most promising method.

@@ -57,7 +57,6 @@
 % ********************************************************************
 % Setup, finetuning, and useful commands
 % ********************************************************************
-\include{common-config}
 \newcounter{dummy} % necessary for correct hyperlinks (to index, bib, etc.)
 \newlength{\abcd} % for ab..z string length calculation
 \providecommand{\mLyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
@@ -92,8 +91,6 @@
 \PassOptionsToPackage{fleqn}{amsmath}        % math environments and more by the AMS
  \usepackage{amsmath}
 \usepackage{stmaryrd}
-\DeclareMathOperator*{\argmax}{argmax}
-% \newcommand{\argmax}[1]{\arg\underset{#1}{\max}\;}
 \PassOptionsToPackage{noautolanguage}{numprint}
 \usepackage{numprint}
 \npstyleenglish
@@ -251,7 +248,7 @@
 % ********************************************************************
 % Development Stuff
 % ********************************************************************
-\listfiles
+% \listfiles
 %\PassOptionsToPackage{l2tabu,orthodox,abort}{nag}
 %    \usepackage{nag}
 %\PassOptionsToPackage{warning, all}{onlyamsmath}
@@ -287,7 +284,7 @@
 %\usepackage{lmodern} % <-- no osf support :-(
 %\usepackage[urw-garamond]{mathdesign} <-- no osf support :-(
 % ****************************************************************************************************
-
+\include{common-config}
 \usepackage[xindy,style=long,nolist]{glossaries}
 \makeglossaries
 \renewcommand{\glsnamefont}[1]{\spacedlowsmallcaps{#1}}
