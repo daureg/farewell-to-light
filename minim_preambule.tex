@@ -32,8 +32,7 @@
 \makeglossaries
 \renewcommand{\glsnamefont}[1]{\spacedlowsmallcaps{#1}}
 \input{glossary}
-\PassOptionsToPackage{style=ieee,sorting=nyt,backend=biber,defernumbers=true}{biblatex}
-\usepackage{biblatex}
+\usepackage[sorting=nyt,defernumbers=true]{biblatex}
 \addbibresource{../../aalto/thesis.bib}
 \PassOptionsToPackage{noautolanguage}{numprint}
 \usepackage{numprint}
@@ -77,7 +76,7 @@
 \usepackage{microtype}
 % \usepackage[numbers,square]{natbib}
 % \usepackage{pgfplots}
-% \usepackage{pgfplotstable}
+\usepackage{pgfplotstable}
 % \input{figure-params.tex}
 \usepackage[strict]{csquotes}
 \usepackage{subcaption}
