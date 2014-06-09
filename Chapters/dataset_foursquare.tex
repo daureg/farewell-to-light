@@ -1,6 +1,12 @@
 \section{Foursquare}
 
-Why people use 4SQ\autocite{FSMotivation11}.
+As of 2014, Foursquare has become the most popular \gls{lbsn}. But because
+its usage it not driven by explicit task solving (like finding direction in a
+new city), it sounds to ask why people are using it. According to
+\textcite{FSMotivation11}, the main factor are fun (because the application is
+gamified and its a lightweight activity to perform when one is bored), social
+aspect (see where your friends go and let them know what you are doing) and
+discovery (read tips left by previous users and get discount).
 
 \subsection{Check-ins}
 
@@ -16,15 +22,15 @@ A typical check-in looks like this:
 I'm at Meridian Pint (, ) w/ 7 others. http://4sq.com/9GoW57
 \end{verbatim}
 
-where we can find the twitter user id, the tweet id, the
-latitude and longitude, the local time, a place id and the tweet's text
-\footnote{a more thorough description can be found online
+where we can find the twitter user id, the tweet id, the latitude and
+longitude, the local time, a place id and the tweet's text\footnote{a more
+thorough description can be found online
 at \href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
-{\url{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}}.}.
+{\url{infolab.tamu.edu/static/users/zhiyuan/icwsm_2011_readme.pdf}}.}.
 
 After filtering tweets originating from our twenty cities, we were left with
 \numprint{2133752} of them. However, there is no easy way to map twitter place
-id to Foursquare venue id\footnote{It even seems that there is not one to one
+id to Foursquare venue id\footnote{Indeed, there is no one to one
 correspondence between them.}. Therefore, we had to follow the short links
 appearing in the tweets to recover those ids. But as the dataset is three
 years old, some links are dead. At the end, we found \numprint{1296505}
@@ -34,14 +40,14 @@ exploitable check-ins, as showed in \autoref{tab:dataset}.
 
 Another way to access check-ins is to use Twitter. Some applications publish
 tweets regarding check-in on the behalf of user. Furthermore, Twitter allows
-anyone to access a 1\% sample of public tweets\footnote{Using their Public
+anyone to access a 1\% sample of public tweets\footnote{Using the Public
 streams API described here:
 \href{https://dev.twitter.com/docs/streaming-apis/streams/public}%
-{\url{https://dev.twitter.com/docs/streaming-apis/streams/public}}.}.
+{\url{dev.twitter.com/docs/streaming-apis/streams/public}}.}.
 \marginpar{refactor script to clean dependencies} Therefore we set up our own
 collection process from March to July 2014\footnote{The code can be found on
 github: \href{https://github.com/daureg/illalla}%
-{\url{https://github.com/daureg/illalla}}.} by selecting tweets with
+{\url{github.com/daureg/illalla}}.} by selecting tweets with
 \url{4sq.com} links, retaining those located in the target cities and that
 leads to real check-ins. It adds \numprint{351365} tweets. The format,
 described in \autoref{tab:checkinfields}, is rather similar to the previous
@@ -84,8 +90,11 @@ one:
 \end{table}
 
 \marginpar{Put those details in Appendix?}
-\Textcite{TwitterMongoDB13} describe a similar but more robust setup, that
-also use the timeline of selected users.
+\Textcite{TwitterMongoDB13} describe a similar but more robust setup.
+Additionnaly, they obtained more data by crawling the timeline of users that
+appear to post geo located tweets according to the public sample. We also
+follow this approach in a few cities, resulting in \numprint{300000} more
+tweets.
 
 \begin{table}[ht]
     \centering
@@ -116,7 +125,7 @@ also use the timeline of selected users.
     Rome          & 9364    & 5068   & 142113  & 4311   \\
     Prague        & 4757    & 3610   & 41395   & 2943   \\
     Helsinki      & 6724    & 1486   & 21333   & 1956   \\
-    total         & 1296505 & 351365 & 7748621 & 226768 \\
+    total         & 1296505 & 351365 & 7748621 & 226768
 }
 \caption[Dataset number]{Count of objects in the dataset\label{tab:dataset}}
 \end{table}
@@ -128,21 +137,45 @@ the collection process was to gather information about all of those
 \numprint{226768} that appear in at least on check-in. This was done by calling the
 appropriate Foursquare API, with result showed in \autoref{tab:venue}.
 
-link to dataset on
+\begin{comments}
+link to the dataset on
 \href{http://figshare.com/authors/G\%C3\%A9raud\%20Le\%20Falher/542931}%
 {\url{figshare.com}} or \url{http://academictorrents.com}
+\end{comments}
 
 \subsection{Limitations}
 
-fake checkin\autocite{FakeCheckins12} (although this can be corrected
-\autocite{ValidateCheckin13,FindingFake14}
+The data collection process described above is easily fooled by dishonest user
+claiming to be at some locations even if it is not the case. According to
+\autocite{FakeCheckins12}, this can be caused by the desire to \enquote{cheat}
+the gaming component of many \glspl{lbsn}, take advantage of monetary
+incentives offered by venues owner to go in their establishment or simply
+provide allegedly objective alibi to cover for other activity. Solution
+involving special hardware and protocol are not within our reach
+\autocite{ValidateCheckin13} and even detecting such fake check-ins, by using
+temporal tensor decomposition \autocite{FindingFake14} is a problem in itself.
+Therefore we did not make any attempt at cleaning the data.
 
-bias in twitter sampling\autocite{TwitterBias14}
+Another concern is the use of Twitter. First because we access only a sample
+of all tweets, without any guarantee about its representativeness.
+Fortunately, it does not appear that Twitter is purposely trying to trick
+researchers \autocite{TwitterBias14}. Second because our tweets span more than
+three years, a interval during which Twitter and its user behavior have
+changed \autocite{TwitterEvolution14}
 
-situation where people are reluctant to check-in\autocite{Privacy11} (on the
-other hands some user are very open: like 5 tweets in less than one hour in a
-pub with 3 names of beer through
-\url{https://untappd.com/user/fneri3/checkin/85857825?ref=social} and 2 photos
-\url{https://foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc&ref=tw}
+The data we collected are largely influenced by privacy consideratiosn.
+Even if it would give us a more reliable picture, there are situations in
+which people are reluctant (or unable) to check-in \autocite{Privacy11}.
+\begin{comments}
+On the other hands some users are very open: One posted 5 tweets in less than
+one hour in a pub, along with 3 names of beer
+\href{https://untappd.com/user/fneri3/checkin/85857825}%
+{\url{untappd.com/user/fneri3/checkin/85857825}} and 2 photos
+\href{https://foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}%
+{\url{foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}}.
+\end{comments}
 
-fixed categories instead of inferred LDA semantics\autocite{PlaceSemantic14}
+Finally, through this work, we relied on venues category provided by
+Foursquare. Yet it has been showed recently than performing Latent Dirichlet
+Allocation on associated text defined finer and more meaningful categorisation
+\autocite{PlaceSemantic14}.

@@ -5,8 +5,8 @@ before hand which place is similar to which one. Furthermore, there is no
 easily available source containing this information at a large scale. The
 traditional approach in recommendation system is to held off the most recent
 data and compare the predicted result with them to assess its accuracy.  Yet
-in this case, this method do not work. Firstly because it restricts test users
-to those that have spend a significant time in several cities. Secondly, even
+in this case, this method do not work. First because it restricts test users
+to those that have spend a significant time in several cities. Second, even
 among this limited pool, there would still not be enough information to
 judge similarity. Consider someone who visited ten restaurants in Paris in
 2010 and fifteen in London in 2012. We cannot infer from that that they are
@@ -17,7 +17,7 @@ labeling though.}.
 To overcome this difficulty of evaluating results, we decided to ask people
 for their opinion. But as we thought it was to convoluted to ask directly for
 pair of locations, we adopted a simpler approach. We presented user with a
-list of activities (the full list is presented in \autoref{tab:questions}) and
+list of activities (the full list is available in \autoref{tab:questions}) and
 a map of a city. For each activity, user are prompted to draw region on the
 map and optionally, select specific venues. The interface is showed in
 \autoref{fig:survey}.
@@ -37,7 +37,9 @@ map and optionally, select specific venues. The interface is showed in
     \caption{Website survey interface.\label{fig:survey}}
 \end{figure}
 
+\begin{comments}
 number of answers, analysis of the results(?).
+\end{comments}
 
 \begin{table}[ht]
     \centering

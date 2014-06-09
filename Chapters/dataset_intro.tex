@@ -1,30 +1,32 @@
-\chapter{Dataset}
-\label{chap:dataset}
-
 There are many ways to obtain information about places. The most
 straightforward is to ask directly people. For instance, \textcite{Curated14}
-\marginpar{describe better} asked residents of Pittsburgh to build a city
-guide by sharing their opinion about locations they know well.
-Mine text, like yelp review \autocite{YelpReview14}
-Image analysis to describe place atmosphere
-Transportation data to see which place are connected
+asked residents of Pittsburgh to build a city guide by sharing personal
+stories about locations they know well. One can also mine text, like Yelp
+reviews to discover shared topics among restaurant \autocite{YelpReview14}.
+Other possibilities include Image analysis to describe place atmosphere
+or mining GPS trajectories to discover which places are significant
+\autocite{GPSStay10}
 
-In this work, we choose to focus on trace of human activity. Namely we
-collected Foursquare check-ins and Flickr photos' metadata. The first step of
+In this work, we choose to focus on traces of human activity. Namely we
+collected Foursquare check-ins and Flickr photos metadata. The first step of
 this process was to choose a fixed number of cities.
 
 According to \href{http://www.4sqstat.com/}{4sqstat.com}, we first selected
 the ten cities in the US with the highest number of check-ins: New York,
 Washington, San Francisco, Atlanta, Indianapolis, Los Angeles, Seattle,
-Houston, St. Louis and Chicago. We did something similar in Europe,
+Houston, Saint Louis and Chicago. We followed a similar procedure in Europe,
 resulting in the selection of London, Paris, Berlin, Rome, Prague, Moscow,
 Amsterdam, Helsinki, Stockholm and Barcelona. This is admittedly a choice
-biased by our own history and the ease to gather user input. Indeed, Rio
-de Janeiro or Tokyo are more active than Helsinki or Stockholm, but less
-familiar to us and to many students of Aalto University, making results more
-difficult to interpret.
+biased by our own history and the ease to gather user input. Indeed, Rio de
+Janeiro or Tokyo are more active than Helsinki or Stockholm, but less familiar
+to us and to many students of Aalto University, making results more difficult
+to interpret.
 
-Besides their own issues explained later, these two datasets suffers from
-biased user distribution\autocite{Weird10}, heavy tail (half of twitter users
-have never tweeted \href{http://twopcharts.com/twitteractivitymonitor}%
-{\url{twopcharts.com/twitteractivitymonitor}}
+Besides their specific issues that we will explain later, these two datasets
+suffers from general problem related to online sources. First, as in most of
+psychological studies \autocite{Weird10}, the user distribution of online
+services is biased toward young people, living in cities and with a high level
+of life. Second, even among those, we observed an heavy tail phenomena; for
+instance, 70\% of twitter users have tweeted less than 10 times
+\href{http://twopcharts.com/twitteractivitymonitor}%
+{\url{twopcharts.com/twitteractivitymonitor}})
