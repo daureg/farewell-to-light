@@ -1,0 +1,148 @@
+\section{Foursquare}
+
+Why people use 4SQ\autocite{FSMotivation11}.
+
+\subsection{Check-ins}
+
+Foursquare check-ins are not available publicly for free, thus one has to
+find other way to get them. The easiest one was to reuse an existing dataset.
+Between September 2010 and January 2011, \textcite{dataset11} collected
+\numprint{22387930} check-ins from various \glspl{lbsn}.
+
+A typical check-in looks like this:
+\begin{verbatim}
+41418752    19459464870    38.931834    -77.028256
+2010-07-25 01:19:02    a95cd7e5e0eddaad
+I'm at Meridian Pint (, ) w/ 7 others. http://4sq.com/9GoW57
+\end{verbatim}
+
+where we can find the twitter user id, the tweet id, the
+latitude and longitude, the local time, a place id and the tweet's text
+\footnote{a more thorough description can be found online
+at \href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
+{\url{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}}.}.
+
+After filtering tweets originating from our twenty cities, we were left with
+\numprint{2133752} of them. However, there is no easy way to map twitter place
+id to Foursquare venue id\footnote{It even seems that there is not one to one
+correspondence between them.}. Therefore, we had to follow the short links
+appearing in the tweets to recover those ids. But as the dataset is three
+years old, some links are dead. At the end, we found \numprint{1296505}
+exploitable check-ins, as showed in \autoref{tab:dataset}.
+
+\medskip
+
+Another way to access check-ins is to use Twitter. Some applications publish
+tweets regarding check-in on the behalf of user. Furthermore, Twitter allows
+anyone to access a 1\% sample of public tweets\footnote{Using their Public
+streams API described here:
+\href{https://dev.twitter.com/docs/streaming-apis/streams/public}%
+{\url{https://dev.twitter.com/docs/streaming-apis/streams/public}}.}.
+\marginpar{refactor script to clean dependencies} Therefore we set up our own
+collection process from March to July 2014\footnote{The code can be found on
+github: \href{https://github.com/daureg/illalla}%
+{\url{https://github.com/daureg/illalla}}.} by selecting tweets with
+\url{4sq.com} links, retaining those located in the target cities and that
+leads to real check-ins. It adds \numprint{351365} tweets. The format,
+described in \autoref{tab:checkinfields}, is rather similar to the previous
+one:
+
+\begin{verbatim}
+ _id : 533bae24498eea4314f699e1?s=aDw52maNIBKg8_vmChduwSKDm3I
+ lid : "4d56bccecff7721ea778b9f5"
+ uid : 9037626
+ loc : {"type": "Point",
+        "coordinates": [2.3979855, 48.85740119]}
+ city: "paris"
+ time: "2014-04-02T13:28:52Z"
+ tid : "451244858809012224"
+ tuid: "824282623"
+ msg : "Should be forgotten (@ Kingdom of Paradise)
+        http://t.co/2CFVAZL1wq"
+\end{verbatim}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        field & description \\
+        \midrule
+        \texttt{\_id} & Check-in id and its public signature, which can be used
+        to get more information using Foursquare API. \\
+        \texttt{lid} & Foursquare venue id \\
+        \texttt{uid} & Numerical Foursquare user id \\
+        \texttt{loc} & GeoJSON location of the tweet \\
+        \texttt{city} & Corresponding city \\
+        \texttt{time} & Local time at which the check-in took place (this may differ from the time of the tweet) \\
+        \texttt{tid} & Tweet id \\
+        \texttt{tuid} & Twitter user id \\
+        \texttt{msg} & Textual content of the tweet \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Check-in format]{Description of the fields of the check-in
+    object.\label{tab:checkinfields}}
+\end{table}
+
+\marginpar{Put those details in Appendix?}
+\Textcite{TwitterMongoDB13} describe a similar but more robust setup, that
+also use the timeline of selected users.
+
+\begin{table}[ht]
+    \centering
+    \pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
+    alias/old/.initial={2010 check-ins},
+    alias/new/.initial={2014 check-ins},
+    columns/city/.style={string type,column type=l},
+    every head row/.style={before row=\toprule,after row=\midrule},
+    every last row/.style={before row=\midrule,after row=\bottomrule}]{%
+    city          & 2010 check-ins & 2014 check-ins & photos  & venues \\
+    New York      & 408584  & 75635  & 1654289 & 49818  \\
+    Los Angeles   & 165463  & 30155  & 743314  & 25110  \\
+    Chicago       & 133822  & 28176  & 575306  & 18333  \\
+    San Francisco & 104363  & 16241  & 932568  & 12152  \\
+    London        & 72674   & 24608  & 1562858 & 16534  \\
+    Washington    & 75984   & 17627  & 610263  & 9481   \\
+    Seattle       & 51574   & 6744   & 504210  & 7587   \\
+    Amsterdam     & 35339   & 4673   & 134459  & 6538   \\
+    Houston       & 41037   & 11241  & 32459   & 9080   \\
+    Atlanta       & 40798   & 9466   & 215178  & 5766   \\
+    Paris         & 32952   & 14296  & 159969  & 11025  \\
+    Stockholm     & 10501   & 1768   & 26540   & 3121   \\
+    Indianapolis  & 30955   & 5943   & 23740   & 5427   \\
+    Moscow        & 17577   & 74134  & 52821   & 21626  \\
+    Barcelona     & 21448   & 9273   & 98730   & 7032   \\
+    Berlin        & 15098   & 7806   & 193556  & 6430   \\
+    St.~Louis     & 17491   & 3415   & 23520   & 2498   \\
+    Rome          & 9364    & 5068   & 142113  & 4311   \\
+    Prague        & 4757    & 3610   & 41395   & 2943   \\
+    Helsinki      & 6724    & 1486   & 21333   & 1956   \\
+    total         & 1296505 & 351365 & 7748621 & 226768 \\
+}
+\caption[Dataset number]{Count of objects in the dataset\label{tab:dataset}}
+\end{table}
+
+\subsection{Venues}
+
+Each of these check-ins is associated with a venue. Thus, the second part of
+the collection process was to gather information about all of those
+\numprint{226768} that appear in at least on check-in. This was done by calling the
+appropriate Foursquare API, with result showed in \autoref{tab:venue}.
+
+link to dataset on
+\href{http://figshare.com/authors/G\%C3\%A9raud\%20Le\%20Falher/542931}%
+{\url{figshare.com}} or \url{http://academictorrents.com}
+
+\subsection{Limitations}
+
+fake checkin\autocite{FakeCheckins12} (although this can be corrected
+\autocite{ValidateCheckin13,FindingFake14}
+
+bias in twitter sampling\autocite{TwitterBias14}
+
+situation where people are reluctant to check-in\autocite{Privacy11} (on the
+other hands some user are very open: like 5 tweets in less than one hour in a
+pub with 3 names of beer through
+\url{https://untappd.com/user/fneri3/checkin/85857825?ref=social} and 2 photos
+\url{https://foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc&ref=tw}
+
+fixed categories instead of inferred LDA semantics\autocite{PlaceSemantic14}

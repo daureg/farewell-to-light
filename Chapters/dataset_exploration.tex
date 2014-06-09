@@ -1,0 +1,294 @@
+\section{Exploration}
+
+While collecting this data, it was helpful to explore them, in order to
+discover feature that could characterize places and help cluster them into
+similar group.
+
+\subsection{Time}
+
+The time at which check-ins occur is undoubtedly a important variable. For
+instance, \textcite{UrbanStory12} performed topic modelling from the text of
+check-in tweets and showed that various topics exhibit daily or weekly
+patterns. Likewise, \textcite{TimeCluster13} clustered cells of a rectangular
+grid according to their repartition of check-ins over categories and time of
+day.
+
+Thus we first looked at when check-ins are performed, and how it differed from
+city to city \autoref{fig:time_checkin}. Then we adopted a venue-centric view
+and clustered locations according to which time they are active
+\autoref{fig:day_cluster}, which also depend of the city
+\autoref{fig:time_cluster_size}.
+
+\begin{figure}[hbt]
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{%
+        \includegraphics[width=\textwidth]{daily_checkin}
+    }{%
+        \input{mkfigs/daily_checkin}
+    }
+    \caption[Pattern of check-in during the day]{Generally, the activity is at
+    its lowest around 5 a.m.\ and during the day, there are three peaks: one
+when people go to work in the morning, one in the middle of the day and the
+last one at the end of the evening. Yet, depending of the city, these peaks do
+not happen at the same time, nor with the same intensity.
+\label{fig:daily_checkin}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{%
+        \includegraphics[width=\textwidth]{weekly_checkin}
+    }{%
+        \input{mkfigs/weekly_checkin}
+    }
+    \caption[Pattern of check-in during the week]{During the week, patterns
+        are less clear.  \label{fig:weekly_checkin}}
+    \end{subfigure}
+    \caption{Check-ins temporal pattern.\label{fig:time_checkin}}
+\end{figure}
+
+\begin{figure}[hbt]
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[width=\textwidth]{day_cluster_3h}}{\input{mkfigs/day_cluster_3h}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[width=\textwidth]{day_cluster_4h}}{\input{mkfigs/day_cluster_4h}}
+    \end{subfigure}
+    \caption[Venues clustered by time of check-ins]{Venues clustered by time
+    of check-ins. \label{fig:day_cluster}}
+\end{figure}
+
+\newgeometry{left=0.3cm,right=0.3cm,bottom=0.1cm,top=0.1cm}
+\begin{center}
+\begin{figure}[hbt]
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl1}}{\input{mkfigs/cluster_day_3h_cl1}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl1}}{\input{mkfigs/cluster_day_4h_cl1}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl2}}{\input{mkfigs/cluster_day_3h_cl2}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl2}}{\input{mkfigs/cluster_day_4h_cl2}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl3}}{\input{mkfigs/cluster_day_3h_cl3}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl3}}{\input{mkfigs/cluster_day_4h_cl3}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl4}}{\input{mkfigs/cluster_day_3h_cl4}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl4}}{\input{mkfigs/cluster_day_4h_cl4}}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl5}}{\input{mkfigs/cluster_day_3h_cl5}}
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl5}}{\input{mkfigs/cluster_day_4h_cl5}}
+    \end{subfigure}
+    \caption[Venues cluster by time among all the cities]{4 hours time
+    clusters are the same among all cities, whereas it is not the case for 3
+hours clusters. \label{fig:time_cluster_size}}
+\end{figure}
+\end{center}
+\restoregeometry
+
+\subsection{Space}
+
+\begin{figure}[hbtp]
+\includegraphics[width=\textwidth]{density_paris_venues}
+\caption[Venue density in Paris]{Estimated venues density in Paris.
+\label{fig:density_paris}}
+\end{figure}
+
+Density picture \autoref{fig:density_paris} remote versus central
+locations
+
+Explain categories surrounding.
+
+\subsection{User entropy}
+
+Explain why entropy is an interesting measure according to
+\autocite{Entropy10}.
+
+Let $\mathcal{U}$ be the set of users and $\mathcal{V}$ the one of venues. For
+each venue $v \in \mathcal{V}$, we can gather the set of check-ins $c_v$ that
+occurred there as well as the corresponding users $[u_1, u_2, u_2, \ldots,
+u_n]$ (note that the same users can check-in multiple times). Then we
+transform this list to a frequency distribution $f_v$ over $\mathcal{U}$ and
+compute the normalized entropy: \[
+    H(v) = -\frac{1}{\log\left(\left| \mathcal{U}\right|\right)}
+\sum_{u\in \mathcal{U}} f_v(u) \log(f_v(u)) \]
+
+Show example with high and low value in Paris and Barcelona:
+\begin{tabular}{llr}
+	\toprule
+	Name                    & Category            & Entropy \\
+	\midrule
+	Castellers de Barcelona & Non-Profit          & 0.118064 \\
+	Café de la Pompeu       & Café                & 0.146145 \\
+	Ràdio 4                 & Radio Station       & 0.149995 \\
+	La Comarca              & Home (private)      & 0.153078 \\
+	House castellar         & Home (private)      & 0.154076 \\
+	Av Tomas Gimenez        & Bar                 & 0.158411 \\
+	Torre De Barad-Dur      & Building            & 0.163024 \\
+	\midrule
+	Parc de la Ciutadella   & Park                & 4.416021 \\
+	Apple Store             & Electronics Store   & 4.560921 \\
+	Parc Güell              & Park                & 4.815076 \\
+	Plaça de Catalunya      & Plaza               & 4.977019 \\
+	Sagrada Família         & Government Building & 5.356548 \\
+	Sants Estació           & Train Station       & 5.360970 \\
+	Camp Nou                & Stadium             & 5.829855 \\
+	\bottomrule
+\end{tabular}
+
+Compute time entropy and see if there is a link. Not really, some place are
+visited all the day by a very small group of people,
+\autoref{fig:two_entropies}
+
+\begin{figure}[hbtp]
+\includegraphics[width=\textwidth]{two_entropies}
+\caption{Venues entropy with respect to user population and time of check-in
+during the day. \label{fig:two_entropies}}
+\end{figure}
+
+
+\subsection{Photos}
+
+Assume that photos are background signal of interest within city. Use exact
+grid algo from \autocite{Agarwal2006spatial} to compute discrepancy with
+check-ins measurement (and conversely). \marginpar{give real examples} More
+photos in touristic places, more check-in in “event” places (railway, stadium)
+
+Look at high and low focus places: not so interesting either. High value are
+for popular places like park or monument whereas low (but not zero) are for
+mundane place (like pizzeria) close to famous locations.
+
+\section{Chosen representation}
+
+Based on the insights gained by exploring the dataset, we settle to represents
+each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
+The features involving the surrounding (numbered from 6 to 16) were weighted
+by a 2D Gaussian of radius $r=350$ meters.
+
+\begin{table}[hb]
+    \centering
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        index & description \\
+        \midrule
+	\datasetRow{}0 & Number of likes \\
+	\datasetRow{}1 & Number of unique users \\
+	\datasetRow{}2 & Number of total check-ins \\
+        3 & User entropy \\
+        4 & Venue density \\
+	\datasetRow{}5 & Venue top level category \\
+        6 & \enquote{Arts \& Entertainment} venues around \\
+        7 & \enquote{College \& University} venues around \\
+        8 & \enquote{Food} venues around \\
+        9 & \enquote{Nightlife Spot} venues around \\
+        10 & \enquote{Outdoors \& Recreation} venues around \\
+        11 & \enquote{Shop \& Service} venues around \\
+        12 & \enquote{Professional \& Other Places} venues around \\
+        13 & \enquote{Residence} venues around \\
+        14 & \enquote{Travel \& Transport} venues around \\
+	15 & Ratio of photos over check-ins \\
+	16 & Ratio of photos associated to the venue over photos linked to other venues \\
+	17 & More than half of the check-ins occurs during the week-end \\
+	18 & Frequency of check-ins between 2 a.m. and 6 a.m. \\
+	19 & Frequency of check-ins between 6 a.m. and 10 a.m. \\
+	20 & Frequency of check-ins between 10 a.m. and 2 p.m. \\
+	21 & Frequency of check-ins between 2 p.m. and 6 p.m. \\
+	22 & Frequency of check-ins between 6 p.m. and 10 p.m. \\
+	23 & Frequency of check-ins between 10 p.m. and 2 a.m. \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Venue features]{Feature representation of Foursquare venues,
+	    taking surrounding into account. \colorbox{Moccasin}{Shaded
+	    features} are provided directly by Foursquare database whereas the
+	    others were computed solely based on the partial information
+	    contained in the dataset.\label{tab:venuefeatures}}
+\end{table}
+
+\clearpage
+
+\newgeometry{hmargin=1.1cm,vmargin=0.7cm}
+\begin{table}[t]
+	\centering
+	\begin{tabularx}{\textwidth}{lXX}
+		\toprule
+		field & description & example \\
+		\midrule
+		\texttt{\_id}   & Flickr photo id                                    & 12683984675 \\
+		\texttt{loc}    & GeoJSON location of the photo                      & {"type": "Point", "coordinates": [25.009667, 60.227586]} \\
+		\texttt{uid}    & Flickr user id                                     & "40747751@N08" \\
+		\texttt{taken}  & Local time of the shooting according to the camera & ISODate("2014-02-21T18:40:21Z") \\
+		\texttt{title}  & User given title                                   & "One Way to Lock a Bicycle" \\
+		\texttt{hint}   & city name                                          & "helsinki" \\
+		\texttt{tags}   & Normalized user given tags                         & ["bicycle", "lock", "chain", padlock, "locked"] \\
+		\texttt{venue}  & Foursquare venue id                                & null \\
+		\texttt{upload} & UTC time at which the photo was uploaded           & ISODate("2014-02-22T00:28:32Z") \\
+		\texttt{farm}   & Used to obtain a link to the picture file          & 6 \\
+		\texttt{server} & Used to obtain a link to the picture file          & "5506" \\
+		\texttt{secret} & Used to obtain a link to the picture file          & "74fbd5b60a" \\
+		\bottomrule
+	\end{tabularx}
+	\caption[Photo format]{Description of the fields of the photo
+	object.\label{tab:photo}}
+\end{table}
+\begin{table}[b]
+    \centering
+    \begin{tabularx}{\textwidth}{lXX}
+        \toprule
+        field & description & example \\
+        \midrule
+\texttt{\_id}          & Foursquare venue id                             & "4ba22d4cf964a5207ce137e3" \\
+\texttt{name}          & Name of the venue                               & "Ravintola Oiva" \\
+\texttt{loc}           & GeoJSON location according to Foursquare        & {"type" : "Point", "coordinates": [24.951011, 60.181716084480286]} \\
+\texttt{cat}           & id of the primary category                      & "4bf58dd8d48988d11b941735" \\
+\texttt{cats}          & Potential additional categories                 & ["4bf58dd8d48988d1c4941735", "4bf58dd8d48988d143941735"] \\
+\texttt{checkinsCount} & Total number of check-ins in Foursquare         & \numprint{2556} \\
+\texttt{usersCount}    & Number of unique user in Foursquare             & \numprint{1321} \\
+\texttt{tipCount}      & Number of tip left by users                     & 13 \\
+\texttt{price}         & Price range, from 1 to 4                        & 2 \\
+\texttt{rating}        & Rating over 10                                  & 7.82 \\
+\texttt{createdAt}     & Time at which the venue was added to Foursquare & ISODate("2010-03-18T15:40:28Z") \\
+\texttt{mayor}         & User id of the mayor at the time of collection  & 18123276 \\
+\texttt{tags}          & User contributed tags                           & ["karaoke"] \\
+\texttt{shortUrl}      & Short URL appearing in tweets                   & "\url{http://4sq.com/bV8IRQ}" \\
+\texttt{canonicalUrl}  & Full URL                                        & "\url{https://foursquare.com/v/ravintola-oiva/4ba22d4cf964a5207ce137e3}" \\
+\texttt{likes}         & Total number of like in Foursquare              & 3 \\
+\texttt{likers}        & List of at most ten users liking this venue     & [14695530, 9936722, 37114401] \\
+\texttt{city}          & City name                                       & "helsinki" \\
+\texttt{closed}        & True when Foursquare says the venue is closed   & null \\
+\texttt{hours}         & Always \texttt{null}                            & null \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Venue format]{Description of the fields of the venue
+    object.\label{tab:venue}}
+\end{table}
+\restoregeometry
