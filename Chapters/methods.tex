@@ -1,9 +1,7 @@
 \chapter{Methods}
 \label{chap:methods}
 
-\section{Closest Neighbors}
-
-\subsection{Dimensionality reduction}
+\section{Dimensionality reduction}
 
 \begin{flushright}{\slshape
  If people could see in high dimensions \\
@@ -13,24 +11,53 @@
 \end{flushright}
 
 A common idea in Machine Learning problems is that data are meaningful.
-Although we fail to distinguish their structure in high dimensional space, we
+Although we fail to perceive their structure in high dimensional space, we
 assume that data are the result of a principled underlying process and
 therefore that sample points are not randomly distributed in the whole space.
 A fruitful approach to validate this hypothesis is to perform dimensionality
 reduction, with the aim of recovering a low dimensional manifold that embed
 the data.
 
-So far, t-Distributed Stochastic Neighbor Embedding \autocite{tSNE08} seems
-the most promising method.
+Another motivation is that matching would be easier in this low dimensional
+manifold. We tried several standard method but the best performing was
+t-Distributed Stochastic Neighbor Embedding \autocite{tSNE08}. Basically, it…
 
-\subsection{Metric learning}
+\section{Individual matching}
+
+Roughly the idea was to use $k$-NN, first with basic euclidean distance and
+later with more suitable metrics.
 
 After reading some surveys \autocite{MetricSurvey06, MetricSurvey13}, I tried
-Information-theoretic Metric Learning \autocite{InfoMetric07} and
-Gradient-Boosted Largest Margin Nearest Neighbors \autocite{GBLMNN12} although
-it would be interesting to also use histogram distance
-\autocite{HistogramDistance02}
+Information-theoretic Metric Learning \autocite{InfoMetric07},
+Gradient-Boosted Largest Margin Nearest Neighbors \autocite{GBLMNN12}. If I
+have time, I would also like to try the recent Sparse Compositional Metric
+Learning \autocite{SparseMetric14}, as its code has recently been made available.
 
-\section{Matching under constraint}
+Another point to mention is how results were evaluated. First by looking at
+how far we need to go before finding a venue of the same brand. Second by
+computed the Normalized Discounted Cumulative Gain over category
+\autocite{IREvaluation07}.
+
+\section{Neighborhood matching}
+
+\subsection{Choosing a distance between set of points}
+\subsection{Learning parameters from partial ground truth}
+\subsection{Efficient search heuristic}
+
+\section{Complete city}
+
+\begin{comments}
+Right now, I have not started this part at all. What I was initially thinking
+is some sort of iterative process that alternate two steps: one where we
+partition each city into neighborhoods, another where those neighborhoods are
+matched. And the result of each step will influence the next one.
+\end{comments}
 
 \section{Visualization}
+\begin{comments}
+I do not think there will be a lot of time left for this part. Yet even if 2D
+map are quite effective at showing results, it would have been nice to use
+something in 3D. For instance, Nokia have pretty maps of some cities in the
+dataset: \href{http://here.com/60.1670149,24.9477934,15.92,293,54,3d.day}%
+{\url{http://here.com/60.1670149,24.9477934,15.92,293,54,3d.day}}
+\end{comments}
