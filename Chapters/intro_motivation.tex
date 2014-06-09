@@ -3,25 +3,62 @@
 
 \section{Motivation}
 
-Many people live in cities and nowadays, a lot of them share their
-spatio-temporal whereabout on social networks \autocite{SpatialComputing12}.
-Such data enables useful applications as well as it provides new insights into
-human dynamics. We seize this opportunity to devised a similarity measure
-between urban areas that fulfills these two objectives. It gives
-recommendation to travelling users, while letting us compare different cities
-and their organization. First we motivate the need for such a measure through
-its major use case, before giving a more precise problem statement.
+More and more people are living in cities\footnote{According to an
+\href{http://esa.un.org/unup/pdf/WUP2011_Highlights.pdf}{UN report},
+\enquote{the population living in urban areas is projected to [pass] from 3.6
+billion in 2011 to 6.3 billion in 2050.}}. This simple observation leads to
+two questions: how to help urban dwellers make informed everyday decisions and
+how to understand these large and complex systems. Fortunately, now is good
+time to tackle these issues. Indeed, thanks to social networks and mobile
+devices, we know where and when people are active within
+cities\autocite{SpatialComputing12}. We seize this opportunity to devised a
+similarity measure between urban areas. First we motivate the need for such a
+measure through a typical use case:
 
-\medskip
+\begin{quote}
+Let us say you have lived in a city for the last years. During this time,
+you have acquired urban knowledge that you can leverage to find relevant
+locations where to perform various tasks. In simpler words, whether you want
+to buy milk, listen to loud music or exhibit your athletic skills, you know
+where to go. Yet life is full of surprises and you may be spending a few
+days in a new town. Fair enough, but you do not want to renounce to your
+wide range of outside activities. This is where our application comes in
+handy. You select a location or an area in your familiar city and it shows
+you a place or a zone sharing similar characteristics in your surrounding.
+Thus you can boldly venture into distant shores, reassured that a part of
+your home will always travels with you.
+\end{quote}
 
-Let us say you have lived in a city for the last years. During this time, you
-have acquired urban knowledge that you can leverage to find relevant locations
-where to perform various tasks. In simpler words, whether you want to buy
-milk, listen to loud music or exhibit your athletic skills, you know where to
-go and in some cases why. Yet life is full of surprises and you may be
-spending a few days in a new town. Fair enough, but you do not want to
-renounce to your wide range of outside activities. This is where our
-application comes in handy. You select a location or an area in your familiar
-city and it returns a place or a zone sharing similar characteristics in your
-surrounding. Thus you can boldly venture into distant shores, reassured that a
-part of your home will always travels with you.
+This short illustration gives an intuivive definition of the problem we are
+trying to solve. Namely, an user picks a small part of a city and we represent
+it by a bag of all venues it contains. These venues are associated with some
+features and we want to find, efficiently, a set of venues that shares similar
+characteristics. Yet for this result to be meaningful, we add the constraint
+that the venues must delineate a neighborhood, that is a small and compact
+subset of the whole city.
+
+In the next section, we will give a more precise problem statement. Before
+that, notice that although we define it in terms of cities and venues, it can
+be generalized to other settings. All we need is a set of disconnected metric
+spaces\footnote{Here two dimensional cities.}, points lying in those spaces
+and described by some features\footnote{Here the venues described by their
+activity.} and a set of latent high-level characteristics associated with set
+of points\footnote{For instance here, \enquote{nightlife neighborhood} or
+\enquote{touristic hotspot}.}. Here are some examples that can be modeled
+under this framework:
+\begin{itemize}
+	\item The social graph of students in several universities. The
+		metric is a distance in the graph and featured point are
+		students. Picking some of them, we posit that they are close because
+        they share the same degree program or some other demographic. We
+        want to know if the same group exists elsewhere.
+	\item Graph of twitter users in different cities or countries. They are
+        described by the topic distribution of their tweets. We ask whether
+        some community of interest exist in several places in the world.
+    \item The set of all books ever written, grouped by centuries and
+        characterised by their style and main themes. Choosing all pieces
+        written during the Enlightenment, it would tell if there was a
+        similar movement in the twentieth century.
+\end{itemize}
+Even though these examples are not all relevant, they provide additionnal
+motivation to solve the problem at hand.
