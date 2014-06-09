@@ -1,8 +1,8 @@
 \section{Exploration}
 
-While collecting this data, it was helpful to explore them, in order to
-discover feature that could characterize places and help cluster them into
-similar group.
+While collecting these data, it was helpful to explore them, in order to
+discover features that could characterize places and help cluster them into
+similar groups.
 
 \subsection{Time}
 
@@ -28,7 +28,7 @@ and clustered locations according to which time they are active
         \input{mkfigs/daily_checkin}
     }
     \caption[Pattern of check-in during the day]{Generally, the activity is at
-    its lowest around 5 a.m.\ and during the day, there are three peaks: one
+    its lowest around 5 \am{}\ and during the day, there are three peaks: one
 when people go to work in the morning, one in the middle of the day and the
 last one at the end of the evening. Yet, depending of the city, these peaks do
 not happen at the same time, nor with the same intensity.
@@ -118,21 +118,28 @@ hours clusters. \label{fig:time_cluster_size}}
 
 \subsection{Space}
 
+The other main characteristic of every check-in is where it takes place. We
+focus on two spatial feature of venues. First, was does the surrounding looks
+like in terms of categories. For instance, if a restaurant is mainly
+surrounded by night life places and another by education buildings, they
+probably have different customers. Second, venues are not uniformly
+distributed within the city and the density of nearby locations is a
+discriminative feature as well. For instance in \autoref{fig:density_paris},
+we can clearly distinguish venues belonging to the city center from the
+others.
+
 \begin{figure}[hbtp]
 \includegraphics[width=\textwidth]{density_paris_venues}
-\caption[Venue density in Paris]{Estimated venues density in Paris.
-\label{fig:density_paris}}
+\caption[Venue density in Paris]{Estimated venues density in Paris by a
+	Gaussian kernel.\label{fig:density_paris}}
 \end{figure}
 
-Density picture \autoref{fig:density_paris} remote versus central
-locations
+\subsection{Location entropy}
 
-Explain categories surrounding.
-
-\subsection{User entropy}
-
-Explain why entropy is an interesting measure according to
-\autocite{Entropy10}.
+\Textcite{Entropy10} showed that \enquote{location entropy, which measures the
+diversity of unique visitors of a location} gives good indication of the
+sociability level of venues and therefore help predicting friendship ties within
+\gls{lbsn}.
 
 Let $\mathcal{U}$ be the set of users and $\mathcal{V}$ the one of venues. For
 each venue $v \in \mathcal{V}$, we can gather the set of check-ins $c_v$ that
@@ -143,32 +150,53 @@ compute the normalized entropy: \[
     H(v) = -\frac{1}{\log\left(\left| \mathcal{U}\right|\right)}
 \sum_{u\in \mathcal{U}} f_v(u) \log(f_v(u)) \]
 
-Show example with high and low value in Paris and Barcelona:
+Show examples with high and low value in Paris and Barcelona:
+
 \begin{tabular}{llr}
 	\toprule
 	Name                    & Category            & Entropy \\
 	\midrule
-	Castellers de Barcelona & Non-Profit          & 0.118064 \\
-	Café de la Pompeu       & Café                & 0.146145 \\
-	Ràdio 4                 & Radio Station       & 0.149995 \\
-	La Comarca              & Home (private)      & 0.153078 \\
-	House castellar         & Home (private)      & 0.154076 \\
-	Av Tomas Gimenez        & Bar                 & 0.158411 \\
-	Torre De Barad-Dur      & Building            & 0.163024 \\
+    Castellers de Barcelona       & Non-Profit        & 0.0139 \\
+    Café de la Pompeu             & Café              & 0.0172 \\
+    Ràdio 4                       & Radio Station     & 0.0176 \\
+    La Comarca                    & Home (private)    & 0.0180 \\
+    House castellar               & Home (private)    & 0.0181 \\
+    Av Tomas Gimenez              & Bar               & 0.0186 \\
+    Torre De Barad-Dur            & Building          & 0.0192 \\
+    \midrule
+    Blue Acacia                   & Office            & 0.0119 \\
+    Boutique Orange               & Electronics Store & 0.0141 \\
+    Regus                         & Office            & 0.0163 \\
+    Café Pierre                   & French Restaurant & 0.0181 \\
+    my home 2                     & Home (private)    & 0.0193 \\
+    10e arrondissement – Entrepôt & \& Municipalities & 0.0213 \\
+    Scanblog                      & Office            & 0.0221 \\
 	\midrule
-	Parc de la Ciutadella   & Park                & 4.416021 \\
-	Apple Store             & Electronics Store   & 4.560921 \\
-	Parc Güell              & Park                & 4.815076 \\
-	Plaça de Catalunya      & Plaza               & 4.977019 \\
-	Sagrada Família         & Government Building & 5.356548 \\
-	Sants Estació           & Train Station       & 5.360970 \\
-	Camp Nou                & Stadium             & 5.829855 \\
+    Parc de la Ciutadella          & Park                & 0.5188 \\
+    Apple Store                    & Electronics Store   & 0.5358 \\
+    Parc Güell                     & Park                & 0.5666 \\
+    Plaça de Catalunya             & Plaza               & 0.5835 \\
+    Sants Estació                  & Train Station       & 0.6298 \\
+    Sagrada Família                & Government Building & 0.6309 \\
+    Camp Nou                       & Stadium             & 0.6852 \\
+    \midrule
+    Arc de Triomphe                & Government Building & 0.5831 \\
+    Cathédrale Notre-Dame de Paris & Spiritual Center    & 0.5874 \\
+    Gare SNCF Paris Montparnasse   & Train Station       & 0.6141 \\
+    Musée du Louvre                & Museum              & 0.6444 \\
+    Gare SNCF Gare de Lyon         & Train Station       & 0.6460 \\
+    Tour Eiffel                    & Government Building & 0.6618 \\
+    Gare SNCF Paris Nord           & Train Station       & 0.6707 \\
 	\bottomrule
 \end{tabular}
 
-Compute time entropy and see if there is a link. Not really, some place are
-visited all the day by a very small group of people,
-\autoref{fig:two_entropies}
+Following the same idea, we also computed the entropy of locations with
+respect to time of check-ins. Indeed, it distinguishes between a railway
+station active all day along and a restaurant only open during lunch hours.
+We are also expecting a link between the two entropies, as place that stay
+open longer have more chance to be enjoy a various crowd. But it is not the
+cases on \autoref{fig:two_entropies}, as some places are visited all the time
+by a very small group of people
 
 \begin{figure}[hbtp]
 \includegraphics[width=\textwidth]{two_entropies}
@@ -192,8 +220,8 @@ mundane place (like pizzeria) close to famous locations.
 
 Based on the insights gained by exploring the dataset, we settle to represents
 each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
-The features involving the surrounding (numbered from 6 to 16) were weighted
-by a 2D Gaussian of radius $r=350$ meters.
+The features involving the surrounding (numbered from 6 to 16 and 25 to 30)
+were weighted by a 2D Gaussian of radius $r=350$ meters.
 
 \begin{table}[hb]
     \centering
@@ -219,12 +247,19 @@ by a 2D Gaussian of radius $r=350$ meters.
 	15 & Ratio of photos over check-ins \\
 	16 & Ratio of photos associated to the venue over photos linked to other venues \\
 	17 & More than half of the check-ins occurs during the week-end \\
-	18 & Frequency of check-ins between 2 a.m. and 6 a.m. \\
-	19 & Frequency of check-ins between 6 a.m. and 10 a.m. \\
-	20 & Frequency of check-ins between 10 a.m. and 2 p.m. \\
-	21 & Frequency of check-ins between 2 p.m. and 6 p.m. \\
-	22 & Frequency of check-ins between 6 p.m. and 10 p.m. \\
-	23 & Frequency of check-ins between 10 p.m. and 2 a.m. \\
+	18 & Frequency of check-ins between 2 \am{} and 6 \am{} \\
+	19 & Frequency of check-ins between 6 \am{} and 10 \am{} \\
+	20 & Frequency of check-ins between 10 \am{} and 2 \hpm{} \\
+	21 & Frequency of check-ins between 2 \hpm{} and 6 \hpm{} \\
+	22 & Frequency of check-ins between 6 \hpm{} and 10 \hpm{} \\
+	23 & Frequency of check-ins between 10 \hpm{} and 2 \am{} \\
+	24 & Time entropy \\
+	25 & Frequency of neighbouring check-ins between 2 \am{} and 6 \am{} \\
+	26 & Frequency of neighbouring check-ins between 6 \am{} and 10 \am{} \\
+	27 & Frequency of neighbouring check-ins between 10 \am{} and 2 \hpm{} \\
+	28 & Frequency of neighbouring check-ins between 2 \hpm{} and 6 \hpm{} \\
+	29 & Frequency of neighbouring check-ins between 6 \hpm{} and 10 \hpm{} \\
+	30 & Frequency of neighbouring check-ins between 10 \hpm{} and 2 \am{} \\
         \bottomrule
     \end{tabularx}
     \caption[Venue features]{Feature representation of Foursquare venues,
