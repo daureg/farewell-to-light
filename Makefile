@@ -28,7 +28,7 @@ figures: $(SRC_FIGURES)
 	cd mkfigs
 	for f in $^; sh mkfig.sh $f; done
 
-bib: $HOME/aalto/thesis.bib
+bib: ${HOME}/aalto/thesis.bib
 	sed -e '/url/d' $< > strip.bib
 	sed -i '/issn/d'  strip.bib
 	sed -i '/isbn/d'  strip.bib

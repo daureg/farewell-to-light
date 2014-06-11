@@ -38,28 +38,11 @@
 % ****************************************************************************************************
 
 
-% ****************************************************************************************************
-% 2. Personal data and user ad-hoc commands
-% ****************************************************************************************************
-\newcommand{\mySubtitle}{Mining cities similarity through human activity\xspace}
-\newcommand{\myTitle}{Is Helsinki simply a colder Barcelona?\xspace}
-\newcommand{\myDegree}{Master of Science\xspace}
-\newcommand{\myName}{Géraud Le Falher\xspace}
-\newcommand{\myProf}{Aristides Gionis\xspace}
-\newcommand{\mySupervisor}{Michael Mathioudakis\xspace}
-\newcommand{\myFaculty}{School of Science\xspace}
-\newcommand{\myDepartment}{Department of Information and Computer Science\xspace}
-\newcommand{\myUni}{Aalto University\xspace}
-\newcommand{\myLocation}{Espoo, Finland\xspace}
-\newcommand{\myTime}{June 2014\xspace}
-\newcommand{\myVersion}{version 0.1\xspace}
-
+\include{info}
 % ********************************************************************
 % Setup, finetuning, and useful commands
 % ********************************************************************
-\newcounter{dummy} % necessary for correct hyperlinks (to index, bib, etc.)
 \newlength{\abcd} % for ab..z string length calculation
-\providecommand{\mLyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
 \newcommand{\ie}{i.\,e.}
 \newcommand{\Ie}{I.\,e.}
 \newcommand{\eg}{e.\,g.}
@@ -86,7 +69,7 @@
 %  \usepackage{natbib}
 \PassOptionsToPackage{style=ieee,sorting=nyt,backend=biber,defernumbers=true}{biblatex}
 \usepackage{biblatex}
-\addbibresource{../../aalto/thesis.bib}
+\addbibresource{strip.bib}
 
 \PassOptionsToPackage{fleqn}{amsmath}        % math environments and more by the AMS
  \usepackage{amsmath}
@@ -107,7 +90,6 @@
     \usepackage{fontenc}
 \usepackage{textcomp} % fix warning with missing font shapes
 \usepackage{scrhack} % fix warnings when using KOMA with listings package
-\usepackage{xspace} % to get the spacing after macros right
 \usepackage{mparhack} % get marginpar right
 \usepackage{fixltx2e} % fixes some LaTeX stuff
 \PassOptionsToPackage{printonlyused,smaller}{acronym}

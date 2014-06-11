@@ -1,3 +1,4 @@
+\input{info}
 \usepackage{ifxetex}
 \ifxetex{}
 \usepackage{polyglossia}
@@ -24,8 +25,6 @@
 \newcommand*{\texrel}[0]{\ensuremath{\leftrightarrow\;}}
 \newcommand*{\keyfinding}[1]{\textbf{#1}}
 \usepackage[automark]{scrpage2}
-\newcounter{dummy}
-\newcounter{lofdepth}
 \DeclareRobustCommand{\spacedallcaps}[1]{\textls[160]{\MakeTextUppercase{#1}}}%
 \DeclareRobustCommand{\spacedlowsmallcaps}[1]{\textls[80]{\scshape\MakeTextLowercase{#1}}}%
 \usepackage[xindy,style=long,nolist]{glossaries}
@@ -33,7 +32,7 @@
 \renewcommand{\glsnamefont}[1]{\spacedlowsmallcaps{#1}}
 \input{glossary}
 \usepackage[sorting=nyt,defernumbers=true]{biblatex}
-\addbibresource{../../aalto/thesis.bib}
+\addbibresource{strip.bib}
 \PassOptionsToPackage{noautolanguage}{numprint}
 \usepackage{numprint}
 \npstyleenglish
