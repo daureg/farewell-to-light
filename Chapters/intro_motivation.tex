@@ -4,16 +4,16 @@
 \section{Motivation}
 
 More and more people are living in cities\footnote{According to an
-\href{http://esa.un.org/unup/pdf/WUP2011_Highlights.pdf}{UN report},
-\enquote{the population living in urban areas is projected to [pass] from 3.6
-billion in 2011 to 6.3 billion in 2050.}}. This simple observation leads to
-two questions: how to help urban dwellers make informed everyday decisions and
-how to understand these large and complex systems. Fortunately, now is good
-time to tackle these issues. Indeed, thanks to social networks and mobile
-devices, we know where and when people are active within
-cities\autocite{SpatialComputing12}. We seize this opportunity to devised a
-similarity measure between urban areas. First we motivate the need for such a
-measure through a typical use case:
+\href{http://esa.un.org/unup/pdf/WUP2011_Highlights.pdf}{UN report}
+\autocite{UNreport12}, \enquote{the population living in urban areas is
+projected to [pass] from 3.6 billion in 2011 to 6.3 billion in 2050.}}. This
+simple observation leads to two questions: how to help urban dwellers make
+informed everyday decisions and how to understand these large and complex
+systems. Fortunately, now is a good time to tackle these issues. Indeed, thanks
+to social networks and mobile devices, we know where and when people are
+active within cities \autocite{SpatialComputing12}. We seize this opportunity
+to devised a similarity measure between urban areas. First we motivate the
+need for such a measure through a typical use case:
 
 \begin{quote}
 Let us say you have lived in a city for the last years. During this time,
@@ -40,25 +40,26 @@ subset of the whole city.
 In the next section, we will give a more precise problem statement. Before
 that, notice that although we define it in terms of cities and venues, it can
 be generalized to other settings. All we need is a set of disconnected metric
-spaces\footnote{Here two dimensional cities.}, points lying in those spaces
-and described by some features\footnote{Here the venues described by their
-activity.} and a set of latent high-level characteristics associated with set
-of points\footnote{For instance here, \enquote{nightlife neighborhood} or
-\enquote{touristic hotspot}.}. Here are some examples that can be modeled
-under this framework:
+spaces\footnote{Here two dimensional plane underlying the cities.}, points
+lying in those spaces and described by some features\footnote{Here the venues
+described by their activity.} and a set of latent high-level characteristics
+associated with set of points\footnote{For instance here, \enquote{nightlife
+neighborhood} or \enquote{touristic hotspot}.}. Here are some examples that
+can be modeled under this framework:
 \begin{itemize}
-	\item The social graph of students in several universities. The
-		metric is a distance in the graph and featured point are
-		students. Picking some of them, we posit that they are close because
-        they share the same degree program or some other demographic. We
-        want to know if the same group exists elsewhere.
-	\item Graph of twitter users in different cities or countries. They are
-        described by the topic distribution of their tweets. We ask whether
-        some community of interest exist in several places in the world.
-    \item The set of all books ever written, grouped by centuries and
-        characterised by their style and main themes. Choosing all pieces
-        written during the Enlightenment, it would tell if there was a
-        similar movement in the twentieth century.
+	\item The social graph of students in several universities. The metric
+		is a distance in the graph and featured points are students.
+		Picking some of them, we posit that they are close because
+		they share the same degree program or some other demographic.
+		We want to know if the same group exists elsewhere.
+	\item Graph of twitter users in different cities or countries. They
+		are described by the topic distribution of their tweets. We
+		ask whether some community of interest exist in several places
+		in the world.
+	\item The set of all books ever written, grouped by centuries and
+		characterised by their style and main themes. Choosing all
+		pieces written during the Enlightenment, it would tell if
+		there was a similar movement in the twentieth century.
 \end{itemize}
 Even though these examples are not all relevant, they provide additional
 motivation to solve the problem at hand.

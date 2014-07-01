@@ -26,12 +26,11 @@ and items is based on spatial distance.
 
 By combining venues own characteristics and their associated items, we want to
 devise a similarity measure over the venues $\mathcal{V}$, namely $\delta:
-\mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. More generally, we want
-another measure of similarity between two spatial regions. That is, after
-choosing a home city $c_h$ and a target city $c_t$\footnote{$t$ can also stand
-for travel or tourist.}, we want to construct $\delta': R_{c_h} \times R_{c_t}
-\rightarrow \llbracket 0, 1 \rrbracket$. These two functions answer the
-following queries:
+\mathcal{V}^2 \rightarrow \llbracket 0, 1 \rrbracket $. More generally, we
+want another measure of similarity between two spatial regions. That is, after
+choosing a home city $c_h$ and a target city $c_t$, we want to construct
+$\delta': R_{c_h} \times R_{c_t} \rightarrow \llbracket 0, 1 \rrbracket$.
+These two functions answer the following queries:
 
 \begin{enumerate}
 \item When users pick a venue $v$ in their home city, find the venue in the
@@ -45,7 +44,7 @@ following queries:
 
 
 \begin{comments}
-another way to say it:\\
+a short way of saying it:\\
 We have two cities, $C_1$ and $C_2$. In each of them lie objects of different
 kind (in our case: photos, check-ins and venues). These objects have a
 position in $\mathbb{R}^2$, along with other attributes like time, tags,
@@ -86,14 +85,14 @@ and as mentioned, our our objective is fulfilled by computing, for a given $R
 \end{equation}
 
 More precisely, $\delta_{\theta}$ is defined as follow.\marginpar{Actually,
-that's only one of the possible definition.} Let $X_i$ (respectively
-$X'_i$) be the $i$\textsuperscript{th} column of $X$ ($X'$), $P_i$ ($Q_i$) the
-associated distribution, $D_{\mathrm{KL}}(P \parallel Q) = \sum_j
-P(j)\ln\left(\frac{P(j)}{Q(j)}\right)$ the Kullback--Leibler divergence
-between $P$ and $Q$ and $ \mathrm{JSD}(P \parallel Q)=
-\frac{1}{2}D_{\mathrm{KL}}(P \parallel M)+\frac{1}{2}D_{\mathrm{KL}}(Q
-\parallel M)$ their Jensen--Shannon divergence \autocite{JensenShannon03},
-where $M=\frac{1}{2}(P+Q)$. Then
+that's only one of the possible definition. So they should all be there or
+none.} Let $X_i$ (respectively $X'_i$) be the $i$\textsuperscript{th} column
+of $X$ ($X'$), $P_i$ ($Q_i$) the associated distribution, $D_{\mathrm{KL}}(P
+\parallel Q) = \sum_j P(j)\ln\left(\frac{P(j)}{Q(j)}\right)$ the
+Kullback--Leibler divergence between $P$ and $Q$ and $ \mathrm{JSD}(P
+\parallel Q)= \frac{1}{2}D_{\mathrm{KL}}(P \parallel
+M)+\frac{1}{2}D_{\mathrm{KL}}(Q \parallel M)$ their Jensen--Shannon divergence
+\autocite{JensenShannon03}, where $M=\frac{1}{2}(P+Q)$. Then
 \[
 	\delta_{\theta} \left(\phi(R), \phi(R')\right) = \sum_{i=1}^d
 	\theta_i \mathrm{JSD}(P_i \parallel Q_i) + \vnorm{x - x'}

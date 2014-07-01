@@ -17,8 +17,8 @@
 % in order to deactivate the time-stamp on the pages
 % ****************************************************************************************************
 \PassOptionsToPackage{eulerchapternumbers,listings,drafting,%
-                 pdfspacing,%floatperchapter,%linedheaders,%
-                 subfig,beramono,eulermath}{classicthesis}
+                 pdfspacing,%floatperchapter,%linedheaders,eulermath%
+                 subfig,beramono}{classicthesis}
 % ********************************************************************
 % Available options for classicthesis.sty
 % (see ClassicThesis.pdf for more information):
@@ -73,6 +73,7 @@
 
 \PassOptionsToPackage{fleqn}{amsmath}        % math environments and more by the AMS
  \usepackage{amsmath}
+ \usepackage{amssymb}
 \usepackage{stmaryrd}
 \PassOptionsToPackage{noautolanguage}{numprint}
 \usepackage{numprint}
@@ -263,7 +264,7 @@
 %\usepackage{hfoldsty} % Computer Modern with osf
 %\usepackage[light,condensed,math]{iwona}
 %\renewcommand{\sfdefault}{iwona}
-%\usepackage{lmodern} % <-- no osf support :-(
+\usepackage{lmodern} % <-- no osf support :-(
 %\usepackage[urw-garamond]{mathdesign} <-- no osf support :-(
 % ****************************************************************************************************
 \include{common-config}
