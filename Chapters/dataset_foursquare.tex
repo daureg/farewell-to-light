@@ -49,47 +49,10 @@ collection process from March to July 2014\footnote{The code can be found on
 github: \href{https://github.com/daureg/illalla}%
 {\url{github.com/daureg/illalla}}.} by selecting tweets with
 \url{4sq.com} links, retaining those located in the target cities and that
-leads to real check-ins. It adds \numprint{351365} tweets. The format,
-described in \autoref{tab:checkinfields}, is rather similar to the previous
-one:
+leads to actual valid check-ins. It adds \numprint{1389117} tweets, with a
+similar structure (their format is described in more detail in
+\autoref{tab:checkinfields}, if you want to use them).
 
-\begin{verbatim}
- _id : 533bae24498eea4314f699e1?s=aDw52maNIBKg8_vmChduwSKDm3I
- lid : "4d56bccecff7721ea778b9f5"
- uid : 9037626
- loc : {"type": "Point",
-        "coordinates": [2.3979855, 48.85740119]}
- city: "paris"
- time: "2014-04-02T13:28:52Z"
- tid : "451244858809012224"
- tuid: "824282623"
- msg : "Should be forgotten (@ Kingdom of Paradise)
-        http://t.co/2CFVAZL1wq"
-\end{verbatim}
-
-\begin{table}[ht]
-    \centering
-    \begin{tabularx}{\textwidth}{lX}
-        \toprule
-        field & description \\
-        \midrule
-        \texttt{\_id} & Check-in id and its public signature, which can be used
-        to get more information using Foursquare API. \\
-        \texttt{lid} & Foursquare venue id \\
-        \texttt{uid} & Numerical Foursquare user id \\
-        \texttt{loc} & GeoJSON location of the tweet \\
-        \texttt{city} & Corresponding city \\
-        \texttt{time} & Local time at which the check-in took place (this may differ from the time of the tweet) \\
-        \texttt{tid} & Tweet id \\
-        \texttt{tuid} & Twitter user id \\
-        \texttt{msg} & Textual content of the tweet \\
-        \bottomrule
-    \end{tabularx}
-    \caption[Check-in format]{Description of the fields of the check-in
-    object.\label{tab:checkinfields}}
-\end{table}
-
-\marginpar{Put those details in Appendix?}
 \Textcite{TwitterMongoDB13} describe a similar but more robust setup.
 Additionnaly, they obtained more data by crawling the timeline of users that
 appear to post geo located tweets according to the public sample. We also
