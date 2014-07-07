@@ -1,2 +1,47 @@
 \chapter{Background}
 \label{ch:background}
+
+\section{Clustering}
+
+\enquote{\emph{Clustering algorithms partition a given data set into several groups based on some notion of similarity between objects.}}
+
+A general class of methods to deal with unsupervised problems is clustering. The most widely used is the \methodname{$k$-means algorithm} \autocite{kmeans67}. After initially choosing $k$ centroids, an iterative process takes place, divided in two phases. First each point is assigned to the cluster of the closest centroid. Then centroids positions are updated by taking the mean of all points belonging to their cluster. Convergence occurred when centroids positions do not change anymore between iterations. In practice, the algorithm is fast but it is only guaranteed to find a local optimal of the within-cluster sum of squares: \[ \underset{\mathbf{S}} {\operatorname{arg\,min}}  \sum_{i=1}^{k} \sum_{ x_j \in S_i} \left\| x_j - \mu_i \right\|^2 \] Another drawbacks is that $k$, the number of clusters, has to be specified before algorithm execution, whereas this information is often unknown at this stage. Finally, because it results in a Voronoy diagram, the clusters found are linearly separable, which may not reflect the actual data.
+
+There are plenty of alternatives.
+
+A cluster can be defined as an area of high density surrounded by low density regions. This definition suggests to assign numerical value of density to every point of space. A common method is \marginpar{Maybe there is a more practical reference, especially for multivariate estimation} \methodname{Kernel Density Estimation} \autocite{KDE56}. Basically, a kernel is centered around each point (\ie{} a symmetrical weighting function, for instance a Multivariate Gaussian) and the estimation of the probability distribution $f$ is the normalized sum:
+% http://en.wikipedia.org/wiki/Multivariate_kernel_density_estimation
+\[ \hat{f}_\bold{H}(\bold{x})= \frac{1}{n} \sum_{i=1}^n K_\bold{H} (\bold{x} - \bold{x}_i) \]
+
+Yet this does not provide any clustering. One idea would to find the modes of $\hat{f}$, which is the underlying principle of Mean Shift \autocite{MeanShift95}. Another density based algorithm is \methodname{DBSCAN} \autocite{DBSCAN96}. It has two parameters, a distance $\epsilon$ and a number of points $\mathrm{minPts}$. A core sample is a point with at least $\mathrm{minPts}$ neighbors in its $\epsilon$-neighborhood. From a core sample, we visit all its neighbors to find other core samples belonging to the same cluster. Once it is not more possible, we move to another point. Points that are $\epsilon$ close to a core sample without having a large enough neighborhood are also part of the cluster (but fringe points rather than core). Any other remaining point is noise. With an appropriate index structure, neighborhood queries takes $O(\log n)$ time and the algorithm runs in $O(n\log n)$. Otherwise, one need to compute the pairwise distance matrix, which takes $O(n^2)$ time and memory. DBSCAN find arbitrary number of arbitrary shapes. In the special case where points carries user identification (like photos or tweets), it can be tweaked to favor area that features user diversity \autocite{PDBSCANKisilevich2010}.\marginpar{Explain the principle}Another extension deals with cluster of varying density \autocite{OPTICS99}.
+
+\begin{comments}
+I didn't use these methods so maybe I don't need to talk about it\\
+Some are based on graphs. For instance \methodname{Spectral Clustering} \autocite{SpectralClustering01} (which is related to Kernel $k$-means, as shown by \textcite{KernelKmeans04}).
+\methodname{Affinity Propagation} \autocite{AffinityPropagation07}
+% https://en.wikipedia.org/wiki/Affinity_propagation
+% http://scikit-learn.org/stable/modules/clustering.html#affinity-propagation
+
+Other are hierarchical
+\url{https://en.wikipedia.org/wiki/Hierarchical_clustering}
+\end{comments}
+
+A major component of all clustering algorithm is the distance function, and the space where it operates. The default choice is the Euclidean metric in the original feature space but these two parameters can be changed. In the latter case, it often leads to dimensionality reduction.
+
+\subsection{Dimensionality reduction}
+
+Again, there are many methods, but many of them are based on the idea of preserving distances between points, under the general name Multidimensional Scaling \autocite{MDS77}. Given points $i$ and $j$ in the original space, we know their separation $\delta_{i,j}$ with a weight $w_{i,j}$\footnote{that denotes confidence in the measurement or importance of the points.}. We are looking for their new position $x_i$ and $x_j$ in the reduced space such that the stress \[
+\sqrt{\frac{\sum w_{i,j}(\delta_{i,j} - d(x_i, x_j))^2}{\sum  d(x_i, x_j)^2}} \] is minimized. Instead of interpreting distances in a geometrical sense, it is also possible to give a probabilistic fashion. Namely, in Stochastic Neighbor Embedding \autocite{SNE02}, $d^2_{ij} = \frac{\vnorm{x_i - x_j}^2}{\sigma^2_i}$  and
+$p_{ij} = \frac{\exp(-d_{ij}^2)}{\sum_{k \neq i}\exp(-d_{ik}^2)}$ likewise
+$q_{ij} = \frac{\vnorm{y_i - y_j}}{\sum_{k \neq i}\vnorm{y_i - y_k}}$ and we optimize $\sum_i KL(P_i || Q_i)$. In t-SNE \autocite{tSNE08}, better distance modeling
+$q_{ij} = \frac{(1+\vnorm{y_i - y_j})^{-1}}{\sum_{k \neq i}(1+\vnorm{y_i - y_k})^{-1}}$. A ingenious implementation runs in $O(n\log n)$ \autocite{BarnesHut13}.
+
+It is easier to visually evaluate clustering results in this two or three dimensional space, although there are meaningful. Furthermore, it is justified by manifold recovering.
+
+\subsection{Spatial data structure}
+kDtree and R-index.
+
+\section{Metric}
+\subsection{Ground metric}
+\subsection{Set metric}
+\subsection{Learning}
