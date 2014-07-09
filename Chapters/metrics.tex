@@ -1,0 +1,123 @@
+\chapter{Choice of metrics}
+\label{chap:metric}
+
+\section{Venues metrics}
+
+Before being able to compare set of venues, we need a distance function between
+two venues, where venues are points in the feature space described in
+\autoref{tab:venuefeatures} \vpageref{tab:venuefeatures}.
+
+We evaluate the following metrics:
+\begin{itemize}
+	\item Euclidean norm
+	\item Information Theoretic Metric Learning
+	\item Gradient Boosted Large Margin Nearest Neighbor
+	\item Euclidean norm in a 2D space reduced by t-SNE
+\end{itemize}		
+As well as two baselines:
+\begin{itemize}
+	\item $d_A$ where $A$ is a diagonal matrix with random coefficients in
+		the range $[2, 20]$.
+	\item Random ordering of venues. It is not a metric but because we
+		only evaluate ranking instead of distances themselves that is
+		enough.
+\end{itemize}		
+On two tasks:
+\begin{enumerate}
+	\item finding venue of the same brand in another city.
+	\item finding venue of the same category in another city.
+\end{enumerate}		
+
+Evaluation is not straightforward as there are no easily available ground truth
+indicating whether a given venue is close to another one or not. Thus we had to
+rely on indirect information.
+
+For the first task, we start by looking at common substrings in the name of venues
+in Paris and Barcelona, keeping those that were company name and not mere
+generic terms like \emph{park} or \emph{hotel}. We selected \emph{Starbucks} and
+\emph{McDonald's} as they are ubiquitous and unambiguous. Then for each of
+them in one city, we ranked all venues from the other city by how close they
+are from this query and select the first one that was of the same brand. The
+closest this first rank is the one, the better the metric. The results are
+shown in some Figures.
+
+The second task is more general. Each venue is assigned a hierarchical category
+by Foursquare\footnote{The tree can be seen on their website:
+\href{https://developer.foursquare.com/categorytree}{%
+\url{developer.foursquare.com/categorytree}}.}. We restrict ourselves
+to two levels, meaning that one venue can be a \emph{French Restaurant
+$\rightarrow$ Food} and another one \emph{Airport $\rightarrow$ Travel
+\& Transport}. We repeat the same sorting procedure but this time, we expect
+venues of the same sub category to be first, followed by other venues of the
+same top category and then the rest. To measure how well metrics achieved such
+ranking, we use \methodname{Normalised Discounted Cumulative Gain}
+\autocite{IREvaluation07}. The gain is a measure of relevance. We arbitrarily
+choose $rel_i=1$ when the sub category of two venues matches, $rel_i=0.4$ when
+only top category matches and $rel_i=0$ if they were not related at all. We
+accumulate them (or sum them) but discount results that came too late with \[
+\mathrm{DCG} = \sum_{i=1} \frac{ 2^{rel_{i}} - 1 }{ \log_{2}(i+1)} \]
+Finally we normalized by the result of a perfect ordering to have scores
+between $0$ and $1$, which allow direct comparison. The score of each metric
+for each venue is showed in some Figures.
+
+\section{Neighborhoods metrics}
+
+As mentionned in the background, we consider EMD in three variant: Euclidean
+ground metric, LMNN learned ground metric and 80\%-EMD. In the last case, we
+reformulate the linear problem so that only 80\% of the probability mass has
+to be moved from one distribution to the others and we solve it with MATLAB.
+Specifically, if we have distribution $P$ and $Q$ with weights $w_P$ and $w_Q$
+and a ground metric $d$ between them, we find the flow $f$ solving
+\begin{align*}
+	&\quad \underset{f}{\min} \sum_{i,j} d_{i,j} f_{i,j} \\
+	\text{subject to} &\quad \sum_j f_{i,j} \leq w_{P,i} \\
+	&\quad \sum_i f_{i,j} \leq w_{Q,j} \\
+	&\quad \sum_{i,j} f_{i,j} \geq 0.8 
+\end{align*}
+
+JSD on every dim and learning $\theta$
+
+3 cluster min cost baseline
+
+
+
+All these methods can accept weighted input. We consider using number of
+unique visitors and thus paying more attention to popular venues but it did
+not perform better.
+
+Evaluating metrics over queries using Information Retrieval framework
+
+In that case, documents are regions in space.
+
+And queries are pair `(city, district)` associated with $\{g_1, \ldots, g_n\}$ relevant results (the ground truth provided by human judges).
+
+For each query, each metric returns some results $\{r_1, \ldots, r_m\}$ (where presently, $m=5$).
+
+The relevance of each result is computed as 
+$$
+\mathrm{rel}(r_i) = \max_{g_j} rel(r_i, g_j)
+$$
+where $$rel(r_i, g_j) = \frac{| V_r \cap V_g|}{|V_r \cup V_g|}$$ is the Jaccard similarity between set of venues.
+
+I use Discounted Cumulative Gain as a measure of quality. The idea is that, the later a document comes in the results list of query $q$, the more its relevance is discounted:
+$$ \mathrm{DCG_{m}^q} = \sum_{i=1}^{m} \frac{ 2^{rel_{i}} - 1 }{ \log_{2}(i+1)} $$
+
+Then, because we have $Q = 6\times 8 - 2 = 46$ queries, we take the average $$ \mathrm{ADCG_{m}} = \frac{1}{Q}\sum_{q=1}^Q \mathrm{DCG_{m}^q} $$
+
+*I didn't use the normalized version because*
+1. *almost all result lists have the same size*
+1. *it would require some effort to come up with the ideal score (by trying to cover most of the ground truth with small circles) and we don't care as it would only scale all the results by some factor and thus not change their relative order.*
+
+\begin{tabular}{lrrrrrr}
+\toprule
+{} &   cluster &       emd &  emd-lmnn &       jsd &  leftover &   Average \\
+\midrule
+Barcelona     &  0.083064 &  0.078173 &  0.084204 &  0.042414 &  0.078244 &  0.073220 \\
+New York      &  0.059200 &  0.059385 &  0.059023 &  0.057180 &  0.053495 &  0.057656 \\
+Paris         &  0.061438 &  0.091178 &  0.078614 &  0.045136 &  0.061940 &  0.067661 \\
+Rome          &  0.024313 &  0.042352 &  0.039936 &  0.021156 &  0.029746 &  0.031501 \\
+San Francisco &  0.045977 &  0.045031 &  0.040164 &  0.033829 &  0.044497 &  0.041899 \\
+Washington    &  0.043694 &  0.034762 &  0.038164 &  0.033211 &  0.038829 &  0.037732 \\
+6             &  0.052947 &  0.058480 &  0.056684 &  0.038821 &  0.051125 &  0.051612 \\
+\bottomrule
+\end{tabular}
