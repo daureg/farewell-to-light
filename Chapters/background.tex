@@ -49,9 +49,9 @@ Instead of projecting points in a new space, we can directly modify the norm use
 
 The first is \methodname{Information Theoretic Metric Learning} \autocite{InfoMetric07}. Given a positive definite matrix $A$, we can associate (up to a scaling constant) a multivariate Gaussian distribution of mean $\mu$: $p(x; A) = \frac{1}{Z}\exp\left(-\frac{1}{2}d_A(x, \mu)\right)$. We also need a reference matrix $A_0$ (for instance the identity or the covariance matrix of the dataset), a set $S$ of similar points and a set $D$ of dissimilar points. We want $A$ to be close to $A_0$ in the sense of relative entropy $\KL{p(x; A_0)}{p(x,A)} = \int \! p(x; A_0) \log\frac{p(x; A_0)}{p(x; A)}\, \mathrm{d}x$ by solving
 \begin{align*}
-        \min_A & \KL{p(x; A_0)}{p(x; A)} \\
-        \text{subject to} & d_A(x_i, x_j) \leq u (i,j) \in S,\\
-                       & d_A(x_i, x_j) \geq l (i,j) \in D.
+        \min_A &\quad \KL{p(x; A_0)}{p(x; A)} &\quad\\
+        \text{subject to} &\quad d_A(x_i, x_j) \leq u &(i,j) \in S,\\
+                       &\quad d_A(x_i, x_j) \geq l &(i,j) \in D.
 \end{align*}
 
 The other one is \methodname{Large Margin Nearest Neighbor} \autocite{LMNN09}
@@ -66,7 +66,7 @@ $N_i$ is the set of the $k$ closest neighbors of $x_i$ in the original space whi
 \end{equation}
 where $[x]_+$ is the hinge-loss: $[x]_+=\max(0, x)$
 
-The end results is a linear global metric but there are other approaches. One can learn multiple local metric or non linear metric like \methodname{Gradient Boosting LMNN} \autocite{GBLMNN12} \emph{same formulation but distance in a mapping space and the mapping is learned by a pool a weak learner}.
+The end result is a linear, global metric but there are other approaches. One can learn multiple local metrics, or a non linear metric like \methodname{Gradient Boosting LMNN} \autocite{GBLMNN11} \emph{same formulation but distance in a mapping space and the mapping is learned by a pool a weak learner}.
 
 A more complete overview of metric learning is given in the survey of \textcite{MetricSurvey13}.
 
@@ -75,7 +75,7 @@ We discussed metrics between points but in this work, we also used distances bet
 
 geometric: For instance, the bottleneck distance \autocite{Bottleneck96} (the smallest distance between pairs of farthest point), the sum of the distance of each point to its closest neighbor, or the Hausdorff distance (the largest distance between pairs of closest point) and its variation \autocite{ModifiedHausdorff94}.
 
-Assignment problem and Hungarian algorithm \autocite{Hungarian57}. Transportation problem. Because these problem have min cost flow constraints matrix, they area totally unimodular (\ie{} every non singular sub square matrix has a determinant of $+1$ or $-1$) and thus admits a integer solution.
+Assignment problem and Hungarian algorithm $O(n^4)$ and $O(n^3)$ \autocite{Hungarian57}. Transportation problem. Because these problem have min cost flow constraints matrix, they are totally unimodular (\ie{} every non singular sub square matrix has a determinant of $+1$ or $-1$) and thus admits a integer solution.
 It may be more convenient to consider non integer supply and demand, which leads to fractional weight and probabilistic interpretation. For instance the modern Kantorovitch formulation of the Transportation problem: $\underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}} \int_{X\times Y} c(x,y)\mathrm{d}\gamma(x,y)$. It is related to the Wasserstein distance of two probability measures $\mu$ and $\nu$ of a space $M$ with $p$\textsuperscript{th} finite moment
 $W_p(\mu, \nu) = \left( \underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}} \int_{M\times M} d(x,y)^p\mathrm{d}\gamma(x,y)\right)^{\frac{1}{p}}$. $W_1$ is also called \methodname{Earth Mover's Distance} \autocite{EMD98}.
 
@@ -90,4 +90,4 @@ It computes lower and upper bounds of EMD quickly, with GPU and in parallel. The
 
 % ground metric learning for EMD? \autocite{LearnEMD14}
 
-information theoretic distance over some probability distributions, like the Kullback--Leibler divergence or a metric based on it \methodname{Jensen--Shannon Divergence} \autocite{JensenShannon03}
+information theoretic distance over some probability distributions, like the Kullback--Leibler divergence or a metric based on it, like the \methodname{Jensen--Shannon Divergence} \autocite{JensenShannon03}.
