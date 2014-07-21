@@ -7,12 +7,42 @@
 account \autocite{GeoTopicYin11, GeoTopicKurashima2013, nestedChinese13,%
 NonGaussianTopicKling14} as well as time \autocite{GeoScope, TwitterBurst13}
 
-% spatial mining (food?)
+Mining spatial data to discover places and their semantics. This places are
+usually defined by their density, and thus one seeks to find high concentration
+of activity. For instance, \textcite{Deng2009} use DBSCAN to cluster Flickr
+photos and then look at tags co occurrence within clusters to identify their
+meaning. \Textcite{Rattenbury2009} also employ various methods to discover
+regions in San Francisco where one photos tag appears significantly. The shape
+of these hotspot regions can be refined by looking at the orientation of each
+photos \autocite{Hotspots12}. Another way of identify hotspots is second order
+Ripley's K-function \autocite{TagHotspot12}. Basically, it is a statistical
+test for the hypothesis that points are distributed according to a Poisson
+process and it tells how they \enquote{interact with each other, either
+\enquote{repulsively} [\dots] or \enquote{attractively}.} Furthermore, it is
+able to deal with varying density of pictures.
 
-\item flickr data and hotspot \autocite{TagHotspot12, Hotspots12}
-
-\item Searching explicitly for neighborhoods
-\autocite{Rattenbury2009, Livehoods12, SocioMap12, Hoodsquare13}
+Moving from Flickr to \glspl{lbsn} allows to search for larger areas like
+neighborhoods. \Textcite{SocioMap12} collect general tweets and perform
+sentiment analysis as well as movement detection to draw a socio cognitive map
+of the Kinki region in Japan which helps user to make decision regarding where
+to live. Closer to our work, \textcite{Livehoods12} make use of 18 million
+check-ins to find so-called
+\emph{Livehoods}\footnote{\href{http://livehoods.org/}{\url{livehoods.org}}}.
+They build a $m$ spatial neighbors graph of venues with edges weighted by the
+cosine similarity between their user distribution and then perform spectral
+clustering. Faced with the same difficulty to evaluate their results, they
+interview residents of Pittsburgh who validate the obtained representation.
+Another approach was proposed by
+\textcite{Hoodsquare13}\footnote{\href{http://pizza.cl.cam.ac.uk/hoodsquare/}%
+{\url{hoodsquare.org}}}, also based on Foursquare check-ins.  Each
+venues is given its category, its peak time activity and a binary
+label: touristic or not. They are clustered in hotspots along each of
+these features by OPTICS. The city is then divided into a regular grid
+and cells are described by its hotspot density for each feature.
+\marginpar{Mention evaluation?} Finally, cells are clustered into neighborhoods
+by their smoothed cosine similarity. The main difference between this two last
+work and ours is that they do not explicitly mention distance between the
+neighborhoods they recover.
 
 \item smart cities \autocite{HelsinkiSCC11, Eunoia13, SmartCities13} (or
 find nicest path within cities \cite{Quercia2014}
@@ -20,14 +50,18 @@ playable cities: \url{http://www.watershed.co.uk/playablecity/overview/},
 \ie{} avoid focusing solely on monetization:
 \url{http://radar.oreilly.com/2014/05/most-of-what-we-need-for-smart-cities-already-exists.html})
 
-% transportation data
-
-% \item graph and community detection (instead of clustering used in several
-% places \autocite{PositinalCluster14})
-
-\item non academic initiatives, flickr alpha shape
-\url{http://code.flickr.net/2008/10/30/the-shape-of-alpha/}, airbnb
-neighborhoods \url{https://www.airbnb.com/locations}
+Even though I did not find publications, some companies are also using data to
+better understand cities. For instance, Flickr has shown that by computing the
+$\alpha$-shape of a set of tagged photos (which is a generalisation of its
+convex hull \autocite{AlphaShape83}) they can recover boundaries of
+neighborhoods: \href{http://code.flickr.net/2008/10/30/the-shape-of-alpha/}%
+{\url{code.flickr.net/2008/10/30/the-shape-of-alpha}}.  Likewise, Airbnb, the
+social lodging renting website, has accumulated a lot of spatial data as well
+as textual reviews, which can be used to rank cities by hospitality
+\href{http://nerds.airbnb.com/most-hospitable-cities/}%
+{\url{nerds.airbnb.com/most-hospitable-cities}} as well as discovering
+neighborhoods
+\href{https://www.airbnb.com/locations}{\url{airbnb.com/locations}}.
 
 \item learning from multi source \url{http://www.hiit.fi/cosco/mupi} (although
 Flickr and Foursquare are not so different)
