@@ -20,5 +20,25 @@ potentially convey high level semantics.
 	\item Learn a better ground metric, by relying more on ground truth.
 	\item Automatically identify neighborhoods as dense areas sharing similar characteristics.
         \item Match several (or all) neighborhoods at the same time (but without excessive overlapping)
+	\item Deliver interpretable results. Beyond a single number, the
+		similarity, or absence thereof, must be motivated. It enables
+		principled comparison of cities and more user friendly output (as well
+		as justifying why no sensible result were found for some queries).
+		Furthermore, this would address recent concerns about Algorithmic
+		Accountability \autocite{Accountability13}. For instance,
+		\textcite{Discrimination13} showed that in case of online advertisement
+		discrimination, opacity of the algorithms makes it difficult to find
+		and sanction those responsible.
+
+		The easiest way to do it would be to find justification after the
+		matching process (by clustering venues and summarizing it like
+		\enquote{These two regions match because people take a lot of photos,
+		go there on weekday from 4pm to 8pm and there are a lot cultural
+		buildings.} Another source of information is the resulting flow of
+		EMD. Looking at what kind of venues are close between two regions also
+		provide insights. Yet it would be more satisfactory if the whole
+		process was driven by such considerations instead of being a mere post
+		processing step.
 \end{itemize}
+
 \section{Conclusion}
