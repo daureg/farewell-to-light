@@ -1,0 +1,27 @@
+\begin{tikzpicture}
+\begin{axis}[legend pos=outer north east,
+    axis x line=none, axis y line=none,
+    unit vector ratio*=1.5 1,
+    legend style={mark options={scale=2.5}}
+]
+\addplot[
+scatter/classes={
+0={cat1,mark size=0.5pt},%
+1={cat2,mark size=0.5pt},%
+2={cat3,mark size=0.5pt},%
+3={cat4,mark size=0.5pt},%
+4={cat5,mark size=0.5pt},%
+5={cat6,mark size=0.5pt},%
+6={cat7,mark size=0.5pt},%
+7={cat8,mark size=0.5pt},%
+8={cat9,mark size=0.5pt}
+},
+scatter,only marks,
+    every mark/.append style={draw opacity=0,fill opacity=0.7},
+scatter src=explicit symbolic]
+table[x=posx,y=posy,meta=cat]
+{EUvenues.dat};
+\legend{Art, Education, Food, Night, Recreation, Shop, Professional, Residence, Transport}
+\end{axis}
+\end{tikzpicture}
+

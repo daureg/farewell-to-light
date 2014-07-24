@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+	\begin{semilogyaxis}[xmin=0, xmax=248,
+            % unit vector ratio*=1 1.75,
+            % ymin=0, ymax=8.8,
+            % title={Check-ins frequency through the day},
+            xlabel={query},
+            ylabel={speed up},
+            legend style={fill=pale,draw=none},
+            % legend style={at={(0.05,0.8)},anchor=west},
+            % grid=major
+		]
+\addplot[DodgerBlue,thin]table [x index=0, y index=1] {larger_time_ratio.dat};
+\addlegendentry{0 extension}
+\addplot[FireBrick,thin, smooth]table [x index=0, y index=2] {larger_time_ratio.dat};
+\addlegendentry{1 extension}
+\addplot[LimeGreen,thin, smooth]table [x index=0, y index=3] {larger_time_ratio.dat};
+\addlegendentry{2 extensions}
+\addplot[Orange,thin, smooth]table [x index=0, y index=4] {larger_time_ratio.dat};
+\addlegendentry{3 extensions}
+\addplot[Purple,thin, smooth]table [x index=0, y index=5] {larger_time_ratio.dat};
+\addlegendentry{4 extensions}
+\end{semilogyaxis}
+\end{tikzpicture}
