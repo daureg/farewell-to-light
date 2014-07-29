@@ -4,12 +4,74 @@
 \renewcommand{\equiv}{\Leftrightarrow}
 \newcommand{\KL}[2]{\mathrm{KL}\left(#1||#2\right)}
 \newcommand{\vnorm}[1]{\left|\left|#1\right|\right|}
-% \newcommand{\cbest}[1]{\colorbox{Moccasin}{#1}}
-\newcommand{\cbest}[1]{\textbf{#1}}
-\newcommand{\am}{a.\,m.}
-\newcommand{\hpm}{p.\,m.}
+\newcommand{\am}{a.\@m.\@}
+\newcommand{\hpm}{p.\@m.\@}
 \newcounter{dummy}
 \newcounter{lofdepth}
 \newcounter{lotdepth}
 \newcommand{\methodname}[1]{\textbf{#1}}
 \providecommand{\mLyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+
+%% notation
+\newcommand{\cities}{\ensuremath{{\cal C}}}
+\newcommand{\city}{\ensuremath{{C}}}
+\newcommand{\noc}{\ensuremath{{n}}}
+\newcommand{\venues}{\ensuremath{{V}}}
+\newcommand{\venue}{\ensuremath{{v}}}
+\newcommand{\nov}{\ensuremath{{m}}}
+\newcommand{\novenues}[1]{\ensuremath{{m}_{#1}}}
+\newcommand{\allvenues}{\ensuremath{{\cal V}}}
+\newcommand{\activities}{\ensuremath{{\cal A}}}
+\newcommand{\activity}{\ensuremath{{a}}}
+\newcommand{\noa}{\ensuremath{{|\activities|}}} 
+\newcommand{\loc}{\ensuremath{{\mathrm{loc}}}}
+\newcommand{\timestamp}{\ensuremath{\mathrm{t}}}
+\newcommand{\ainfo}{\ensuremath{{\mathrm{descr}}}}
+\newcommand{\user}{\ensuremath{\mathrm{u}}}
+\newcommand{\type}{\ensuremath{{\mathrm{type}}}}
+\newcommand{\vloc}{\ensuremath{{\mathrm{loc}}}}
+\newcommand{\vinfo}{\ensuremath{{\mathrm{info}}}}
+\newcommand{\vfv}{\ensuremath{{\mathbf{f}}}}
+\newcommand{\vfvs}{\ensuremath{{F}}}
+\newcommand{\vdist}{\ensuremath{{d}}}
+\newcommand{\dist}{\ensuremath{{d}}}
+\newcommand{\vw}{\ensuremath{{W}}}
+\newcommand{\region}{\ensuremath{{R}}}
+\newcommand{\rdist}{\ensuremath{{\delta}}}
+\newcommand{\sdist}{\ensuremath{{D}}}
+\newcommand{\radius}{\ensuremath{{r}}}
+\newcommand{\rel}{\ensuremath{{\mathrm{rel}}}}
+\newcommand{\neighbors}{\ensuremath{{N}}}
+
+%% methods
+\newcommand{\itml}{{ITML}}
+\newcommand{\lmnn}{{LMNN}}
+\newcommand{\tsne}{{$t$-{SNE}}}
+\newcommand{\eucl}{{\sc Euclidean}}
+\newcommand{\emd}{{EMD}}
+\newcommand{\emde}{{EMD-{\sc Eucl}}}
+\newcommand{\emdl}{{EMD-LMNN}}
+\newcommand{\emdp}{{EMD-{\sc Partial}}}
+\newcommand{\jsd}{{JSD}}
+
+%% acronyms
+\newcommand{\taskbrand}{{\sf Brand}}
+\newcommand{\tasktype}{{\sf Type}}
+\newcommand{\ndcg}{{NDCG}}
+\newcommand{\dcg}{{DCG}}
+\newcommand{\adcg}{{ADCG}}
+
+%%misc 
+\newcommand{\fs}{{Four\-square}}
+\newcommand{\flickr}{{Flickr}}
+\newcommand{\tw}{{Twitter}}
+\newcommand{\airbnb}{{Airbnb}}
+
+\definecolor{light-gray}{gray}{0.55}
+\newcommand{\cbest}[1]{\textbf{#1}}
+\newcommand{\notbest}[1]{\textcolor{light-gray}{#1}}
+
+\newcommand{\Dratio}{relative distance}
+%% case study
+\newcommand{\walls}{{\sf Wall Street}}
+\newcommand{\mission}{{\sf Mission}}
