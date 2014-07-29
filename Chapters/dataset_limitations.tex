@@ -1,0 +1,65 @@
+\section{Limitations and other sources}
+\label{sec:limitations}
+
+These two datasets suffers from general problem related to online sources.
+First, as its the case in most of psychological studies \autocite{Weird10}, the
+user distribution of online services is biased toward young people, living in
+cities and with a high level of life. Second, even among those, we observed an
+heavy tail phenomena; for instance, 70\% of twitter users have tweeted less
+than 10 times \href{http://twopcharts.com/twitteractivitymonitor}%
+{\url{twopcharts.com/twitteractivitymonitor}}.
+
+% According to \textcite{FSMotivation11}, the main factor are fun (because the
+% application is gamified and its a lightweight activity to perform when one is
+% bored), social aspect (see where your friends go and let them know what you
+% are doing) and discovery (read tips left by previous users and get discount).
+
+The data collection process described above is easily fooled by dishonest user
+claiming to be at some locations even if it is not the case. According to
+\autocite{FakeCheckins12}, this can be caused by the desire to \enquote{cheat}
+the gaming component of many \glspl{lbsn}, take advantage of monetary
+incentives offered by venues owner to go in their establishment or simply
+provide allegedly objective alibi to cover for other activity. Solution
+involving special hardware and protocol are not within our reach
+\autocite{ValidateCheckin13} and even detecting such fake check-ins, by using
+temporal tensor decomposition \autocite{FindingFake14} is a problem in itself.
+Therefore we did not make any attempt at cleaning the data.
+
+Another concern is the use of Twitter. First because we access only a sample
+of all tweets, without any guarantee about its representativeness.
+Fortunately, it does not appear that Twitter is purposely trying to trick
+researchers \autocite{TwitterBias14}. Second because our tweets span more than
+three years, a interval during which Twitter and its user behavior have
+changed \autocite{TwitterEvolution14}.
+
+We cannot be oblivious to privacy issues either.
+Even if it would give us a more reliable picture, there are situations in
+which people are reluctant (or unable) to check-in \autocite{Privacy11}. For
+instance, when people are in hospitals, they have something else on their mind
+than checking in and as a consequence, these places are not as well described
+as restaurant or parks.
+% \begin{comments}
+% On the other hands some users are very open: One posted 5 tweets in less than
+% one hour in a pub, along with 3 names of beer
+% \href{https://untappd.com/user/fneri3/checkin/85857825}%
+% {\url{untappd.com/user/fneri3/checkin/85857825}} and 2 photos
+% \href{https://foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}%
+% {\url{foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}}.
+% \end{comments}
+
+Finally, through this work, we relied on venues category provided by
+Foursquare. Yet it has been showed recently than performing Latent Dirichlet
+Allocation on associated text defined finer and more meaningful categorisation
+\autocite{PlaceSemantic14}, which could benefit for the semi supervised
+training described later.
+
+\bigskip
+
+\Textcite{TwitterMongoDB13} describe in great details a setup similar to ours.
+But there are others ways to obtain information about places. The most
+straightforward is to ask directly people. For instance, \textcite{Curated14}
+asked residents of Pittsburgh to build a city guide by sharing personal stories
+about locations they know well. One can also mine text, like Yelp reviews to
+discover shared topics among restaurant \autocite{YelpReview14}.  Other
+possibilities include image analysis to describe place atmosphere or mining GPS
+trajectories to discover which places are significant \autocite{GPSStay10}.

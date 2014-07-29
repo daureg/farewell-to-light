@@ -1,32 +1,25 @@
-There are many ways to obtain information about places. The most
-straightforward is to ask directly people. For instance, \textcite{Curated14}
-asked residents of Pittsburgh to build a city guide by sharing personal
-stories about locations they know well. One can also mine text, like Yelp
-reviews to discover shared topics among restaurant \autocite{YelpReview14}.
-Other possibilities include Image analysis to describe place atmosphere
-or mining GPS trajectories to discover which places are significant
-\autocite{GPSStay10}
+To solve the problem at hand, we extract information from data. Specifically,
+we take of advantage of geo localized activities exposed on \fs{}
+(\autoref{sec:foursquare}) and \flickr{} (\autoref{sec:flickr}). An extensive
+exploration of the data collected (\autoref{sec:exploration}) leads us to
+choose \emph{venue} as the elementary unit of information. Therefore, we
+represent them by some numerical features (\autoref{sec:feature}) in the rest
+of this work. Beside raw data, we also gathered ground truth by conducting a
+small-scale user study (\autoref{sec:user-study}). Finally, as we are problem
+and not data-driven, we conclude this chapter by assessing the adequacy of such
+data toward our goal, and by presenting alternative sources of information
+(\autoref{sec:limitations}).
 
-In this work, we choose to focus on traces of human activity. Namely we
-collected Foursquare check-ins and Flickr photos metadata. The first step of
-this process was to choose a fixed number of cities.
+To limit the scope of our study, we focus on 20 cities:
+\begin{itemize}
+	\item 10 located in the United States: Atlanta, Chicago, Houston,
+		Indianapolis, Los Angeles, New York, Saint Louis, San Francisco,
+		Seattle and Washington
+	\item 10 located in Europe: Amsterdam, Barcelona, Berlin, Helsinki, London,
+		Moscow, Paris, Prague, Rome and Stockholm
+\end{itemize}
 
-According to \href{http://www.4sqstat.com/}{4sqstat.com}, we first selected
-the ten cities in the US with the highest number of check-ins: New York,
-Washington, San Francisco, Atlanta, Indianapolis, Los Angeles, Seattle,
-Houston, Saint Louis and Chicago. We followed a similar procedure in Europe,
-resulting in the selection of London, Paris, Berlin, Rome, Prague, Moscow,
-Amsterdam, Helsinki, Stockholm and Barcelona. This is admittedly a choice
-biased by our own history and the ease to gather user input. Indeed, Rio de
-Janeiro or Tokyo are more active than Helsinki or Stockholm, but less familiar
-to us and to many students of Aalto University, making results more difficult
-to interpret.
-
-Besides their specific issues that we will explain later, these two datasets
-suffers from general problem related to online sources. First, as in most of
-psychological studies \autocite{Weird10}, the user distribution of online
-services is biased toward young people, living in cities and with a high level
-of life. Second, even among those, we observed an heavy tail phenomena; for
-instance, 70\% of twitter users have tweeted less than 10 times
-\href{http://twopcharts.com/twitteractivitymonitor}%
-{\url{twopcharts.com/twitteractivitymonitor}})
+They were chosen for their high activity according to
+\href{http://www.4sqstat.com/}{4sqstat.com}. We deliberately exclude other
+parts of the world as we are not familiar enough with them to correctly
+evaluate our results.

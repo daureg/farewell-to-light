@@ -1,144 +1,104 @@
 \section{Foursquare}
+\label{sec:foursquare}
 
-As of 2014, Foursquare has become the most popular \gls{lbsn}. But because
-its usage it not driven by explicit task solving (like finding direction in a
-new city), it sounds to ask why people are using it. According to
-\textcite{FSMotivation11}, the main factor are fun (because the application is
-gamified and its a lightweight activity to perform when one is bored), social
-aspect (see where your friends go and let them know what you are doing) and
-discovery (read tips left by previous users and get discount).
+Foursquare is the most popular \gls{lbsn} in 2014, claiming more than 50
+million users\footnote{See \href{https://foursquare.com/about/}%
+{\url{foursquare.com/about}} for more usage statistics.}. Its two main purposes
+are to enable users discover new places and let their friends or the world know
+where they are. The first activity is centered around venues. Venues have their
+own web page that displays basic facts (like name, address and type) but also
+user contributed information (such as photos, reviews, likes and tips) which
+can be used for rating or recommendation. The second possibility revolved
+around check-in, which represents the visit of a user to a venue at a given
+time. It is also associated with a web page, potentially displaying a message
+or a photo enclosed with the check-in.
 
-\subsection{Check-ins}
+\subsection{Check ins}
 
-Foursquare check-ins are not available publicly for free, thus one has to
-find other way to get them. The easiest one was to reuse an existing dataset.
-Between September 2010 and January 2011, \textcite{dataset11} collected
-\numprint{22387930} check-ins from various \glspl{lbsn}.
+Following \fs's privacy policy, check-ins are private.  Yet some users opt to
+share their check-ins via \tw\footnote{\href{https://twitter.com/}%
+{\url{twitter.com}}} a popular micro-blogging platform. 
+As \tw{} allows anyone to access a 1\% sample of public tweets\footnote{Using
+the Public streams API described here:
+\href{https://dev.twitter.com/docs/streaming-apis/streams/public}%
+{\url{dev.twitter.com/docs/streaming-apis/streams/public}}.},
+we collected such check-ins
+from March to July 2014 by monitoring tweets with
+\url{4sq.com} links and retaining those located in the target cities.
+Essential informations of these \numprint{1651773} particular tweets are user id, Foursquare venue,
+local time, latitude and longitude. Yet they contain other fields, whose
+details are given in \autoref{tab:checkinfields}~\pageref{tab:checkinfields}.
 
-A typical check-in looks like this:
-\begin{verbatim}
-41418752    19459464870    38.931834    -77.028256
-2010-07-25 01:19:02    a95cd7e5e0eddaad
-I'm at Meridian Pint (, ) w/ 7 others. http://4sq.com/9GoW57
-\end{verbatim}
-
-where we can find the twitter user id, the tweet id, the latitude and
-longitude, the local time, a place id and the tweet's text\footnote{a more
-thorough description can be found online
-at \href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
+In addition, we used a previously released dataset~\autocite{dataset11},
+extracting \numprint{1296505} \fs\ check-ins generated between September 2010
+and January 2011 in these cities\footnote{a practical description of this
+	dataset can be found online at
+	\href{http://infolab.tamu.edu/static/users/zhiyuan/icwsm\_2011\_readme.pdf}%
 {\url{infolab.tamu.edu/static/users/zhiyuan/icwsm_2011_readme.pdf}}.}.
 
-After filtering tweets originating from our twenty cities, we were left with
-\numprint{2133752} of them. However, there is no easy way to map twitter place
-id to Foursquare venue id\footnote{Indeed, there is no one to one
-correspondence between them.}. Therefore, we had to follow the short links
-appearing in the tweets to recover those ids. But as the dataset is three
-years old, some links are dead. At the end, we found \numprint{1296505}
-exploitable check-ins, as showed in \autoref{tab:dataset}.
+Finally, we obtained more data by crawling the timeline of users that appear to
+post geo located tweets according to the public sample. We apply this approach
+in Barcelona, Helsinki, Paris, Rome, San Francisco, Stockholm and Washington,
+resulting in \numprint{1403217} additional tweets (even though a significant
+portion of them were located in other cities as some users travel).
 
-\medskip
+In total, our \fs\ data consists of almost 5 million check-ins, whose
+repartition can be found in \autoref{tab:dataset}.
 
-Another way to access check-ins is to use Twitter. Some applications publish
-tweets regarding check-in on the behalf of user. Furthermore, Twitter allows
-anyone to access a 1\% sample of public tweets\footnote{Using the Public
-streams API described here:
-\href{https://dev.twitter.com/docs/streaming-apis/streams/public}%
-{\url{dev.twitter.com/docs/streaming-apis/streams/public}}.}.
-\marginpar{refactor script to clean dependencies} Therefore we set up our own
-collection process from March to July 2014\footnote{The code can be found on
-github: \href{https://github.com/daureg/illalla}%
-{\url{github.com/daureg/illalla}}.} by selecting tweets with
-\url{4sq.com} links, retaining those located in the target cities and that
-leads to actual valid check-ins. It adds \numprint{1389117} tweets, with a
-similar structure (their format is described in more detail in
-\autoref{tab:checkinfields}, if you want to use them).
-
-\Textcite{TwitterMongoDB13} describe a similar but more robust setup.
-Additionnaly, they obtained more data by crawling the timeline of users that
-appear to post geo located tweets according to the public sample. We also
-follow this approach in a few cities, resulting in \numprint{300000} more
-tweets.
 
 \begin{table}[ht]
-    \centering
-    \pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
-    alias/old/.initial={2010 check-ins},
-    alias/new/.initial={2014 check-ins},
-    columns/city/.style={string type,column type=l},
-    every head row/.style={before row=\toprule,after row=\midrule},
-    every last row/.style={before row=\midrule,after row=\bottomrule}]{%
-    city          & 2010 check-ins & 2014 check-ins & photos  & venues \\
-    New York      & 408584  & 75635  & 1654289 & 49818  \\
-    Los Angeles   & 165463  & 30155  & 743314  & 25110  \\
-    Chicago       & 133822  & 28176  & 575306  & 18333  \\
-    San Francisco & 104363  & 16241  & 932568  & 12152  \\
-    London        & 72674   & 24608  & 1562858 & 16534  \\
-    Washington    & 75984   & 17627  & 610263  & 9481   \\
-    Seattle       & 51574   & 6744   & 504210  & 7587   \\
-    Amsterdam     & 35339   & 4673   & 134459  & 6538   \\
-    Houston       & 41037   & 11241  & 32459   & 9080   \\
-    Atlanta       & 40798   & 9466   & 215178  & 5766   \\
-    Paris         & 32952   & 14296  & 159969  & 11025  \\
-    Stockholm     & 10501   & 1768   & 26540   & 3121   \\
-    Indianapolis  & 30955   & 5943   & 23740   & 5427   \\
-    Moscow        & 17577   & 74134  & 52821   & 21626  \\
-    Barcelona     & 21448   & 9273   & 98730   & 7032   \\
-    Berlin        & 15098   & 7806   & 193556  & 6430   \\
-    St.~Louis     & 17491   & 3415   & 23520   & 2498   \\
-    Rome          & 9364    & 5068   & 142113  & 4311   \\
-    Prague        & 4757    & 3610   & 41395   & 2943   \\
-    Helsinki      & 6724    & 1486   & 21333   & 1956   \\
-    total         & 1296505 & 351365 & 7748621 & 226768 \\
+  \small
+  \setlength{\tabcolsep}{5pt}
+	\centering
+	% \input{dataset_count.tex}
+% City&\multicolumn{3}{c}{Check-ins}&Venues&Photos\\
+% 		\cmidrule(r){2-4}
+%    & 2010 & 2014 & Timeline &    & \\
+% \midrule
+	\pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
+	columns/City/.style={string type,column type=l},
+	% outfile=dataset_count.tex,
+	every head row/.style={before row=\toprule,after row=\midrule},
+	every last row/.style={before row=\midrule,after row=\bottomrule}]{%
+		City          & 2010 Check-ins & 2014 Check-ins & Timeline & Venues & Photos \\
+		New York      & 408584         & 369562         & 0        & 67363  & 1744890 \\
+		Los Angeles   & 165463         & 139624         & 0        & 33586  & 794537  \\
+		Chicago       & 133822         & 137119         & 0        & 26012  & 601859  \\
+		San Francisco & 104363         & 77294          & 0        & 15580  & 983723  \\
+		London        & 72674          & 112305         & 0        & 23512  & 1653489 \\
+		Washington    & 75984          & 80274          & 0        & 13168  & 650882  \\
+		Seattle       & 51574          & 32568          & 0        & 9627   & 525794  \\
+		Amsterdam     & 35339          & 24349          & 0        & 8764   & 148807  \\
+		Houston       & 41037          & 50165          & 0        & 13430  & 41827   \\
+		Atlanta       & 40798          & 42988          & 0        & 8089   & 228744  \\
+		Paris         & 32952          & 67382          & 0        & 17231  & 208895  \\
+		Stockholm     & 10501          & 8440           & 0        & 4193   & 37422   \\
+		Indianapolis  & 30955          & 27655          & 0        & 7651   & 30908   \\
+		Moscow        & 17577          & 331332         & 0        & 47937  & 69826   \\
+		Barcelona     & 21448          & 44462          & 0        & 11351  & 130039  \\
+		Berlin        & 15098          & 39772          & 0        & 11174  & 226420  \\
+		St.\ Louis    & 17491          & 15384          & 0        & 3459   & 33917   \\
+		Rome          & 9364           & 24128          & 0        & 7691   & 166537  \\
+		Prague        & 4757           & 18791          & 0        & 5698   & 51962   \\
+		Helsinki      & 6724           & 8179           & 0        & 3153   & 27849   \\
+		Total         & 1296505        & 1651773        & 0        & 338669 & 8358327 \\
 }
-\caption[Dataset number]{Count of objects in the dataset\label{tab:dataset}}
+\caption[Dataset number]{Number of check-ins, venues, and photos in each city
+Note that \fs\ usage surged in Moscow between 2010 and 2014 whereas the
+opposite happened in San Francisco.\label{tab:dataset}}
 \end{table}
 
 \subsection{Venues}
 
-Each of these check-ins is associated with a venue. Thus, the second part of
+As explained, each of these check-ins is associated with a venue. Thus, the second part of
 the collection process was to gather information about all of those
-\numprint{226768} that appear in at least on check-in. This was done by calling the
-appropriate Foursquare API, with result showed in \autoref{tab:venue}.
+\numprint{338669} that appear in at least one check-in. This was done by calling the
+appropriate Foursquare API and the obtained object is described in
+\autoref{tab:venue}. The main informations are the venue location, its category,
+the number of likes, the number of check-ins and the number of unique visitors.
 
 \begin{comments}
 link to the dataset on
 \href{http://figshare.com/authors/G\%C3\%A9raud\%20Le\%20Falher/542931}%
 {\url{figshare.com}} or \url{http://academictorrents.com}
 \end{comments}
-
-\subsection{Limitations}
-
-The data collection process described above is easily fooled by dishonest user
-claiming to be at some locations even if it is not the case. According to
-\autocite{FakeCheckins12}, this can be caused by the desire to \enquote{cheat}
-the gaming component of many \glspl{lbsn}, take advantage of monetary
-incentives offered by venues owner to go in their establishment or simply
-provide allegedly objective alibi to cover for other activity. Solution
-involving special hardware and protocol are not within our reach
-\autocite{ValidateCheckin13} and even detecting such fake check-ins, by using
-temporal tensor decomposition \autocite{FindingFake14} is a problem in itself.
-Therefore we did not make any attempt at cleaning the data.
-
-Another concern is the use of Twitter. First because we access only a sample
-of all tweets, without any guarantee about its representativeness.
-Fortunately, it does not appear that Twitter is purposely trying to trick
-researchers \autocite{TwitterBias14}. Second because our tweets span more than
-three years, a interval during which Twitter and its user behavior have
-changed \autocite{TwitterEvolution14}
-
-The data we collected are largely influenced by privacy consideratiosn.
-Even if it would give us a more reliable picture, there are situations in
-which people are reluctant (or unable) to check-in \autocite{Privacy11}.
-\begin{comments}
-On the other hands some users are very open: One posted 5 tweets in less than
-one hour in a pub, along with 3 names of beer
-\href{https://untappd.com/user/fneri3/checkin/85857825}%
-{\url{untappd.com/user/fneri3/checkin/85857825}} and 2 photos
-\href{https://foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}%
-{\url{foursquare.com/fneri3/checkin/5373fb47498e65814631c3e3?s=D2ximdj1zhKVt_qZy9xpvObiHkc}}.
-\end{comments}
-
-Finally, through this work, we relied on venues category provided by
-Foursquare. Yet it has been showed recently than performing Latent Dirichlet
-Allocation on associated text defined finer and more meaningful categorisation
-\autocite{PlaceSemantic14}.

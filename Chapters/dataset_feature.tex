@@ -1,0 +1,55 @@
+\section{Chosen representation}
+\label{sec:feature}
+
+Building upon the insights gained by exploring the dataset, we settle to
+represents \marginpar{give a high level overview for people not reading the
+table?} each venues by the numeric vector presented in
+\autoref{tab:venuefeatures}.  The features involving the surrounding (numbered
+from 6 to 16 and 25 to 30) were weighted by a 2D Gaussian of radius $r=350$
+meters.
+
+\begin{table}[hb]
+    \centering
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        index & description \\
+        \midrule
+	\datasetRow{}0 & Number of likes \\
+	\datasetRow{}1 & Number of unique users \\
+	\datasetRow{}2 & Number of total check-ins \\
+        3 & User entropy \\
+        4 & Venue density \\
+	\datasetRow{}5 & Venue top level category \\
+        6 & \enquote{Arts \& Entertainment} venues around \\
+        7 & \enquote{College \& University} venues around \\
+        8 & \enquote{Food} venues around \\
+        9 & \enquote{Nightlife Spot} venues around \\
+        10 & \enquote{Outdoors \& Recreation} venues around \\
+        11 & \enquote{Shop \& Service} venues around \\
+        12 & \enquote{Professional \& Other Places} venues around \\
+        13 & \enquote{Residence} venues around \\
+        14 & \enquote{Travel \& Transport} venues around \\
+	15 & Ratio of photos over check-ins \\
+	16 & Ratio of photos associated to the venue over photos linked to other venues \\
+	17 & More than half of the check-ins occurs during the week-end \\
+	18 & Frequency of check-ins between 2 \am{} and 6 \am{} \\
+	19 & Frequency of check-ins between 6 \am{} and 10 \am{} \\
+	20 & Frequency of check-ins between 10 \am{} and 2 \hpm{} \\
+	21 & Frequency of check-ins between 2 \hpm{} and 6 \hpm{} \\
+	22 & Frequency of check-ins between 6 \hpm{} and 10 \hpm{} \\
+	23 & Frequency of check-ins between 10 \hpm{} and 2 \am{} \\
+	24 & Time entropy \\
+	25 & Frequency of neighbouring check-ins between 2 \am{} and 6 \am{} \\
+	26 & Frequency of neighbouring check-ins between 6 \am{} and 10 \am{} \\
+	27 & Frequency of neighbouring check-ins between 10 \am{} and 2 \hpm{} \\
+	28 & Frequency of neighbouring check-ins between 2 \hpm{} and 6 \hpm{} \\
+	29 & Frequency of neighbouring check-ins between 6 \hpm{} and 10 \hpm{} \\
+	30 & Frequency of neighbouring check-ins between 10 \hpm{} and 2 \am{} \\
+        \bottomrule
+    \end{tabularx}
+    \caption[Venue features]{Feature representation of Foursquare venues,
+	    taking surrounding into account. \colorbox{Moccasin}{Shaded
+	    features} are provided directly by Foursquare database whereas the
+	    others were computed solely based on the information
+	    contained in the dataset.\label{tab:venuefeatures}}
+\end{table}

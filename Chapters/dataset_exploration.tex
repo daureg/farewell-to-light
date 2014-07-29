@@ -1,4 +1,5 @@
 \section{Exploration}
+\label{sec:exploration}
 
 While collecting these data, it was helpful to explore them, in order to
 discover features that could characterize places and help cluster them into
@@ -7,17 +8,25 @@ similar groups.
 \subsection{Time}
 
 The time at which check-ins occur is undoubtedly a important variable. For
-instance, \textcite{UrbanStory12} performed topic modelling from the text of
-check-in tweets and showed that various topics exhibit daily or weekly
-patterns. Likewise, \textcite{TimeCluster13} clustered cells of a rectangular
+instance, \textcite{UrbanStory12} perform topic modelling from the text of
+check-in tweets and show that various topics exhibit daily or weekly
+patterns. Likewise, \textcite{TimeCluster13} cluster cells of a rectangular
 grid according to their repartition of check-ins over categories and time of
 day.
 
-Thus we first looked at when check-ins are performed, and how it differed from
-city to city \autoref{fig:time_checkin}. Then we adopted a venue-centric view
-and clustered locations according to which time they are active
-\autoref{fig:day_cluster}, which also depend of the city
-\autoref{fig:time_cluster_size}.
+Thus we first look at when check-ins are performed through the day
+\autoref{fig:daily_checkin} or the week \autoref{fig:weekly_checkin}, and how it
+differ whether we consider New York, the city that never sleeps, or Helsinki.
+
+But these patterns do not affect all venues uniformly. Taking Paris as an
+example, we can summarize each venue's activity by an histogram with 3 or 4
+four hours bins. Then, running $k$-means algorithm with $k=5$, we obtained the
+clusters depicted in \autoref{fig:day_cluster}. We observe that they have
+the same characteristic shape with one peak during the day and relatively low
+activity the rest of the time. We repeat these in all the cities to determine
+if these clusters are universal. As showed in \autoref{fig:time_cluster_size},
+it is the case with 4-hours bins, but 3-hours clusters exhibit slight
+variations across cities of our dataset.
 
 \begin{figure}[hbt]
     \begin{subfigure}[b]{\textwidth}
@@ -27,12 +36,14 @@ and clustered locations according to which time they are active
     }{%
         \input{mkfigs/daily_checkin}
     }
-    \caption[Pattern of check-in during the day]{Generally, the activity is at
-    its lowest around 5 \am{}\ and during the day, there are three peaks: one
-when people go to work in the morning, one in the middle of the day and the
-last one at the end of the evening. Yet, depending of the city, these peaks do
-not happen at the same time, nor with the same intensity.
-\label{fig:daily_checkin}}
+	\caption[Pattern of check-in during the day]{Hourly check-ins frequency
+		during the day. The activity is at its lowest around 5 \am\ and after
+		that, there are three peaks: one when people go to work in the morning,
+		one in the middle of the day and the last one at the end of the
+		evening. Yet, depending of the city, these peaks do not happen at the
+		same time, nor with the same intensity. Therefore, instead of working
+		directly the raw values of features, we use the number of standard
+		deviation or \emph{z-score}.\label{fig:daily_checkin}}
     \end{subfigure}
 
     \begin{subfigure}[b]{\textwidth}
@@ -42,8 +53,10 @@ not happen at the same time, nor with the same intensity.
     }{%
         \input{mkfigs/weekly_checkin}
     }
-    \caption[Pattern of check-in during the week]{During the week, patterns
-        are less clear.  \label{fig:weekly_checkin}}
+	\caption[Pattern of check-in during the week]{Four-hour check-in frequency
+	during the week. We observe a day/night cycle, which becomes less
+	distinctive as the weekend is approaching and disappears on
+	Saturday.\label{fig:weekly_checkin}}
     \end{subfigure}
     \caption{Check-ins temporal pattern.\label{fig:time_checkin}}
 \end{figure}
@@ -62,58 +75,58 @@ not happen at the same time, nor with the same intensity.
     of check-ins. \label{fig:day_cluster}}
 \end{figure}
 
-\newgeometry{left=0.3cm,right=0.3cm,bottom=0.1cm,top=0.1cm}
-\begin{center}
-\begin{figure}[hbt]
-    \begin{subfigure}[b]{0.4\textwidth}
+\newgeometry{vmargin=0.65cm,hmargin=1.4cm}
+\begin{figure}[p]
+	\centering
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl1}}{\input{mkfigs/cluster_day_3h_cl1}}
     \end{subfigure}~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl1}}{\input{mkfigs/cluster_day_4h_cl1}}
     \end{subfigure}
 
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl2}}{\input{mkfigs/cluster_day_3h_cl2}}
     \end{subfigure}~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl2}}{\input{mkfigs/cluster_day_4h_cl2}}
     \end{subfigure}
 
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl3}}{\input{mkfigs/cluster_day_3h_cl3}}
     \end{subfigure}~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl3}}{\input{mkfigs/cluster_day_4h_cl3}}
     \end{subfigure}
 
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl4}}{\input{mkfigs/cluster_day_3h_cl4}}
     \end{subfigure}~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl4}}{\input{mkfigs/cluster_day_4h_cl4}}
     \end{subfigure}
 
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_3h_cl5}}{\input{mkfigs/cluster_day_3h_cl5}}
     \end{subfigure}~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.35\textwidth}
     \centering
     \iftoggle{EXTERNALPGF}{\includegraphics[height=0.18\textheight]{cluster_day_4h_cl5}}{\input{mkfigs/cluster_day_4h_cl5}}
     \end{subfigure}
-    \caption[Venues cluster by time among all the cities]{4 hours time
-    clusters are the same among all cities, whereas it is not the case for 3
-hours clusters. \label{fig:time_cluster_size}}
+    \caption[Venues cluster by time among all the cities]{
+		Results of $k$-means with $k=5$ on the 3-hours window (left column) and 4-hours window (right column) check-in distribution of venues. 
+Each line in each figure is the centroid of a cluster in a city.\label{fig:time_cluster_size}}
 \end{figure}
-\end{center}
+\clearpage
 \restoregeometry
 
 \subsection{Space}
@@ -128,10 +141,24 @@ discriminative feature as well. For instance in \autoref{fig:density_paris},
 we can clearly distinguish venues belonging to the city center from the
 others.
 
-\begin{figure}[hbtp]
-\includegraphics[width=\textwidth]{density_paris_venues}
-\caption[Venue density in Paris]{Estimated venues density in Paris by a
-	Gaussian kernel.\label{fig:density_paris}}
+\begin{figure}[h]
+        \centering
+    \begin{subfigure}[b]{0.32\textheight}
+        \centering
+        \includegraphics[width=\textwidth]{paris_new_density_50.pdf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textheight}
+	\includegraphics[width=\textwidth]{paris_new_density_160.pdf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textheight}
+        \centering
+	\includegraphics[width=\textwidth]{paris_new_density_350.pdf}
+    \end{subfigure}
+\caption[Venue density in Paris]{Estimated density of 3192 venues in Paris by a
+Gaussian kernel. On the top, the bandwidth is 50 meters and it looks too small:
+venues are isolated. In the middle, $h=160$ because this value maximize the
+probability of existing venues.  On the bottom, $h=350$ corresponds to human
+definition of neighborhood size.\label{fig:density_paris}}
 \end{figure}
 
 \subsection{Location entropy}
@@ -150,53 +177,63 @@ compute the normalized entropy: \[
     H(v) = -\frac{1}{\log\left(\left| \mathcal{U}\right|\right)}
 \sum_{u\in \mathcal{U}} f_v(u) \log(f_v(u)) \]
 
-Show examples with high and low value in Paris and Barcelona:
+Computing this value for all venues in Paris and Barcelona shows that it is a
+good descriptor of the \enquote{publicness} of a place. As showed in
+\autoref{tab:entropy}, touristic attractions like the Sagrada Família or the
+Eiffel Tower exhibit high entropy because they are visited by a large and
+diverse set of people. On the other hand, work offices and private houses have
+low entropy, as they attract a much more restricted crowd.
 
-\begin{tabular}{llr}
+\begin{table}[ht]
+	\centering
+\begin{tabular}{lllr}
 	\toprule
-	Name                    & Category            & Entropy \\
+	City                       & Name                           & Category                 & Entropy \\
 	\midrule
-    Castellers de Barcelona       & Non-Profit        & 0.0139 \\
-    Café de la Pompeu             & Café              & 0.0172 \\
-    Ràdio 4                       & Radio Station     & 0.0176 \\
-    La Comarca                    & Home (private)    & 0.0180 \\
-    House castellar               & Home (private)    & 0.0181 \\
-    Av Tomas Gimenez              & Bar               & 0.0186 \\
-    Torre De Barad-Dur            & Building          & 0.0192 \\
-    \midrule
-    Blue Acacia                   & Office            & 0.0119 \\
-    Boutique Orange               & Electronics Store & 0.0141 \\
-    Regus                         & Office            & 0.0163 \\
-    Café Pierre                   & French Restaurant & 0.0181 \\
-    my home 2                     & Home (private)    & 0.0193 \\
-    10e arrondissement – Entrepôt & \& Municipalities & 0.0213 \\
-    Scanblog                      & Office            & 0.0221 \\
+	\multirow{3}{*}{Barcelona} & Castellers de Barcelona        & Non-Profit               & $0.0139$ \\
+	                           & Café de la Pompeu              & Café                     & $0.0172$ \\
+	                           & Ràdio 4                        & Radio Station            & $0.0176$ \\
+	%                          & La Comarca                     & Home (private)           & $0.0180$ \\
+	%                          & House castellar                & Home (private)           & $0.0181$ \\
+	%                          & Av Tomas Gimenez               & Bar                      & $0.0186$ \\
+	%                          & Torre De Barad-Dur             & Building                 & $0.0192$ \\
 	\midrule
-    Parc de la Ciutadella          & Park                & 0.5188 \\
-    Apple Store                    & Electronics Store   & 0.5358 \\
-    Parc Güell                     & Park                & 0.5666 \\
-    Plaça de Catalunya             & Plaza               & 0.5835 \\
-    Sants Estació                  & Train Station       & 0.6298 \\
-    Sagrada Família                & Government Building & 0.6309 \\
-    Camp Nou                       & Stadium             & 0.6852 \\
-    \midrule
-    Arc de Triomphe                & Government Building & 0.5831 \\
-    Cathédrale Notre-Dame de Paris & Spiritual Center    & 0.5874 \\
-    Gare SNCF Paris Montparnasse   & Train Station       & 0.6141 \\
-    Musée du Louvre                & Museum              & 0.6444 \\
-    Gare SNCF Gare de Lyon         & Train Station       & 0.6460 \\
-    Tour Eiffel                    & Government Building & 0.6618 \\
-    Gare SNCF Paris Nord           & Train Station       & 0.6707 \\
+	\multirow{3}{*}{Paris}     & Blue Acacia                    & Office                   & $0.0119$ \\
+	                           & Boutique Orange                & Electronics Store        & $0.0141$ \\
+	                           & Regus                          & Office                   & $0.0163$ \\
+	%                          & Café Pierre                    & French Restaurant        & $0.0181$ \\
+	%                          & my home 2                      & Home (private)           & $0.0193$ \\
+	%                          & 10e arrondissement – Entrepôt  & States \& Municipalities & $0.0213$ \\
+	%                          & Scanblog                       & Office                   & $0.0221$ \\
+	\midrule
+	%                          & Parc de la Ciutadella          & Park                     & $0.5188$ \\
+	%                          & Apple Store                    & Electronics Store        & $0.5358$ \\
+	%                          & Parc Güell                     & Park                     & $0.5666$ \\
+	\multirow{4}{*}{Barcelona} & Plaça de Catalunya             & Plaza                    & $0.5835$ \\
+	                           & Sants Estació                  & Train Station            & $0.6298$ \\
+	                           & Sagrada Família                & Government Building      & $0.6309$ \\
+	                           & Camp Nou                       & Stadium                  & $0.6852$ \\
+	\midrule
+	%                          & Arc de Triomphe                & Government Building      & $0.5831$ \\
+	%                          & Cathédrale Notre-Dame de Paris & Spiritual Center         & $0.5874$ \\
+	%                          & Gare SNCF Paris Montparnasse   & Train Station            & $0.6141$ \\
+	\multirow{4}{*}{Paris}     & Musée du Louvre                & Museum                   & $0.6444$ \\
+	                           & Gare SNCF Gare de Lyon         & Train Station            & $0.6460$ \\
+	                           & Tour Eiffel                    & Government Building      & $0.6618$ \\
+	                           & Gare SNCF Paris Nord           & Train Station            & $0.6707$ \\
 	\bottomrule
 \end{tabular}
+\caption{Venues in Paris and Barcelona with lowest and highest user
+entropy.\label{tab:entropy}}
+\end{table}
 
-Following the same idea, we also computed the entropy of locations with
-respect to time of check-ins. Indeed, it distinguishes between a railway
-station active all day along and a restaurant only open during lunch hours.
-We are also expecting a link between the two entropies, as place that stay
-open longer have more chance to be enjoy a various crowd. But it is not the
-cases on \autoref{fig:two_entropies}, as some places are visited all the time
-by a very small group of people
+Following the same idea, we also computed the entropy of locations with respect
+to time of check-ins. Indeed, it distinguishes between a railway station active
+all day long and a restaurant open only during lunch hours.  We also expect a
+link between the two entropies, as places that stay open longer have more
+chance to be visited by a various set of users. But this relation, shown on
+\autoref{fig:two_entropies}[REDRAW IT] is weak, as some places are visited all the time by
+a small group of dedicated people.
 
 \begin{figure}[hbtp]
 \includegraphics[width=\textwidth]{two_entropies}
@@ -207,64 +244,18 @@ during the day. \label{fig:two_entropies}}
 
 \subsection{Photos}
 
-Assume that photos are background signal of interest within city. Use exact
-grid algo from \autocite{Agarwal2006spatial} to compute discrepancy with
-check-ins measurement (and conversely). \marginpar{give real examples} More
-photos in touristic places, more check-in in “event” places (railway, stadium)
+Finally, one interesting aspect of this dataset is the interaction between
+check-ins and photos.  The spatial repartition of both objects can be seen as
+an indirect signal of interest within the city. Thus we were curious to see in
+which place they disagree, that is location where there is significantly more
+photos taken that what we would expect by looking at the tweet concentration
+(and conversely). To answer this question, we compute the discrepancy between
+this two measure of activity \autocite{Agarwal2006spatial}. It turns out that
+some places are mostly checked-in because events take place there (such as when
+people arrive in a new city via a railway station or an airport, or when a
+sport team plays a match in a stadium) whereas other are more photographed,
+like museum or touristic sights.
 
-Look at high and low focus places: not so interesting either. High value are
-for popular places like park or monument whereas low (but not zero) are for
-mundane place (like pizzeria) close to famous locations.
-
-\section{Chosen representation}
-
-Based on the insights gained by exploring the dataset, we settle to represents
-each venues by the numerical vector presented in \autoref{tab:venuefeatures}.
-The features involving the surrounding (numbered from 6 to 16 and 25 to 30)
-were weighted by a 2D Gaussian of radius $r=350$ meters.
-
-\begin{table}[hb]
-    \centering
-    \begin{tabularx}{\textwidth}{lX}
-        \toprule
-        index & description \\
-        \midrule
-	\datasetRow{}0 & Number of likes \\
-	\datasetRow{}1 & Number of unique users \\
-	\datasetRow{}2 & Number of total check-ins \\
-        3 & User entropy \\
-        4 & Venue density \\
-	\datasetRow{}5 & Venue top level category \\
-        6 & \enquote{Arts \& Entertainment} venues around \\
-        7 & \enquote{College \& University} venues around \\
-        8 & \enquote{Food} venues around \\
-        9 & \enquote{Nightlife Spot} venues around \\
-        10 & \enquote{Outdoors \& Recreation} venues around \\
-        11 & \enquote{Shop \& Service} venues around \\
-        12 & \enquote{Professional \& Other Places} venues around \\
-        13 & \enquote{Residence} venues around \\
-        14 & \enquote{Travel \& Transport} venues around \\
-	15 & Ratio of photos over check-ins \\
-	16 & Ratio of photos associated to the venue over photos linked to other venues \\
-	17 & More than half of the check-ins occurs during the week-end \\
-	18 & Frequency of check-ins between 2 \am{} and 6 \am{} \\
-	19 & Frequency of check-ins between 6 \am{} and 10 \am{} \\
-	20 & Frequency of check-ins between 10 \am{} and 2 \hpm{} \\
-	21 & Frequency of check-ins between 2 \hpm{} and 6 \hpm{} \\
-	22 & Frequency of check-ins between 6 \hpm{} and 10 \hpm{} \\
-	23 & Frequency of check-ins between 10 \hpm{} and 2 \am{} \\
-	24 & Time entropy \\
-	25 & Frequency of neighbouring check-ins between 2 \am{} and 6 \am{} \\
-	26 & Frequency of neighbouring check-ins between 6 \am{} and 10 \am{} \\
-	27 & Frequency of neighbouring check-ins between 10 \am{} and 2 \hpm{} \\
-	28 & Frequency of neighbouring check-ins between 2 \hpm{} and 6 \hpm{} \\
-	29 & Frequency of neighbouring check-ins between 6 \hpm{} and 10 \hpm{} \\
-	30 & Frequency of neighbouring check-ins between 10 \hpm{} and 2 \am{} \\
-        \bottomrule
-    \end{tabularx}
-    \caption[Venue features]{Feature representation of Foursquare venues,
-	    taking surrounding into account. \colorbox{Moccasin}{Shaded
-	    features} are provided directly by Foursquare database whereas the
-	    others were computed solely based on the partial information
-	    contained in the dataset.\label{tab:venuefeatures}}
-\end{table}
+% Look at high and low focus places: not so interesting either. High value are
+% for popular places like park or monument whereas low (but not zero) are for
+% mundane place (like pizzeria) close to famous locations.
