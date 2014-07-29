@@ -5,7 +5,7 @@ import os
 import sys
 import numpy as np
 from functools import wraps
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../illalla'))
 
 
 def add_symlink(func):
@@ -64,7 +64,7 @@ def save_time_cluster(week, shorter):
     nbclass = 3 if week else 5
     size = 21 if week else (6 if shorter else 8)
     # pylint: disable=E1101
-    dirname = '../../' + ('times/' if shorter else 'time/')
+    dirname = '../../illalla/' + ('times/' if shorter else 'time/')
     suffix = '_' + ('weekly' if week else 'daily') + '_time.mat'
     out_name = '{{}}_cluster_{}_{}'.format('week' if week else 'day',
                                            '4h' if shorter else '3h')
@@ -79,10 +79,10 @@ def save_time_cluster(week, shorter):
 
 if __name__ == '__main__':
     # pylint: disable=C0103
-    save_time_cluster(False, False)
-    # import CommonMongo as cm
-    # import arguments
-    # args = arguments.city_parser().parse_args()
-    # DB, CLIENT = cm.connect_to_db('foursquare', args.host, args.port)
-    # # save_checkins_time(DB, args.city)
+    save_time_cluster(False, True)
+    import CommonMongo as cm
+    import arguments
+    args = arguments.city_parser().parse_args()
+    DB, CLIENT = cm.connect_to_db('foursquare', args.host, args.port)
+    # save_checkins_time(DB, args.city)
     # save_checkins_time(DB)

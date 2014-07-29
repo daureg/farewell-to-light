@@ -1,0 +1,197 @@
+\documentclass{standalone}
+\usepackage[svgnames]{xcolor}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\usepgfplotslibrary{statistics}
+\input{../figure-params.tex}
+\begin{document}
+
+\makeatletter
+\pgfplotsset{
+    boxplot/lower notch/.initial=\pgfutil@empty,
+    boxplot/upper notch/.initial=\pgfutil@empty,
+    boxplot/notch width/.initial=0.9,
+    boxplot/draw/box/.code={%
+        \draw[/pgfplots/boxplot/every box/.try]
+            (boxplot box cs:\pgfplotsboxplotvalue{lower quartile},0)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{lower notch},0)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{median},0.5-\pgfplotsboxplotvalue{notch width}/2)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{upper notch},0)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{upper quartile},0)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{upper quartile},1)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{upper notch},1)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{median},0.5+\pgfplotsboxplotvalue{notch width}/2)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{lower notch},1)
+            -- (boxplot box cs:\pgfplotsboxplotvalue{lower quartile},1)
+            -- cycle
+        ;
+    },%
+    boxplot/draw/median/.code={%
+        \draw[/pgfplots/boxplot/every median/.try]
+            (boxplot box cs:\pgfplotsboxplotvalue{median},0.5-\pgfplotsboxplotvalue{notch width}/2)
+            --
+            (boxplot box cs:\pgfplotsboxplotvalue{median},0.5+\pgfplotsboxplotvalue{notch width}/2)
+        ;
+    },%
+        boxplot prepared from table/.code={
+        \def\tikz@plot@handler{\pgfplotsplothandlerboxplotprepared}%
+        \pgfplotsset{
+            /pgfplots/boxplot prepared from table/.cd,
+            #1,
+        }
+    },
+    /pgfplots/boxplot prepared from table/.cd,
+        table/.code={\pgfplotstablecopy{#1}\to\boxplot@datatable},
+        row/.initial=0,
+        make style readable from table/.style={
+            #1/.code={
+                \pgfplotstablegetelem{\pgfkeysvalueof{/pgfplots/boxplot prepared from table/row}}{##1}\of\boxplot@datatable
+                \pgfplotsset{boxplot/#1/.expand once={\pgfplotsretval}}
+            }
+        },
+        make style readable from table=lower whisker,
+        make style readable from table=upper whisker,
+        make style readable from table=lower quartile,
+        make style readable from table=upper quartile,
+        make style readable from table=median,
+        make style readable from table=lower notch,
+        make style readable from table=upper notch
+}
+
+\pgfplotstableread{
+    lw lq med  uq uw  ln  un
+     0.851180622495	1.02710071707	1.07004853009	1.15438306694	1.33305050385	1.05899621911	1.08291452329
+     0.877042616768	1.01944170796	1.05251971331	1.12281450609	1.26197692382	1.04295397442	1.06279497871
+     0.877042616768	1.01421609829	1.04805748321	1.11456187426	1.26197692382	1.03678491728	1.05842301186
+     0.877042616768	1.01181219333	1.04617982053	1.11268559741	1.26197692382	1.03221834631	1.05450901712
+     0.877042616768	1.00859592741	1.04539549538	1.11268559741	1.26696911042	1.03193412321	1.05426644199
+}\datatable
+
+\begin{tikzpicture}
+\begin{axis}[
+    boxplot/draw direction=y, 
+    ymin=0.65, ymax=1.8,
+    xmin=0.7, xmax=5.4,
+    xtick={1,2,3,4,5},
+    xticklabels={0, 1,2,3,4},
+    boxplot/box extend=0.5,
+    boxplot/notch width=0.5,
+ylabel={Approximation ratio},
+xlabel={Number of region extensions},
+thin,
+]
+  \addplot +[
+	DodgerBlue,very thin,
+	mark=x, mark size=1pt,
+        boxplot prepared from table={
+        table=\datatable,
+	row=0,
+        lower whisker=lw,
+        upper whisker=uw,
+        lower quartile=lq,
+        upper quartile=uq,
+        lower notch=ln,
+        upper notch=un,
+        median=med
+    }, boxplot prepared
+ ] coordinates {(1.0, 0.80880) (1.0, 0.82636) (1.0, 1.35120) (1.0, 1.35494)
+(1.0, 1.37792) (1.0, 1.38089) (1.0, 1.41669) (1.0, 1.41707) (1.0, 1.41857)
+(1.0, 1.42032) (1.0, 1.42630) (1.0, 1.42735) (1.0, 1.43417) (1.0, 1.43652)
+(1.0, 1.44715) (1.0, 1.45921) (1.0, 1.46859) (1.0, 1.46963) (1.0, 1.47113)
+(1.0, 1.50602) (1.0, 1.56361) (1.0, 1.62653) (1.0, 1.67578) (1.0, 1.67895)
+(1.0, 1.71420)}
+node[above] at
+(boxplot box cs: \boxplotvalue{median},0.5)
+{\tiny{\pgfmathprintnumber[precision=3]{\boxplotvalue{median}}}};
+
+ \addplot +[
+	 DodgerBlue,very thin,
+	 mark=x, mark size=1pt,
+	 boxplot prepared from table={
+		 table=\datatable,
+		 row=1,
+		 lower whisker=lw,
+		 upper whisker=uw,
+		 lower quartile=lq,
+		 upper quartile=uq,
+		 lower notch=ln,
+		 upper notch=un,
+		 median=med
+	 }, boxplot prepared
+ ] coordinates {(2.0, 0.80880) (2.0, 0.82636) (2.0, 0.85118) (2.0, 1.28116)
+	 (2.0, 1.28762) (2.0, 1.31731) (2.0, 1.31931) (2.0, 1.32319) (2.0, 1.32571)
+	 (2.0, 1.33139) (2.0, 1.33728) (2.0, 1.34570) (2.0, 1.34950) (2.0, 1.34991)
+	 (2.0, 1.35324) (2.0, 1.36043) (2.0, 1.36281) (2.0, 1.38089) (2.0, 1.38135)
+	 (2.0, 1.38223) (2.0, 1.38816) (2.0, 1.39250) (2.0, 1.40895) (2.0, 1.42735)
+ (2.0, 1.43834) (2.0, 1.46963) (2.0, 1.49050) (2.0, 1.50774)}
+ node[above] at
+ (boxplot box cs: \boxplotvalue{median},0.5)
+ {\tiny{\pgfmathprintnumber[precision=3]{\boxplotvalue{median}}}};
+
+
+  \addplot +[
+	 DodgerBlue,very thin,
+	 mark=x, mark size=1pt,
+        boxplot prepared from table={
+        table=\datatable,
+        row=2,
+        lower whisker=lw,
+        upper whisker=uw,
+        lower quartile=lq,
+        upper quartile=uq,
+        lower notch=ln,
+        upper notch=un,
+        median=med
+    }, boxplot prepared
+ ] coordinates {(3.0, 0.78792) (3.0, 0.82636) (3.0, 0.85118) (3.0, 1.27261) (3.0, 1.28762) (3.0, 1.31731) (3.0, 1.31931) (3.0, 1.32319) (3.0, 1.32571) (3.0, 1.33139) (3.0, 1.33323) (3.0, 1.33341) (3.0, 1.34570) (3.0, 1.34991) (3.0, 1.35324) (3.0, 1.36043) (3.0, 1.36281) (3.0, 1.37140) (3.0, 1.37420) (3.0, 1.37861) (3.0, 1.38089) (3.0, 1.38816) (3.0, 1.40895) (3.0, 1.42735) (3.0, 1.43834) (3.0, 1.46963) (3.0, 1.47546) (3.0, 1.50774)
+}
+ node[above] at
+ (boxplot box cs: \boxplotvalue{median},0.5)
+ {\tiny{\pgfmathprintnumber[precision=3]{\boxplotvalue{median}}}};
+  \addplot +[
+	 DodgerBlue,very thin,
+	 mark=x, mark size=1pt,
+        boxplot prepared from table={
+        table=\datatable,
+        row=3,
+        lower whisker=lw,
+        upper whisker=uw,
+        lower quartile=lq,
+        upper quartile=uq,
+        lower notch=ln,
+        upper notch=un,
+        median=med
+    }, boxplot prepared
+ ] coordinates {(4.0, 0.78439) (4.0, 0.82636) (4.0, 0.85118) (4.0, 1.27023) (4.0, 1.28762) (4.0, 1.31731) (4.0, 1.31931) (4.0, 1.32319) (4.0, 1.32571) (4.0, 1.33139) (4.0, 1.33433) (4.0, 1.33528) (4.0, 1.34570) (4.0, 1.34991) (4.0, 1.35324) (4.0, 1.35855) (4.0, 1.36043) (4.0, 1.36488) (4.0, 1.36588) (4.0, 1.38089) (4.0, 1.38135) (4.0, 1.38816) (4.0, 1.40895) (4.0, 1.42735) (4.0, 1.43586) (4.0, 1.46963) (4.0, 1.47493) (4.0, 1.50774)}
+ node[above] at
+ (boxplot box cs: \boxplotvalue{median},0.5)
+ {\tiny{\pgfmathprintnumber[precision=3]{\boxplotvalue{median}}}};
+  \addplot +[
+	 DodgerBlue,very thin,
+	 mark=x, mark size=1pt,
+        boxplot prepared from table={
+        table=\datatable,
+        row=4,
+        lower whisker=lw,
+        upper whisker=uw,
+        lower quartile=lq,
+        upper quartile=uq,
+        lower notch=ln,
+        upper notch=un,
+        median=med
+    }, boxplot prepared
+ ] coordinates {(5.0, 0.78084) (5.0, 0.82636) (5.0, 0.85118) (5.0, 1.28762) (5.0, 1.31731) (5.0, 1.31931) (5.0, 1.32319) (5.0, 1.32527) (5.0, 1.33139) (5.0, 1.33323) (5.0, 1.33341) (5.0, 1.34455) (5.0, 1.34570) (5.0, 1.34991) (5.0, 1.35324) (5.0, 1.36043) (5.0, 1.36157) (5.0, 1.37140) (5.0, 1.37861) (5.0, 1.38089) (5.0, 1.38816) (5.0, 1.40895) (5.0, 1.42387) (5.0, 1.43717) (5.0, 1.46963) (5.0, 1.47546) (5.0, 1.50774)}
+ node[above] at
+ (boxplot box cs: \boxplotvalue{median},0.5)
+ {\tiny{\pgfmathprintnumber[precision=3]{\boxplotvalue{median}}}};
+
+\coordinate (start) at (axis cs:0.7,1.0);
+\coordinate (end) at (axis cs:5.4,1.0);
+
+\draw [black,line width=0.15pt] (start) -- (end);
+\end{axis}
+
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,5 @@
+Should submit a Pdf/A version, according to: https://into.aalto.fi/display/enmasterelec/Electronic+version+of+the+master%27s+thesis
+It may possible using LaTeX http://support.river-valley.com/wiki/index.php?title=Generating_PDF/A_compliant_PDFs_from_pdftex but that seems cumbersome.
+http://tex.stackexchange.com/questions/130201/pdf-a-with-hyperref-on-tex-live-2013
+So it might be easier to make sure all metadata + pdfa option are in hyperref and use Acrobat Pro: http://gradstudents.carleton.ca/thesis-requirements/pdfa-formatting/
+http://library2012.fiu.edu/LinkClick.aspx?fileticket=o4MlJszAYZU%3D&tabid=478
