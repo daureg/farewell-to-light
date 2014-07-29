@@ -1,11 +1,13 @@
 \begin{tikzpicture}
 	\begin{axis}[xmin=0, xmax=24,
-            unit vector ratio*=1 1.75,
+            unit vector ratio*=2 2.4,
+	    axis y line=none,
             ymin=0, ymax=8.8,
-            % title={Check-ins frequency through the day},
-            xlabel={hour},
-            ylabel={percentage},
-            legend style={at={(0.05,0.8)},anchor=west},
+	    xticklabel style={font=\fontsize{6}{7}\selectfont},
+            % title={Hourly check-ins frequency through the day},
+            % xlabel={hour},
+            % ylabel={percentage},
+            legend style={font=\fontsize{6}{7}\selectfont,at={(0.0,0.8)},anchor=west,draw=none,fill=none},
             grid=major
 		]
 \addplot[DodgerBlue,thin, smooth]table [x={time}, y={freq}] {newyork_day.dat};

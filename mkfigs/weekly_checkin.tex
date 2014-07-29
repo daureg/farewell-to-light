@@ -1,28 +1,78 @@
+%Mon 0--4, % Mon 4--8, Mon 8--12, % Mon 12--16, Mon 16--20, % Mon 20--24, Tue 0--4, % Tue 4--8, Tue 8--12, % Tue 12--16, Tue 16--20, % Tue 20--24, Wed 0--4, % Wed 4--8, Wed 8--12, % Wed 12--16, Wed 16--20, % Wed 20--24, Thu 0--4, % Thu 4--8, Thu 8--12, % Thu 12--16, Thu 16--20, % Thu 20--24, Fri 0--4, % Fri 4--8, Fri 8--12, % Fri 12--16, Fri 16--20, % Fri 20--24, Sat 0--4, % Sat 4--8, Sat 8--12, % Sat 12--16, Sat 16--20, % Sat 20--24, Sun 0--4, % Sun 4--8, Sun 8--12, % Sun 12--16, Sun 16--20, % Sun 20--24
 \begin{tikzpicture}
     \begin{axis}[x={11},
-            title={Check-ins frequency through the week},
-            xlabel={time},
-            ylabel={percentage},
-            legend style={at={(0.05,0.8)},anchor=west},
+            % title={Check-ins frequency through the week},
+            % xlabel={time},
+            % ylabel={percentage},
+		    ymax=3.4,axis y line=none,
+            legend
+	    style={at={(0.76,0.00)},anchor=south,draw=none,fill=none,font=\Large,cells={line width=2pt}},
+            x tick label style={rotate=45,anchor=east,font=\large},
             grid=major,
-            xticklabels={Mon 0--4, Mon 4--8, Mon 8--12, Mon 12--16, Mon
-                16--20, Mon 20--24, Tue 0--4, Tue 4--8, Tue 8--12, Tue 12--16,
-                Tue 16--20, Tue 20--24, Wed 0--4, Wed 4--8, Wed 8--12, Wed
-                12--16, Wed 16--20, Wed 20--24, Thu 0--4, Thu 4--8, Thu 8--12,
-                Thu 12--16, Thu 16--20, Thu 20--24, Fri 0--4, Fri 4--8, Fri
-                8--12, Fri 12--16, Fri 16--20, Fri 20--24, Sat 0--4, Sat 4--8,
-                Sat 8--12, Sat 12--16, Sat 16--20, Sat 20--24, Sun 0--4, Sun
-            4--8, Sun 8--12, Sun 12--16, Sun 16--20, Sun 20--24},
+	    major grid style={line width=0.03pt, PapayaWhip},
+	    xticklabels={%
+		    Mon 0--4,,
+		    % Mon 4--8,
+		    Mon 8--12,,
+		    % Mon 12--16,
+		    Mon 16--20,,
+		    % Mon 20--24,
+		    Tue 0--4,,
+		    % Tue 4--8,
+		    Tue 8--12,,
+		    % Tue 12--16,
+		    Tue 16--20,,
+		    % Tue 20--24,
+		    Wed 0--4,,
+		    % Wed 4--8,
+		    Wed 8--12,,
+		    % Wed 12--16,
+		    Wed 16--20,,
+		    % Wed 20--24,
+		    Thu 0--4,,
+		    % Thu 4--8,
+		    Thu 8--12,,
+		    % Thu 12--16,
+		    Thu 16--20,,
+		    % Thu 20--24,
+		    Fri 0--4,,
+		    % Fri 4--8,
+		    Fri 8--12,,
+		    % Fri 12--16,
+		    Fri 16--20,,
+		    % Fri 20--24,
+		    Sat 0--4,,
+		    % Sat 4--8,
+		    Sat 8--12,,
+		    % Sat 12--16,
+		    Sat 16--20,,
+		    % Sat 20--24,
+		    Sun 0--4,,
+		    % Sun 4--8,
+		    Sun 8--12,,
+		    % Sun 12--16,
+		    Sun 16--20,,
+		    % Sun 20--24
+	    },
             xtick={0,...,41},
-            x tick label style={rotate=45,anchor=east}
         ]
-\addplot[DodgerBlue,thin, smooth]table [x={time}, y={freq}] {helsinki_week.dat};
-\addlegendentry{Helsinki}
-\addplot[FireBrick,thin, smooth]table [x={time}, y={freq}] {paris_week.dat};
-\addlegendentry{Paris}
-\addplot[LimeGreen,thin, smooth]table [x={time}, y={freq}] {barcelona_week.dat};
+\addplot[DodgerBlue, smooth]table [x={time}, y={freq}] {newyork_week.dat};
+\addlegendentry{New-York}
+\addplot[FireBrick, smooth]table [x={time}, y={freq}] {london_week.dat};
+\addlegendentry{London}
+\addplot[LimeGreen, smooth]table [x={time}, y={freq}] {barcelona_week.dat};
 \addlegendentry{Barcelona}
-\addplot[Black,thin, smooth]table [x={time}, y={freq}] {global_week.dat};
+\addplot[Orange, smooth]table [x={time}, y={freq}] {helsinki_week.dat};
+\addlegendentry{Helsinki}
+\addplot[LightGray, smooth]table [x={time}, y={freq}] {global_week.dat};
 \addlegendentry{Total}
+% \addplot[DodgerBlue, smooth]table [x={time}, y={freq}] {helsinki_week.dat};
+% \addlegendentry{Helsinki}
+% \addplot[FireBrick, smooth]table [x={time}, y={freq}] {paris_week.dat};
+% \addlegendentry{Paris}
+% \addplot[LimeGreen, smooth]table [x={time}, y={freq}] {barcelona_week.dat};
+% \addlegendentry{Barcelona}
+% \addplot[Black, smooth]table [x={time}, y={freq}] {global_week.dat};
+% \addlegendentry{Total}
 \end{axis}
 \end{tikzpicture}
