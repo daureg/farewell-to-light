@@ -82,6 +82,7 @@
 \usepackage{fancyvrb}
 \PassOptionsToPackage{svgnames}{xcolor}
 \usepackage{colortbl}
+\usepackage{multirow}
 \usepackage{pgfplotstable}
 \input{figure-params.tex}
 % ********************************************************************
@@ -145,13 +146,14 @@
 % Using PDFLaTeX
 % ********************************************************************
 \usepackage{varioref}
-\PassOptionsToPackage{hyperfootnotes=false,pdfpagelabels}{hyperref}
+\usepackage{hyperxmp}
+\PassOptionsToPackage{hyperfootnotes=false,pdfpagelabels,pdfa}{hyperref}
     \usepackage{hyperref}  % backref linktocpage pagebackref
 \pdfcompresslevel=8
 \pdfadjustspacing=1
 % \PassOptionsToPackage{pdftex}{graphicx}
-    \usepackage{graphicx}
-\graphicspath{{./gfx/}{./mkfigs/}}
+\usepackage{graphicx}
+\graphicspath{{./gfx/}{./mkfigs/}{./experiments/}}
 
 % ********************************************************************
 % Setup the style of the backrefs from the bibliography
@@ -191,11 +193,19 @@
     urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen, %pagecolor=RoyalBlue,%
     %urlcolor=Black, linkcolor=Black, citecolor=Black, %pagecolor=Black,%
     pdftitle={\myTitle},%
-    pdfauthor={\textcopyright\ \myName, \myUni, \myFaculty},%
+    pdfauthor={\myName, \myUni, \myFaculty},%
     pdfsubject={},%
     pdfkeywords={},%
-    pdfcreator={pdfLaTeX},%
-    pdfproducer={LaTeX with hyperref and classicthesis}%
+    pdfproducer={LaTeX with hyperref and classicthesis},%
+	pdfcopyright={Copyright \textcopyright\ 2014, \myName},
+	pdflicenseurl={http://creativecommons.org/licenses/by/4.0},
+	pdfcontactaddress={17 rue de l'Epine},
+	pdfcontactcity={Nantes},
+	pdfcontactpostcode={44300},
+	pdfcontactcountry={France},
+	pdfcontactemail={geraud.lefalher@gmail.com},
+	pdfcontacturl={http://daureg.github.io},
+	pdflang={en},
 }
 
 % ********************************************************************
