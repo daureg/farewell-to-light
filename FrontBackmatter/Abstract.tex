@@ -1,34 +1,23 @@
-%*******************************************************
-% Abstract
-%*******************************************************
-%\renewcommand{\abstractname}{Abstract}
 \pdfbookmark[1]{Abstract}{Abstract}
 \begingroup
 \let\clearpage\relax
-\let\cleardoublepage\relax
-\let\cleardoublepage\relax
 
 \chapter*{Abstract}
 
-Large cities are made of smaller regions that serve a few primary functions.
-Here we propose a method to discover such regions in a known city and to find
-matching regions in a target city. Cities are seen as set of discrete venues,
-described by data crawled from Foursquare and Flickr. After feature
-engineering, we pick two metrics and learn their optimal parametrization. We
-then devise heuristics to avoid brute force search. Beside being useful in
-touristic recommendation, these methods apply to similar problem setting.
-
-\begin{comments}
-An older version:\\
-I collected check-ins from Foursquare and photos metadata from Flickr in 20
-cities. After an extensive exploration of these dataset, I combined them by
-extracting features to describe each cities' venues. Then I used those
-features to match similar venues across cities. Results will be compared
-against human input gathered through a website. Finally, I plan to extend this
-matching to neighborhood or whole city, subject to topology preservation and
-homogeneity constraints.
-\end{comments}
+We propose a method to match similar neighborhoods across different cities.
+First, we collect trace of activities in 20 European and American cities from
+location aware social platforms \fs{} and \flickr{}. A thorough exploration
+of these datasets leads us to describe individual venues by relevant features.
+% Then we learned several measure of venue similarity in a semi-supervised fashion
+% and evaluate their performance on two tasks.
+After gathering human ground truth, we evaluate different metrics between sets
+of venues and find out that earth movers distance is the best suited at
+assessing neighborhood similarity. Finally, we address the computational
+efficiency problem of finding the most similar neighborhood given a query. We
+devise a heuristic search strategy and show that it provides results of
+comparable quality while being order of magnitude faster. Beside being useful
+in touristic recommendation and urban planning, these methods apply to similar
+problem setting.
 
 \endgroup 
-
 \vfill
