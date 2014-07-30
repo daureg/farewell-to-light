@@ -34,5 +34,6 @@ bib: ${HOME}/aalto/thesis.bib
 	sed -i '/isbn/d'  strip.bib
 	sed -i '/archivePrefix/d'  strip.bib
 	sed -i '/pmid/d'  strip.bib
+	cat ball.bib >> strip.bib
 	python sortbib.py
 	mv nstrip.bib strip.bib
