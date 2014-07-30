@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+	\begin{axis}[xmin=0, xmax=0.95,
+            unit vector ratio*=2 2.4,
+	    % axis y line=none,
+            ymin=0, ymax=0.72,
+	    % xticklabel style={font=\fontsize{6}{7}\selectfont},
+            % title={Hourly check-ins frequency through the day},
+            xlabel={time entropy $H_t$},
+            ylabel={user entropy $H_u$},
+            legend style={font=\fontsize{6}{7}\selectfont,at={(0.0,0.8)},anchor=west,draw=none,fill=none},
+            % grid=major,
+	    colormap/redyellow,
+		]
+\addplot[DodgerBlue,smooth]table [x={timeH}, y={square}] {two_entropies.dat};
+\addlegendentry{$0.738x^2-0.385x+0.179$}
+\addplot[FireBrick,smooth]table [x={timeH}, y={exp}] {two_entropies.dat};
+\addlegendentry{$0.009 e^{-4.103x}+0.1$}
+\addplot[scatter,only marks,mark size={0.5pt},draw opacity=0,scatter src=y]table [x={timeH}, y={userH}] {two_entropies.dat};
+\end{axis}
+\end{tikzpicture}
