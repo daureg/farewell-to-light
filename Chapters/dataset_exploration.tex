@@ -21,12 +21,12 @@ differ whether we consider New York, the city that never sleeps, or Helsinki.
 But these patterns do not affect all venues uniformly. Taking Paris as an
 example, we can summarize each venue's activity by an histogram with 3 or 4
 four hours bins. Then, running $k$-means algorithm with $k=5$, we obtained the
-clusters depicted in \autoref{fig:day_cluster}. We observe that they have
-the same characteristic shape with one peak during the day and relatively low
+clusters depicted in \autoref{fig:day_cluster}. We observe that they have the
+same characteristic shape with one peak during the day and relatively low
 activity the rest of the time. We repeat these in all the cities to determine
-if these clusters are universal. As showed in \autoref{fig:time_cluster_size},
-it is the case with 4-hours bins, but 3-hours clusters exhibit slight
-variations across cities of our dataset.
+if these clusters are universal. As showed in \autoref{fig:time_cluster_size}
+\vpageref{fig:time_cluster_size}, it is the case with 4-hours bins, but
+3-hours clusters exhibit slight variations across cities of our dataset.
 
 \begin{figure}[hbt]
     \begin{subfigure}[b]{\textwidth}
@@ -137,27 +137,28 @@ like in terms of categories. For instance, if a restaurant is mainly
 surrounded by night life places and another by education buildings, they
 probably have different customers. Second, venues are not uniformly
 distributed within the city and the density of nearby locations is a
-discriminative feature as well. For instance in \autoref{fig:density_paris},
-we can clearly distinguish venues belonging to the city center from the
-others.
+discriminative feature as well. For instance in \autoref{fig:density_paris}
+\vpageref{fig:density_paris}, we can clearly distinguish venues belonging to
+the city center from the others.
 
 \begin{figure}[h]
         \centering
-    \begin{subfigure}[b]{0.32\textheight}
+    \begin{subfigure}[b]{0.25\textheight}
         \centering
         \includegraphics[width=\textwidth]{paris_new_density_50.pdf}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.32\textheight}
-	\includegraphics[width=\textwidth]{paris_new_density_160.pdf}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.32\textheight}
-        \centering
+    \end{subfigure}~
+    \begin{subfigure}[b]{0.25\textheight}
 	\includegraphics[width=\textwidth]{paris_new_density_350.pdf}
     \end{subfigure}
-\caption[Venue density in Paris]{Estimated density of 3192 venues in Paris by a
-Gaussian kernel. On the top, the bandwidth is 50 meters and it looks too small:
-venues are isolated. In the middle, $h=160$ because this value maximize the
-probability of existing venues.  On the bottom, $h=350$ corresponds to human
+    \begin{subfigure}[b]{0.25\textheight}
+        \centering
+	\includegraphics[width=\textwidth]{paris_new_density_160.pdf}
+    \end{subfigure}
+\caption[Venue density in Paris]{Estimated density of 3192 venues in Paris by
+	a Gaussian kernel, cropped to the center of the city. On the left, the
+	bandwidth is 50 meters and it looks too small: venues are isolated. In
+	the middle, $h=160$ because this value maximize the probability of
+	existing venues. On the right, $h=350$ corresponds to human
 definition of neighborhood size.\label{fig:density_paris}}
 \end{figure}
 
@@ -184,62 +185,69 @@ Eiffel Tower exhibit high entropy because they are visited by a large and
 diverse set of people. On the other hand, work offices and private houses have
 low entropy, as they attract a much more restricted crowd.
 
-\begin{table}[ht]
-	\centering
+\begin{figure}[p]
+\begin{subfigure}{0.45\textheight}\centering
+% \begin{table}
+	% \centering
 \begin{tabular}{lllr}
 	\toprule
-	City                       & Name                           & Category                 & Entropy \\
+	City                       & Name                            & Category                 & Entropy \\
 	\midrule
-	\multirow{3}{*}{Barcelona} & Castellers de Barcelona        & Non-Profit               & $0.0139$ \\
-	                           & Café de la Pompeu              & Café                     & $0.0172$ \\
-	                           & Ràdio 4                        & Radio Station            & $0.0176$ \\
-	%                          & La Comarca                     & Home (private)           & $0.0180$ \\
-	%                          & House castellar                & Home (private)           & $0.0181$ \\
-	%                          & Av Tomas Gimenez               & Bar                      & $0.0186$ \\
-	%                          & Torre De Barad-Dur             & Building                 & $0.0192$ \\
+	\multirow{3}{*}{Barcelona} & Castellers de Barcelona         & Non-Profit               & $0.0139$ \\
+	                           & Café de la Pompeu               & Café                     & $0.0172$ \\
+	                           & Ràdio 4                         & Radio Station            & $0.0176$ \\
+	%                          & La Comarca                      & Home (private)           & $0.0180$ \\
+	%                          & House castellar                 & Home (private)           & $0.0181$ \\
+	%                          & Av Tomas Gimenez                & Bar                      & $0.0186$ \\
+	%                          & Torre De Barad-Dur              & Building                 & $0.0192$ \\
 	\midrule
-	\multirow{3}{*}{Paris}     & Blue Acacia                    & Office                   & $0.0119$ \\
-	                           & Boutique Orange                & Electronics Store        & $0.0141$ \\
-	                           & Regus                          & Office                   & $0.0163$ \\
-	%                          & Café Pierre                    & French Restaurant        & $0.0181$ \\
-	%                          & my home 2                      & Home (private)           & $0.0193$ \\
-	%                          & 10e arrondissement – Entrepôt  & States \& Municipalities & $0.0213$ \\
-	%                          & Scanblog                       & Office                   & $0.0221$ \\
+	\multirow{3}{*}{Paris}     & Boutique Orange                 & Electronics Store        & $0.0099$ \\
+	                           & Métro Goncourt [11]             & Subway                   & $0.0105$ \\
+	                           & Blue Acacia                     & Office                   & $0.0112$ \\
+	%                          & Regus                           & Office                   & $0.0154$ \\
+	%                          & Le Pareloup                     & French Restaurant        & $0.0177$ \\
+	%                          & 10e arrondissement – Entrepôt   & States \& Municipalities & $0.0178$ \\
 	\midrule
-	%                          & Parc de la Ciutadella          & Park                     & $0.5188$ \\
-	%                          & Apple Store                    & Electronics Store        & $0.5358$ \\
-	%                          & Parc Güell                     & Park                     & $0.5666$ \\
-	\multirow{4}{*}{Barcelona} & Plaça de Catalunya             & Plaza                    & $0.5835$ \\
-	                           & Sants Estació                  & Train Station            & $0.6298$ \\
-	                           & Sagrada Família                & Government Building      & $0.6309$ \\
-	                           & Camp Nou                       & Stadium                  & $0.6852$ \\
+	%                          & Parc de la Ciutadella           & Park                     & $0.5188$ \\
+	%                          & Apple Store                     & Electronics Store        & $0.5358$ \\
+	%                          & Parc Güell                      & Park                     & $0.5666$ \\
+	\multirow{4}{*}{Barcelona} & Plaça de Catalunya              & Plaza                    & $0.5835$ \\
+	                           & Sants Estació                   & Train Station            & $0.6298$ \\
+	                           & Sagrada Família                 & Government Building      & $0.6309$ \\
+	                           & Camp Nou                        & Stadium                  & $0.6852$ \\
 	\midrule
-	%                          & Arc de Triomphe                & Government Building      & $0.5831$ \\
-	%                          & Cathédrale Notre-Dame de Paris & Spiritual Center         & $0.5874$ \\
-	%                          & Gare SNCF Paris Montparnasse   & Train Station            & $0.6141$ \\
-	\multirow{4}{*}{Paris}     & Musée du Louvre                & Museum                   & $0.6444$ \\
-	                           & Gare SNCF Gare de Lyon         & Train Station            & $0.6460$ \\
-	                           & Tour Eiffel                    & Government Building      & $0.6618$ \\
-	                           & Gare SNCF Paris Nord           & Train Station            & $0.6707$ \\
+	%                          & Arc de Triomphe                 & Government Building      & $0.6234$ \\
+	%                          & Cathédrale Notre-Dame de Paris  & Spiritual Center         & $0.6295$ \\
+	%                          & Gare SNCF de Paris Montparnasse & Train Station            & $0.6337$ \\
+	%                          & Avenue des Champs-Élysées       & Street                   & $0.6450$ \\
+	\multirow{4}{*}{Paris}     & Gare SNCF : Gare de Lyon        & Train Station            & $0.6725$ \\
+	                           & Gare SNCF : Paris Nord          & Train Station            & $0.6911$ \\
+	                           & Musée du Louvre                 & Museum                   & $0.6924$ \\
+	                           & Tour Eiffel                     & Government Building      & $0.7167$ \\
 	\bottomrule
 \end{tabular}
 \caption{Venues in Paris and Barcelona with lowest and highest user
 entropy.\label{tab:entropy}}
-\end{table}
+% \end{table}
+\end{subfigure}
+
+\begin{subfigure}{0.45\textheight} \centering
+% \begin{figure}[hb]
+% 	\centering
+	\includegraphics[height=.4\textheight]{two_entropies.pdf}
+	\caption{Venues entropy in Paris with respect to user population and time of check-in
+	during the day. \label{fig:two_entropies}}
+\end{subfigure}
+\end{figure}
 
 Following the same idea, we also computed the entropy of locations with respect
 to time of check-ins. Indeed, it distinguishes between a railway station active
 all day long and a restaurant open only during lunch hours.  We also expect a
 link between the two entropies, as places that stay open longer have more
 chance to be visited by a various set of users. But this relation, shown on
-\autoref{fig:two_entropies}[REDRAW IT] is weak, as some places are visited all the time by
+\autoref{fig:two_entropies} \vpageref{fig:two_entropies} is weak, as some places are visited all the time by
 a small group of dedicated people.
 
-\begin{figure}[hbtp]
-\includegraphics[width=\textwidth]{two_entropies}
-\caption{Venues entropy with respect to user population and time of check-in
-during the day. \label{fig:two_entropies}}
-\end{figure}
 
 
 \subsection{Photos}
@@ -256,6 +264,8 @@ people arrive in a new city via a railway station or an airport, or when a
 sport team plays a match in a stadium) whereas other are more photographed,
 like museum or touristic sights.
 
+
 % Look at high and low focus places: not so interesting either. High value are
 % for popular places like park or monument whereas low (but not zero) are for
 % mundane place (like pizzeria) close to famous locations.
+\clearpage
