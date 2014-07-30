@@ -1,33 +1,37 @@
 \chapter{Related work}
 \label{chap:related}
 
-\emph{%
-\textbf{Find places} by mining spatial data (\textbf{photos},
-\textbf{check-ins}, \textbf{GPS trajectories}). Works outside academia is also
-done under the umbrella term \enquote{\textbf{smart city}}. Using a NLP
-approach, this can be seen as \textbf{topic modeling}. After finding places,
-we want to \textbf{learn metric} and use it to \textbf{match objects}.
-}
+Our work can be related to several lines of research within the field of urban
+computing. First, mining spatial data (photos, check-ins, and GPS
+trajectories) to find places and their semantics, which is a potential
+application of the broad term of \enquote{smart city} and has very concrete
+implications for major websites. This task also remains of topic modeling,
+with more constraints regarding space and time. After finding places, we want
+to learn metrics and use them to match objects.
 
-Our work belongs to the field of urban computing and be related to previous
-studies. The more similar are those mining spatial data to discover places and
-their semantics. These places are usually defined by their density, and thus
-one seeks to find high concentration of activity. For instance,
-\textcite{Deng2009} use DBSCAN to cluster Flickr photos and then look at tags
-co occurrence within clusters to identify their meaning.
+\paragraph{photos}
+
+Such places are usually defined by their density, and thus one seeks to find
+high concentration of people taking photos there. For instance,
+\textcite{Deng2009} use \textsc{DBSCAN} to cluster Flickr photos and then look
+at tags co occurrence within clusters to identify their meaning.
 \Textcite{Rattenbury2009} also employ various spatial methods to discover
 regions in San Francisco where one photo tag appears in burst. The shape of
 these hotspot regions can be refined by looking at the orientation of each
-photos \autocite{Hotspots12}. Another way of identify hotspots is second order
+photo \autocite{Hotspots12}. Another way of identify hotspots is second order
 Ripley's K-function \autocite{TagHotspot12}. Basically, it is a statistical
 test for the hypothesis that points are distributed according to a Poisson
-process and it tells how they \enquote{interact with each other, either
+process. It indicates how they \enquote{interact with each other, either
 \enquote{repulsively} [\dots] or \enquote{attractively}.} Furthermore, it is
-able to deal with varying density of pictures. Besides location finding,
-analyzing photos can also lead to more pleasble application, linking
-discovering agreable paths within cities \autocite{Quercia2014}.
+able to process regions with varying density of pictures. Besides location
+finding, analyzing photos can also lead to other applications, like
+recommending routes for tourists based on a graph of points of interest
+\autocite{CityItineraries10} and even ensure that these paths are as agreeable
+as possible \autocite{Quercia2014}.
 
-Moving from Flickr to \glspl{lbsn} allows to search for larger areas like
+\paragraph{check-ins}
+
+Moving from Flickr to \glspl{lbsn} allows searching for larger areas like
 neighborhoods. \Textcite{SocioMap12} collect general tweets and perform
 sentiment analysis as well as movement detection to draw a socio cognitive map
 of the Kinki region in Japan which helps user to make decision regarding where
@@ -36,19 +40,21 @@ check-ins to find so-called
 \emph{Livehoods}\footnote{\href{http://livehoods.org/}{\url{livehoods.org}}}.
 They build a $m$ spatial neighbors graph of venues with edges weighted by the
 cosine similarity between their user distribution and then perform spectral
-clustering. Faced with the same difficulty as ours to evaluate their results, they
-interview residents of Pittsburgh who validate the obtained subdivisions.
+clustering. Faced with the same difficulty as ours to evaluate their results,
+they interview residents of Pittsburgh who validate the obtained subdivisions.
 Another approach was proposed by
 \textcite{Hoodsquare13}\footnote{\href{http://pizza.cl.cam.ac.uk/hoodsquare/}%
-{\url{hoodsquare.org}}}, also based on Foursquare check-ins. Each
-venues is given its category, its peak time activity and a binary
-label: touristic or not. They are clustered in hotspots along each of
-these features by the OPTICS algorithm. The city is then divided into a regular grid
+{\url{hoodsquare.org}}}, also based on Foursquare check-ins. Each venue is
+described by its category, its peak time activity and a binary label:
+touristic or not. They are clustered in hotspots along each of these dimensions
+by the \textsc{OPTICS} algorithm. The city is then divided into a regular grid
 and cells are described by their hotspot density for each feature.
-\marginpar{Mention evaluation?} Finally, similar cells are clustered into
-neighborhoods. The main difference between this two last works and ours is that
-they do not explicitly mention distance between the neighborhoods they
-recover.
+\marginpar{Mention evaluation using tweets mention?} Finally, similar cells
+are clustered into neighborhoods. The main difference between this last two
+works and ours is that they do not explicitly mention distance between the
+neighborhoods they recover.
+
+\paragraph{GPS}
 
 In addition to static data like photos, another line of work takes advantage
 of the dynamic nature of human movement to mine trajectories. For instance,
@@ -56,26 +62,37 @@ of the dynamic nature of human movement to mine trajectories. For instance,
 patterns, which can then be used for event detection or traffic jam
 regulation. Similarly, \textcite{GPSStay10} extract stay points from car GPS
 data and assess their significance by how many visitors go there, how far they
-travelled to reach them and how long they stay. \Textcite{TrajROI11} describe
-efficient techiniques to perform closely related tasks. Once the semantics of
+traveled to reach them and how long they stay. \Textcite{TrajROI11} describe
+efficient techniques to perform closely related tasks. Once the semantics of
 locations is known, it is still challenging to find frequent patterns
 efficiently \autocite{SemanticTrajectories14}. Interested reader will find
 more information in a recent survey \autocite{TrajSurvey13}.
 
-Even though I did not find publications, some companies are also using data to
-better understand cities. For instance, Flickr has shown that by computing the
-$\alpha$-shape of a set of tagged photos (which is a generalisation of its
-convex hull \autocite{AlphaShape83}) they can recover boundaries of
-neighborhoods: \href{http://code.flickr.net/2008/10/30/the-shape-of-alpha/}%
-{\url{code.flickr.net/2008/10/30/the-shape-of-alpha}}. Likewise, Airbnb, a
+
+\paragraph{Industrial applications}
+
+The problem of identifying and characterizing neighborhoods has also been
+addressed by companies. For instance, research in \flickr{} has shown that by
+computing the $\alpha$-shape of a set of tagged photos (which is a
+generalisation of its convex hull \autocite{AlphaShape83}) one can recover
+boundaries of
+neighborhoods\footnote{\href{http://code.flickr.net/2008/10/30/the-shape-of-alpha/}%
+{\url{code.flickr.net/2008/10/30/the-shape-of-alpha}}}. Likewise, Airbnb, a
 social lodging renting website, has accumulated a lot of spatial data as well
 as textual reviews, which can be used to rank cities by hospitality
-\href{http://nerds.airbnb.com/most-hospitable-cities/}%
-{\url{nerds.airbnb.com/most-hospitable-cities}} as well as discovering
+\footnote{\href{http://nerds.airbnb.com/most-hospitable-cities/}%
+{\url{nerds.airbnb.com/most-hospitable-cities}}} as well as discovering
 neighborhoods
-\href{https://www.airbnb.com/locations}{\url{airbnb.com/locations}}.
+\footnote{\href{https://www.airbnb.com/locations}{\url{airbnb.com/locations}}}.
+However, the methods and details of these commercial systems are not publicly
+available. Finally, engineers at \fs{} used 1.5 billion check-ins to compare
+activities of different part of cities in
+US\footnote{\href{http://engineering.foursquare.com/2012/03/08/a-hackday-project-what-neighborhood-is-the}%
+{\url{engineering.foursquare.com/2012/03/08/a}}}.
 
-Finding such places can also be though as trying \enquote{to discover the
+\paragraph{Spatio-temporal topic modeling}
+
+Finding such places can also be thought as trying \enquote{to discover the
 hidden thematic structure in large archives of documents}, which is the
 definition of probabilistic topic modeling according to \textcite{topicModel}.
 Usually such documents are textual and can be combined in any way to form a
@@ -86,41 +103,61 @@ neighborhoods (or topic) to be localized. For instance,
 as well as a set of $N$ weighted Gaussian spatial regions. Then they apply
 their Latent Geographical Topic Analysis framework: each region has a topic
 distribution and each topic is a multinomial distribution over all possible
-photos tags. The parameters of the model are learned by a EM algorithm. By
-taking user into account, this approach provide recommendations
-\cite{GeoTopicKurashima2013}. The same can be done for localized tweets with a
-hierarchical model of topic \cite{nestedChinese13}. Recently, precision and
-running time of such methods were improved by
+photos tags. The parameters of the model are learned by an EM algorithm. By
+taking user into account, this approach provides recommendations
+\autocite{GeoTopicKurashima2013}. The same can be done for localized tweets
+with a hierarchical model of topics \autocite{nestedChinese13}. Recently,
+precision and running time of such methods were improved by
 \textcite{NonGaussianTopicKling14}. Finally, some topics are localized in time
 as well as in space (like \texttt{earthquake}) and this calls for more specific
 methods. \Textcite{TwitterBurst13} extract keywords from twitter in a moving
 sliding windows and keep those that are bursty. Using localized tweets, they
 estimate the topic spatial distribution but because of sparsity and noise, it
 requires a regularisation based on a co occurrences and identification of
-anchor keywords. An scalable online approximate solution is described in
+anchor keywords. A scalable online approximate solution is described in
 \autocite{GeoScope}.
 
-Smart cities in general is a new area which offers a lot of scientific
+\paragraph{Smart cities}
+
+Smart cities in general are a new area which offers a lot of scientific
 challenges \autocite[Chapter 4]{Eunoia13} as well as potential benefits in
 terms of sustainability and well being by making use of Information
 Technologies \autocite{SmartCities13}. How IBM was able to tap into Helsinki
-open data to provide a compelling narrative of citizens engagement and promote
+open data to provide a compelling narrative of citizens' engagement and promote
 the World Design Capital event in 2012 \autocite{HelsinkiSCC11}.
 
 % (or playable cities: \url{http://www.watershed.co.uk/playablecity/overview/},
 % \ie{} avoid focusing solely on monetization:
 % \url{http://radar.oreilly.com/2014/05/most-of-what-we-need-for-smart-cities-already-exists.html})
 
-\paragraph{Metric learning} I already mentioned many of them in the background
-section but here are a few more. Older algorithm to learn a Mahalanobis
-distance \autocite{Xing2002} and a simpler optimization formulation, which has
-therefore a lower complexity \autocite{Shen2011}. Two recent works are more
-sophisticated and use two-stage statistical approach \autocite{Wang2014} and
-sparse local metrics \autocite{SparseMetric14}.
+\paragraph{Metric learning}
 
-\paragraph{Matching and multiple domain} To tell the truth, I have not read
-much about it except this one \autocite{iwata2013unsupervised} about going to
-some common latent space. But the paper from Arto Klami was interesting,
-although it does not apply directly to this problem \autocite{Klami2013}.
-Because we have combined date from different sources, something about multiple
-domain learning can be appropriated \autocites{Crammer2008}{Ben-David2009}.
+Some pointers we already given in \autoref{sec:metric} but the topic is
+abundant. For instance, learning a Mahalanobis distance was introduced more
+than ten years ago \autocite{Xing2002}. Later, the optimization problem was
+given a simpler formulation, which has therefore a lower complexity
+\autocite{Shen2011}. Two recent works are more sophisticated and use two-stage
+statistical approach \autocite{Wang2014} and sparse local metrics
+\autocite{SparseMetric14}.
+
+\paragraph{Matching and multiple domains}
+
+\begin{comments}
+	So far, I haven't really found a connection between these papers and my work
+	so I will probably remove them.
+	\begin{itemize}
+		\item 2 domains with the same number of objects in each (but described
+			by different features) \autocite{Klami2013}.
+		\item many to many matching from arbitrary number of domain and
+			different number of object in each by using a common latent space
+			\autocite{iwata2013unsupervised}
+		\item Give unknown $K$ sources of observations and their pairwise
+			dissimilarity, find the optimal set of sources to learn a model
+			for each one \autocite{Crammer2008}.
+		\item Train a classifier in a source domain where there are a lot
+			labeled examples and see how well it would perform on close target
+			domain with less examples (and how to use those)
+			\autocite{Ben-David2009}.
+	\end{itemize}
+\end{comments}
+
