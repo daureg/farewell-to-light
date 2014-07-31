@@ -1,99 +1,247 @@
 \chapter{Choice of metrics}
 \label{chap:metric}
+\iffalse
+In this chapter, we describe the various metrics we considered for measuring
+similarity between venues (\autoref{sec:venues-metrics}) and neighborhoods
+(\autoref{sec:regions-metrics}). We also present what evaluation strategy we
+devised to choose between several candidates and the final results we obtained.
 
 \section{Venues metrics}
 \label{sec:venues-metrics}
 
-Before being able to compare set of venues, we need a distance function between
-two venues, where venues are points in the feature space described in
-\autoref{tab:venuefeatures} \vpageref{tab:venuefeatures}.
+As exposed in Objective \ref{objective:venue-distance-learning}, we want a
+distance function between two venues, where venues are points in the feature
+space described in \autoref{tab:venuefeatures} \vpageref{tab:venuefeatures}.
 
-We evaluate the following metrics:
+We evaluate a number of different approaches:
 \begin{itemize}
-	\item Euclidean norm
-	\item Information Theoretic Metric Learning
-	\item Gradient Boosted Large Margin Nearest Neighbor
-	\item Euclidean norm in a 2D space reduced by t-SNE
+	\item
+		information theoretic metric learning (\itml);
+	\item
+		gradient boosted large margin nearest neighbor (\lmnn);
+	\item
+		embedding to a 2-$d$ plane via $t$-distributed stochastic neighbor
+		embedding (\tsne) dimensionality-reduction method, and computing the
+		Euclidean distance on the projected space; 
+	\item 
+		Euclidean distance in the original space (\eucl).
 \end{itemize}		
-As well as two baselines:
-\begin{itemize}
-	\item $d_A$ where $A$ is a diagonal matrix with random coefficients in
-		the range $[2, 20]$.
-	\item Random ordering of venues. It is not a metric but because we
-		only evaluate ranking instead of distances themselves that is
-		enough.
-\end{itemize}		
-On two tasks:
+
+We described the theory of the first two in \autoref{sub:metric-learning} but
+let us provide practical details on how the learning was done in our specific
+setting. Because these methods are semi supervised, we need some labeling of
+venues, indicating their similarity. But there is no such labeling easily
+available. Therefore, we rely on Foursquare top-level category as a proxy,
+which defines 9 classes. This is problematic for two reasons. First, these
+categories are so broad that two \emph{Food} venues may not have much in
+common. Second, the labeling can be noisy: for instance, imagine a museum that
+most people visit mostly for its cafeteria, and thus it is closer to
+restaurants than other museums.  However, considering the large volume of
+venues over many cities and with different types, we expect that the signal is
+stronger than the noise, and that the learning algorithms yield a robust
+estimation. 
+
+Note also that generally, \tsne{} is not considered as a metric learning method
+per se. Yet we already argued that it can learn to uncover relationship between
+points based on their position in the high-dimensional space. Furthermore, we
+were struck by experimental result showed in \autoref{fig:tsne}. When we hide
+category information, venues of the same category are still projected in the
+same part of the space. Thus, we expect that the proximity of venues in this
+plane is a good measure of their overall similarity.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=1\linewidth]{tsne}
+	\caption[2D projection of European venues by t-SNE]{Using code from
+		\cite{BarnesHut13}, we compute the 2D embedding of 23086 venues from 10 cities in
+		Europe. By taking into account all the 31 features but the category of each
+		venue, the method is able to roughly group venues of the same kind: Education
+		on the right, Nightlife on the bottom left, Professional on the bottom right
+	or Recreation on the top. \label{fig:tsne}}
+\end{figure}
+
+% As well as two baselines:
+% \begin{itemize}
+% 	\item $d_A$ where $A$ is a diagonal matrix with random coefficients in
+% 		the range $[2, 20]$.
+% 	\item Random ordering of venues. It is not a metric but because we
+% 		only evaluate ranking instead of distances themselves that is
+% 		enough.
+% \end{itemize}		
+As mentioned, there is no similarity ground truth so we evaluate how well these
+metrics perform on the following tasks:
 \begin{enumerate}
-	\item finding venue of the same brand in another city.
-	\item finding venue of the same category in another city.
+	\item finding venues of the same brand in another city.
+	\item finding venues of the same category in another city.
 \end{enumerate}		
 
-Evaluation is not straightforward as there are no easily available ground truth
-indicating whether a given venue is close to another one or not. Thus we had to
-rely on indirect information.
+\subsection{Brand finding}
+\label{sub:brand_finding}
 
-For the first task, we start by looking at common substrings in the name of venues
-in Paris and Barcelona, keeping those that were company name and not mere
-generic terms like \emph{park} or \emph{hotel}. We selected \emph{Starbucks} and
-\emph{McDonald's} as they are ubiquitous and unambiguous. Then for each of
-them in one city, we ranked all venues from the other city by how close they
-are from this query and select the first one that was of the same brand. The
-closest this first rank is the one, the better the metric. The results are
-shown in \autoref{fig:brand}.
+For this first task, we start by looking at common substrings in the name of
+venues, keeping those that were company name and not mere generic terms like
+\emph{park} or \emph{hotel}. We selected \emph{Starbucks} and \emph{McDonald's}
+as they are ubiquitous and unambiguous.
 
-\begin{figure}[h]
-        \centering
-        \includegraphics[width=\linewidth]{starbuck_barca_to_paris}
-        \caption{How far is the first Starbucks in Paris when selecting a
-        Starbucks in Barcelona}
-        \label{fig:brand}
-\end{figure}
+
+For each venue \venue\ of one of these two brands in one city $\city$, we rank
+all venues in another city $\city'$ based on their distance to~\venue, and
+consider the highest ranked venue of the same brand.  The smaller the rank of
+this first match, the better the distance measure under consideration.  The
+results for McDonald's are shown in \autoref{tab:metric_brand_first}.  \lmnn\ is
+the best suited measure, even though \eucl, without any training, is often close,
+contrary to \tsne, which is clearly not up to the task. 
+
+\begin{table}[t]
+	\small
+	\centering
+	% \setlength{\tabcolsep}{2pt}
+	\begin{tabular}{llrrrr}
+		\toprule
+		Source & Target & \multicolumn{1}{c}{\eucl} &
+		\multicolumn{1}{c}{\itml} &  \multicolumn{1}{c}{\lmnn} &
+		\multicolumn{1}{c}{\tsne} \\
+		\midrule
+		Berlin        & San Francisco & 16.9        & 4.3         & \cbest{3.2}  & 27.9 \\
+		Chicago       & Rome          & 6.8         & 7.6         & \cbest{6.5}  & 10.0 \\
+		Helsinki      & London        & \cbest{1.0} & 1.2         & 1.2          & 1.6 \\
+		Helsinki      & Prague        & 3.0         & 4.9         & \cbest{1.8}  & 11.2 \\
+		London        & Helsinki      & 10.0          & 13.5        & \cbest{7.6}  & 11.1 \\
+		Moscow        & Paris         & \cbest{1.1} & 1.7         & 1.5          & 1.6 \\
+		New York      & St. Louis     & 15.9        & 16.4        & \cbest{15.0} & 25.2 \\
+		Paris         & Moscow        & 5.6         & 12.6        & \cbest{3.7}  & 4.3 \\
+		Prague        & Helsinki      & 6.3         & 8.2         & \cbest{5.9}  & 16.0 \\
+		Rome          & Chicago       & \cbest{1.5} & 17.3        & 1.8          & 33.9 \\
+		San Francisco & Berlin        & 2.8         & 3.2         & \cbest{2.3}  & 8.9 \\
+		Seattle       & Washington    & 4.2         & 2.9         & \cbest{2.2}  & 21.0 \\
+		St. Louis     & New York      & 5.0           & \cbest{2.0}   & 5.0            & 33.8 \\
+		Washington    & Seattle       & 18.3        & \cbest{6.0} & 12.9         & 36.0 \\
+		\midrule
+		\multicolumn{2}{c}{Winner} & 3 & 2 & 9 & 0 \\
+		\bottomrule
+	\end{tabular}
+	\caption[Metric score for brand task]{Average percentage of 
+	venues in the target city returned before the first McDonald's.
+	\label{tab:metric_brand_first}}
+\end{table}
+
+Another way to evaluate these measures is to look at the first 540 venues
+retrieved, and given $k$, count how many of them before rank $k$ are of this
+brand (precision) and what proportion of all branded venues are recovered
+(recall). The average $F_1$-score is then given in
+\autoref{tab:metric_brand_f1} for $k \in \{15, 50, 200\}$ and \lmnn\ again
+outperforms other measures.
+
+\begin{table}[t]
+	\footnotesize
+	\centering
+	\setlength{\tabcolsep}{3pt}
+	\begin{tabular}{llccc|ccc|ccc|ccc}
+		\toprule
+		Source & Target & \multicolumn{3}{c}{\eucl} & \multicolumn{3}{c}{\itml} & \multicolumn{3}{c}{\lmnn} & \multicolumn{3}{c}{\tsne} \\
+		\midrule
+Berlin & San Francisco & \notbest{00} & \notbest{00} & 08 & \notbest{00} & \notbest{00} & 10 & \notbest{00} & \cbest{19} & \notbest{17} & \notbest{00} & \notbest{04} & 07 \\
+Chicago & Rome & \notbest{22} & 23 & \notbest{19} & \notbest{16} & \notbest{16} & 19 & \notbest{16} & \cbest{24} & \notbest{22} & \notbest{05} & \notbest{11} & 13 \\
+Helsinki & London & \cbest{36} & \notbest{20} & \notbest{16} & \notbest{18} & 25 & \notbest{14} & 27 & \notbest{25} & \notbest{19} & 18 & \notbest{15} & \notbest{14} \\
+London & Helsinki & \notbest{28} & 29 & \notbest{25} & \notbest{24} & \notbest{20} & 26 & 34 & \notbest{29} & \notbest{29} & \cbest{38} & \notbest{30} & \notbest{22} \\
+Moscow & Paris & \notbest{15} & \notbest{32} & \cbest{39} & \notbest{08} & \notbest{17} & 26 & \notbest{08} & \notbest{19} & 30 & \notbest{08} & \notbest{15} & 25 \\
+New York & St. Louis & \notbest{06} & \notbest{08} & 09 & \cbest{12} & \notbest{12} & \notbest{09} & \notbest{10} & 11 & \notbest{09} & \notbest{04} & 06 & \notbest{05} \\
+Paris & Moscow & \notbest{03} & \notbest{12} & 23 & \notbest{03} & \notbest{10} & 15 & \notbest{04} & \notbest{13} & \cbest{25} & \notbest{03} & \notbest{10} & 20 \\
+Prague & Helsinki & \notbest{22} & \cbest{36} & \notbest{25} & \notbest{11} & 32 & \notbest{31} & \notbest{33} & \cbest{36} & \notbest{28} & \notbest{00} & \notbest{12} & 18 \\
+Rome & Chicago & \notbest{05} & \notbest{13} & 25 & \notbest{00} & \notbest{06} & \cbest{26} & \notbest{05} & \notbest{06} & 17 & \notbest{05} & \notbest{06} & 22 \\
+San Francisco & Berlin & \notbest{12} & \cbest{32} & \notbest{20} & \notbest{06} & \notbest{18} & 19 & \notbest{23} & 30 & \notbest{21} & \notbest{06} & \notbest{11} & 13 \\
+Seattle & Washington & \notbest{09} & \notbest{05} & 12 & \notbest{09} & \notbest{14} & 18 & \cbest{35} & \notbest{27} & \notbest{30} & \notbest{09} & 18 & \notbest{09} \\
+St. Louis & New York & \notbest{00} & \notbest{05} & 12 & \notbest{06} & \notbest{10} & \cbest{16} & \notbest{06} & \notbest{05} & 12 & \notbest{00} & 05 & \notbest{05} \\
+Washington & Seattle & \notbest{04} & \notbest{03} & 07 & \notbest{04} & \notbest{02} & 08 & \cbest{12} & \notbest{11} & \notbest{10} & \notbest{04} & \notbest{06} & 07 \\
+		\midrule
+		\multicolumn{2}{c}{Winner} & \multicolumn{3}{c}{4} & \multicolumn{3}{c}{3} & \multicolumn{3}{c}{6} & \multicolumn{3}{c}{1}\\
+		\bottomrule
+	\end{tabular}
+	\caption[Metric score for brand task]{1000 times the $F_1$ score of
+		McDonald's at level 15, 50 and 200.\label{tab:metric_brand_f1}}
+\end{table}
+
+\subsection{Category ordering}
+\label{sub:category_ordering}
+
 
 The second task is more general. Each venue is assigned a hierarchical category
-by Foursquare\footnote{The tree can be seen on their website:
+by Foursquare\footnote{The complete tree can be seen on their website:
 \href{https://developer.foursquare.com/categorytree}{%
-\url{developer.foursquare.com/categorytree}}.}. We restrict ourselves
-to two levels, meaning that one venue can be a \emph{French Restaurant
-$\rightarrow$ Food} and another one \emph{Airport $\rightarrow$ Travel
-\& Transport}. We repeat the same sorting procedure but this time, we expect
-venues of the same sub category to be first, followed by other venues of the
-same top category and then the rest. To measure how well metrics achieved such
+\url{developer.foursquare.com/categorytree}}.}. We restrict ourselves to two
+levels, meaning that one venue can be a \emph{French Restaurant $\rightarrow$
+Food} and another one an \emph{Airport $\rightarrow$ Travel \& Transport}. We
+repeat the same sorting procedure but this time, we expect venues of the
+same sub category to be first, followed by other venues of the same top
+category and then the rest. To measure how well metrics achieved such
 ranking, we use \methodname{Normalised Discounted Cumulative Gain}
-\autocite{IREvaluation07}. The gain is a measure of relevance. We arbitrarily
-choose $rel_i=1$ when the sub category of two venues matches, $rel_i=0.4$ when
-only top category matches and $rel_i=0$ if they were not related at all. We
-accumulate them (or sum them) but discount results that came too late with \[
-\mathrm{DCG} = \sum_{i=1} \frac{ 2^{rel_{i}} - 1 }{ \log_{2}(i+1)} \]
-Finally we normalized by the result of a perfect ordering to have scores
-between $0$ and $1$, which allow direct comparison. The score of each metric
-for each venue is showed in \autoref{fig:category}~\vpageref{fig:category}.
+\autocite{IREvaluation07}. The gain is a measure of relevance. We
+arbitrarily choose $rel_i=1$ when the sub category of two venues matches,
+$rel_i=0.4$ when only top category matches and $rel_i=0$ if they were not
+related at all. We accumulate them (or sum them) but discount results that
+came too late with \[ \mathrm{DCG} = \sum_{i=1} \frac{ 2^{rel_{i}} - 1 }{
+\log_{2}(i+1)} \] Finally we normalized by the result of a perfect ordering
+to have scores between $0$ and $1$, which allow direct comparison.  The
+results, shown in \autoref{tab:metric_type}, confirm that \lmnn\ and \eucl\
+are the best measures regarding this task.  It is noteworthy that \eucl\
+performs so well without any training.
 
-\begin{figure}[h]
-    \begin{subfigure}[b]{\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{ir_paris_barca_sorted}
-        \caption{The DCG score of each venues, sorted for all metrics.}
-    \end{subfigure}
+\begin{table}[t]
+	\small
+	\centering
+	\setlength{\tabcolsep}{4pt}
+	\begin{tabular}{llccccc}
+		\toprule
+		Source        & Target    & \eucl{}      & \itml{} & \lmnn{}      & \tsne{} & Random \\
+		\midrule
+		Prague        & Helsinki  & .603         & .581    & \cbest{.608} & .591    & .538 \\
+		Paris         & Moscow    & \cbest{.284} & .254    & .233         & .194    & .134 \\
+		Helsinki      & London    & .254         & .228    & \cbest{.258} & .231    & .156 \\
+		Washington    & Seattle   & \cbest{.362} & .325    & .355         & .337    & .226 \\
+		New York      & St. Louis & \cbest{.501} & .468    & .498         & .476    & .375 \\
+		San Francisco & Berlin    & \cbest{.376} & .341    & .374         & .351    & .246 \\
+		Rome          & Chicago   & .222         & .187    & \cbest{.224} & .219    & .140 \\
+		Paris         & Barcelona & .355         & .320    & \cbest{.361} & .317    & .234 \\
+\midrule
+		\multicolumn{2}{c}{Winner} & \multicolumn{1}{c}{4} &
+                \multicolumn{1}{c}{0} & \multicolumn{1}{c}{4} &
+                \multicolumn{1}{c}{0} &  \multicolumn{1}{c}{0} \\
+		\bottomrule
+	\end{tabular}
+	\caption[Metric scores for category task]{Average \ndcg{} of each measure
+	for a sample of pairs of cities. The last column shows the score obtained
+	by returning venues in a random order, which can be considered as an empirical
+	lower bound on the result.\label{tab:metric_type}}
+\end{table}
 
-    \begin{subfigure}[b]{\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{ir_paris_barca_raw}
-        \caption{The DCG score of each venues, sorted by one metric.}
-    \end{subfigure}
-    \caption{Matching venues category.\label{fig:category}}
-\end{figure}
 
+\fi
 \section{Neighborhoods metrics}
 \label{sec:regions-metrics}
 
-As mentioned in the background, the first metric we consider is EMD. More
-precisely, three variants of it: Euclidean ground metric, LMNN-learned ground
-metric and 80\%-EMD. In the last case, we reformulate the linear problem so
-that only 80\% of the probability mass has to be moved from one distribution
-to the other and we solve it with MATLAB.  Specifically, if we have
-distribution $P$ and $Q$ with weights $w_P$ and $w_Q$ summing to one and a ground metric $d$
-between them, we find the flow $f$ solving:
+
+We proceed with addressing
+Objective~\ref{objective:neighborhood-distance-learning}, that is, selecting a
+distance measure between sets of feature vectors, in order to evaluate
+similarity between city neighborhoods.  We consider the following options.
+
+\subsection{Candidates}
+
+\paragraph{Earth mover's distance}
+To compute \emd\ we assume an underlying metric to measure
+distances between vectors.
+We experiment with three variants of \emd:
+($i$) using as the underlying metric the Euclidean distance (\emde); 
+($ii$) using as the underlying metric the distance learned with \lmnn\ (\emdl); 
+($iii$) using as the underlying metric the Euclidean distance and
+requiring only a certain fraction of the total mass to be moved
+(\emdp).
+The rationale of \emdp\ is to provide more flexibility by allowing for two
+neighborhoods to have a fraction of venues that are completely different.  For
+the fraction of the mass required to move, we used 80\% in our experiments.
+Specifically, if we have distribution $P$ and $Q$ with weights $w_P$ and $w_Q$
+summing to one and a ground metric $d$ between them, we find the flow $f$
+solving:
 \begin{align*}
 	&\quad \underset{f}{\min} \sum_{i,j} d_{i,j} f_{i,j} \\
 	\text{subject to} &\quad \sum_j f_{i,j} \leq w_{P,i} \\
@@ -101,31 +249,48 @@ between them, we find the flow $f$ solving:
 	&\quad \sum_{i,j} f_{i,j} \geq 0.8 
 \end{align*}
 
-Then we used JSD. As it is based on Kullback--Leibler divergence, it can be
-computed for multivariate distribution. But because our samples are small --
-typically a neighborhood contains around 100 venues, and never more than 700 --
-it was not possible to accurately estimate the probability density function.
-There are some workarounds \autocite{EstimateKL07} but instead, we estimate the
-density of each feature $p_i$ and $q_i$ independently\footnote{With a simple
-10-bins histogram.}, compute their JSD $J_{P,Q}^i = JSD(p_i, q_i)$ and take a
-weighted combination of the results $d_{JSD}(P, Q) = \sum_i\theta_i J_{P,Q}^i$.
-We choose $\theta$ such that it gives small distance between related ground
-regions and a large one between the others. Formally, we have 102 regions with
-at least 9 venues inside. For each pair, we put $J_{P,Q}$ in one row a matrix
-$D$ and we assign a $\pm 1$ label, depending of whether regions $P$ and $Q$ are
-in the same class or not. We want to minimize $\sum_{y_{P,Q} = 1} d_{JSD}(P, Q)
-- \sum_{y_{P,Q} = -1} d_{JSD}(P, Q)$ so we multiply each row of $D$ by
-$\frac{y_{P,Q}}{|\{y,\, y = y_{P,Q}\}|}$ and solve $\min D\theta$ under the
-constraints that $\theta$ is a positive unit norm vector whose coordinates are
-lower bounded by 0.03 (to avoid the optimal zero solution)\footnote{I also
-tried RankSVM but did not really use the result}. 
+\paragraph{Jensen--Shannon divergence}
+\jsd\ can be computed for multivariate distributions, 
+however, in our setting we have a relatively small number of samples
+(a typical neighborhood contains around~100 venues, and never more
+than~700) and a large number of dimensions ($30$ features, see 
+\autoref{sec:feature}), 
+so we cannot estimate an accurate joint probability distribution.
+There are some workarounds \autocite{EstimateKL07} but instead,
+we opt for computing the \jsd\ independently for each feature, whose density
+was estimated with a simple 10-bins histogram. 
+In particular, we compute
+$\mathrm{\jsd}_1(F^{(i)},G^{(i)})$,  
+where  
+$\mathrm{\jsd}_1$ is univariate \jsd, while 
+$F^{(i)}$ and $G^{(i)}$ are the distributions of the $i$\textsuperscript{th} feature for
+the vector sets $F$ and $G$, respectively.
+We then aggregate over all features by
+\begin{equation}
+\label{equation:jsd}
+\mathrm{\jsd}(F,G) = 
+\sum_{i} \theta_i \cdot\mathrm{\jsd}_1(F^{(i)},G^{(i)}).
+\end{equation}
+We learn the values of the coefficients $\theta_i$ using our collected
+ground-truth data (described in \autoref{sec:user-study}). We consider all
+pairs of neighborhoods obtained and label them as similar if they refer to the
+same district in Paris (showed in \autoref{tab:district}
+\pageref{tab:district}). We then compute $\theta_i$ to maximize the sum of the
+\jsd\ values over similar pairs minus the sum of \jsd\ values over non similar
+pairs, subject to the normalization constraint $\sum_i |\theta_i| =1$.
 
-Finally we consider a simple baseline that draws on the same general ideas.
-Given a query area, we cluster the venues inside using Euclidean distance in
-the features space. We do the same in the other region and the distance is the
-minimal cost of the assignment problem between these two sets of three
-centroids.
+\paragraph{Minimum cost matching distance}
+A very simple way to compute a distance between two sets of feature vectors is
+to compute the \emph{centroid} of each set and then compute the distance
+between the two centroids.  We extend this simple definition with $k$
+centroids.  Given a set of feature vectors, we perform $k$-means clustering,
+and represent the set with $k$ centroids.  Then, given two sets of feature
+vectors, and their corresponding $k$-set centroids, we compute the distance of
+a min-cost matching, using the Hungarian algorithm.  We experiment with
+different values of~$k$ and here we report the best results, obtained
+for~$k=3$.
 
+\bigskip
 
 All these methods can accept weighted input. We consider using number of unique
 visitors and thus paying more attention to popular venues but it did not
@@ -133,30 +298,65 @@ perform better.
 
 \subsection{Evaluation}
 
-Then we need to decide which of these metric is for apt to recover the ground
-truth. Let say we have a region query (from one city) and a target city with
-$n$ venues:  this define a query \textsf{(city, district)} associated with
-$\{g_1, \ldots, g_n\}$ known relevant results (each $g_i$ is a ground truth
-polygon defined by a human judge, with a least 20 venues inside). Furthermore,
-we have infinite computational power. There are at most $\sum_i \binom{n}{i}$
-polygons defined by these $n$ venues. We remove those that do not form
-neighborhoods (because they are made of several parts or they have holes
-inside) and compute the distance to the query for the remaining ones. By
-selecting the $m$ non-overlapping of them with the smallest distance, we get a
-list of results $\{r_1, \ldots, r_m\}$ that the most similar neighborhood to
-the query according to the metric at hand. We can then asses how well this
-match the ground truth.
+We now describe our evaluation process for selecting the best function for
+measuring distance over feature vector sets. 
+Consider a neighborhood \region\ in a source city \city, and a target city
+$\city'$.
+From our user study, we know $k$ ground-truth neighborhoods
+$\region_1,\ldots,\region_k$ in $\city'$, which are the most 
+similar to~\region.
 
-To alleviate the irritating lack of infinite power, we restrict our polygons to
-be circle of radius $\{200, 275, 350, 425, 500\}$ meters, whose centers are set
-on a regular grid over the city and we keep the $m = 5$ disjoint circles with
-the smallest distance.
+Given a distance measure $\rdist$ we want to evaluate, 
+we can then compute the distance
+$\rdist(\vfvs(\region),\vfvs(\region'))$ for each possible
+neighborhood $\region'$ of $\city'$ and rank all those neighborhoods
+in order of increasing distance. 
+We can evaluate the quality of this ranking by checking the position
+that the ground-truth neighborhoods $\region_1,\ldots,\region_k$
+appear in the ranking---if appearing at all. 
+The higher we find a match, the better the ranking, and thus, the
+better the distance measure~$\rdist$.
 
-The relevance of each result list is computed as 
-\[ rel_i = \max_{g_j} rel(r_i, g_j) \]
-where
-\[ rel(r_i, g_j) = \frac{| V_r \cap V_g|}{|V_r \cup V_g|} \]
-is the Jaccard similarity between set of venues.
+Since we do not have any a-priori neighborhood boundaries (and in fact
+we do not want to use any, since a neighborhood may be defined in a
+dynamic way, different than what administrative boundaries would give),
+any subset of venues that corresponds to a closed and connected region
+is a candidate neighborhood. 
+As there are exponentially many such subsets, we restrict our
+search to regions of a certain shape. 
+We consider neighborhoods $\region'$ to be \emph{circles}
+$(\venue',\radius)$, centered at a venue $\venue'$ and with radius~\radius.
+We take as $\venue'$ regularly spaced venues in $\city'$ and $\radius\in\{200, 275,
+350, 425, 500\}$ meters, with the additional constraint that the
+resulting circle should contain at least 20 venues. 
+After ranking all possible such circular neighborhoods $\region'$ in
+order of increasing distance $\rdist(\vfvs(\region),\vfvs(\region'))$
+we remove overlapping neighborhoods.
+
+To evaluate the resulting ranking, we need a 
+\emph{relevance score} for each neighborhood $\region'$ in the ranking
+with respect to the ground-truth neighborhoods
+$\region_1,\ldots,\region_k$. 
+Note that $\region'$ may not be identical to any of the ground-truth
+neighbor\-hoods (for one, $\region'$ is circular, while the ground-truth
+neighbor\-hoods can have arbitrary shapes) but there may have
+significant overlap with some of them. 
+To account for such overlap, we define the relevance of each
+$\region'$ to be
+\[
+\rel(\region' \mid \region_1,\ldots,\region_k) =
+\max_{i=1}^{k}
+\frac{|\venues(\region')\cap\venues(\region_i)|} {|\venues(\region')\cup\venues(\region_i)|},
+\]
+that is, the best \emph{overlap} of $\region'$ with a 
+ground-truth neighborhood $\region_1,\ldots,\region_k$, 
+where the overlap is measured using the \emph{Jaccard coefficient} 
+on the sets of venues of two neighborhoods.
+
+Having assigned a relevance score for each neighborhood $\region'$ in
+the ranking, we evaluate the quality of the ranking using 
+\emph{discounted cumulative gain} (\dcg).
+
 
 Like before, we used Discounted Cumulative Gain as a measure of quality. This
 time though, there is no normalization, as the ideal score would be the same
@@ -173,27 +373,60 @@ and we compute the average score \[
 \mathrm{ADCG_{m}} = \frac{1}{Q}\sum_{q=1}^Q \sum_{i=1}^m \frac{ 2^{rel_{i}} - 1 }{\log_{2}(i+1)}
 \]
 
-The results are shown in \autoref{tab:cmp_metric}~\vpageref{tab:cmp_metric} and
-according to them, we choose plain EMD, while noting that JSD performs rather
-poorly.
+Starting with each of the 6 cities as a source city and for each of
+the 8 query neighborhoods,  
+we compute the most similar neighborhoods in all other cities, 
+using each of the distance measures that we want to evaluate.  
+The results are shown in \autoref{tab:distance-comparisons}. 
+Each row corresponds to a source city. 
+\dcg\ scores are averaged over all target cities and all 8 query
+neighborhoods.
 
-\begin{table}[ht]
-    \centering
-\begin{tabular}{lccccc}
-\toprule
-              & Cluster  & EMD      & EMD-LMNN & JSD      & 80\%-EMD\\% & Average \\
-\midrule
-Barcelona     & 0.083064 & 0.078173 & \cbest{0.084204} & 0.042414 & 0.078244\\% & \textit{0.073220} \\
-New York      & 0.059200 & \cbest{0.059385} & 0.059023 & 0.057180 & 0.053495\\% & \textit{0.057656} \\
-Paris         & 0.061438 & \cbest{0.091178} & 0.078614 & 0.045136 & 0.061940\\% & \textit{0.067661} \\
-Rome          & 0.024313 & \cbest{0.042352} & 0.039936 & 0.021156 & 0.029746\\% & \textit{0.031501} \\
-San Francisco & \cbest{0.045977} & 0.045031 & 0.040164 & 0.033829 & 0.044497\\% & \textit{0.041899} \\
-Washington    & \cbest{0.043694} & 0.034762 & 0.038164 & 0.033211 & 0.038829\\% & \textit{0.037732} \\
-Average       & \textit{0.052947} & \textit{\cbest{0.058480}} & \textit{0.056684} & \textit{0.038821} & \textit{0.051125}\\% & \textit{0.051612} \\
-\bottomrule
-\end{tabular}
-\caption[Average score of each metric]{Average score of each metric when query
-        are issued from the city on the left. The best metric in each city is
-        \cbest{highlighted} and the last row is the average score over all
-        cities.\label{tab:cmp_metric}}
+% The results are shown in \autoref{tab:cmp_metric}~\vpageref{tab:cmp_metric} and
+% according to them, we choose plain EMD, while noting that JSD performs rather
+% poorly.
+
+\begin{table}[t]
+	% 	\small
+	% \setlength{\tabcolsep}{4pt}
+	\centering
+	\begin{tabular}{lccccc}
+		\toprule
+		              & Min cost       & \emd-                  & \emd-          & \jsd           & \emd- \\
+		              & matching       & \textsc{Eucl}          & LMNN           &                & \textsc{Partial} \\
+		\midrule
+		Barcelona     & 0.083          & 0.078                  & \cbest{0.084}  & 0.042          & 0.078 \\
+		New York      & 0.059          & \cbest{0.059}          & 0.059          & 0.057          & 0.053\\
+		Paris         & 0.061          & \cbest{0.091}          & 0.078          & 0.045          & 0.061\\
+		Rome          & 0.024          & \cbest{0.042}          & 0.039          & 0.021          & 0.029\\
+		San Francisco & \cbest{0.045}  & 0.045                  & 0.040          & 0.033          & 0.044\\
+		Washington    & \cbest{0.043}  & 0.034                  & 0.038          & 0.033          & 0.038\\
+		\midrule
+		Average       & \textit{0.052} & \textit{\cbest{0.058}} & \textit{0.056} & \textit{0.038} & \textit{0.051}\\
+		\bottomrule
+	\end{tabular}
+	\caption[Average score of each metric]{Average score of each metric when query
+		are issued from the city on the left. The best metric in each city is
+		\cbest{highlighted} and the last row is the average score over all
+	cities.\label{tab:distance-comparisons}}
 \end{table}
+
+We see that \emde\ is the best-performing measure, 
+while \jsd\ performs rather poorly.
+\emdl\ performs only slightly worse than \emde.
+One should contrast this with the results of the previous section, 
+where \lmnn\ slightly outperformed \eucl\ for the task of finding the most
+similar venue. 
+Thus our results indicate that the nature of the similarity-search task
+is important for the choice of the distance measure.
+
+Another observation is that the absolute \dcg\ scores of all measures
+are relatively low.
+One reason for the low scores is that many neighborhoods
+in the ground truth have non-circular shapes (e.g., a long street of
+luxurious shops). 
+%% and since we are evaluating only circular neighborhoods, 
+Thus, even if our measures discover an area very close to the ground
+truth, 
+due to its circular shape it can have low overlap with the ground
+truth, and low relevance score.
