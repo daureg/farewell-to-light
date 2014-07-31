@@ -1,5 +1,47 @@
-\subsection{Overview}
-\subsection{Contributions}
+\section{Overview}
+\label{sec:overview}
+
+Our approach is briefly described as follows.  By collecting rich geo-enabled
+data from social-media platforms, and by associating this data to the different
+venues of the city, we can represent each venue by a feature vector, which
+accurately describes the characteristics and the overall activity of the venue.
+We then ask to devise similarity measures between venues, as well as between
+neighborhoods, i.e., sets of venues that are geographically close to each
+other. 
+
+We address these two problems from a {\em metric-learning} point of view
+\cite{MetricSurvey13}.  We experiment with many different distance measures
+and with algorithms that aim to learn their parameters. %%  of the underlying
+metric.  To learn the parameters of the distance measures and select the
+optimal settings we use ground-truth, either obtained automatically with simple
+rules or gathered from carefully-designed user studies. 
+
+Our results indicate that the problem of finding a venue similar to a single
+query venue is a challenging problem, as the accuracy of the various tasks we
+design is relatively low.  This is probably due to the fact that data at the
+venue level are noisy.  However, when aggregating many venues together and
+asking to find similar neighborhoods, the results become of much higher
+quality.  This is indicated in our case study in
+Section~\ref{section:casestudy}.
+
+The  measure that is shown to perform best for the task of finding similar
+neighborhoods is the {\em earth-mover's distance} (\emd) \cite{EMD98}.  \emd\
+is known to be a robust measure---however, it is also expensive to compute.
+Motivated by this observation, we address the issue of computational
+efficiency.  In particular,  given a neighborhood \region\ in one city, we ask
+how to find the most similar neighborhood to \region\ in another city (or a set
+of other cities) under \emd, and without performing brute force computation.
+We design a pruning strategy that yields significant speed improvement with
+minimal loss in accuracy. 
+
+Our study and our algorithms are based on extensive experimental evaluation, on
+data collected from many cities in Europe and in the US.  Our datasets consist
+of activity logs gathered from \fs\ and \flickr, a location-based social
+network and a photo-sharing platform, respectively.  Yet our study can be
+enriched by many other types of data, such as transportation, weather, air
+quality, energy consumption, etc.  Such an extension is left for future work.
+
+\section{Contributions}
 
 \begin{itemize}
 	\item Collect and compute relevant features describing venues.
