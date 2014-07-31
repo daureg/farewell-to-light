@@ -67,8 +67,33 @@
 
 % \PassOptionsToPackage{square,numbers}{natbib}
 %  \usepackage{natbib}
-\PassOptionsToPackage{style=ieee,sorting=nyt,backend=biber,defernumbers=true}{biblatex}
+\usepackage{setspace}
+\PassOptionsToPackage{style=alphabetic,maxnames=2,minnames=2,firstinits=true,sorting=nyt,backend=biber,defernumbers=true}{biblatex}
 \usepackage{biblatex}
+\AtEveryBibitem{
+   \clearfield{month}
+   \clearfield{series}
+   \clearfield{venue}
+   \clearname{editor}
+   \clearlist{publisher}
+   \clearlist{location} % alias to field 'address'
+   % \clearfield{doi}
+   \clearfield{url}
+   \clearfield{arxivId}
+   \clearfield{eprint}
+   \clearfield{series}
+   \clearfield{venue}
+   \clearfield{issn}
+   \clearfield{isbn}
+   \clearfield{urldate}
+   \clearfield{url}
+   \clearfield{eventdate}
+   %\clearfield{pages}
+   %\clearfield{booktitle}
+   %\clearfield{journaltitle}
+   %\clearfield{number}
+   %\clearfield{volume}
+}
 \addbibresource{strip.bib}
 
 \PassOptionsToPackage{fleqn}{amsmath}        % math environments and more by the AMS
