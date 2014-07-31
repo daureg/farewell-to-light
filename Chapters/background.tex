@@ -94,7 +94,7 @@ the stress \[ S = \sum_{i,j} \sqrt{\frac{\sum w_{i,j}(\delta_{i,j} - d(y_i,
 y_j))^2}{\sum d(y_i, y_j)^2}} \] is minimized.
 
 Instead of interpreting distances in a geometrical sense, it is also possible
-to give them a probabilistic fashion.  Namely, in Stochastic Neighbor Embedding
+to give them a probabilistic fashion. Namely, in Stochastic Neighbor Embedding
 \autocite{SNE02}, starting from the dissimilarity between two points $i$ and
 $j$, $d^2_{ij} = \frac{\vnorm{x_i - x_j}^2}{2\sigma^2_i}$, we compute the
 probability of $i$ picking $j$ as a neighbor in the original space \[ p_{ij} =
@@ -124,40 +124,63 @@ A common subproblem of all the methods exposed so far is to retrieve the $k$
 closest neighbors of a given point. If there are $n$ candidates in a $d$
 dimensional space, a naive linear scan takes a prohibitive $O(n\cdot d)$ time.
 Fortunately, there are data structure well suited to solve this problem faster,
-even tough they become less efficient as $d$ increase. Namely, we will describe
+even tough they become less efficient as $d$ increases. Namely, we will describe
 $k$-d tree and ball tree. The common idea behind them is to partition space
 according to points distribution.
 
-$k$-d tree \autocite{kdtree75}
+A $k$-d tree \autocite{kdtree75} is a binary search tree whose every node is a
+hyperplane that separates the space $\mathbb{R}^k$ in two parts and whose
+leaves contain points lying in the region of the space define by all the
+parents hyperplanes. These hyperplanes are aligned with axes, meaning that on
+the left of a node at the $i$\textsuperscript{th} level are all points whose
+coordinate $i$ is smaller than $t$ and the right the points for which is
+larger. This threshold $t$ is chosen as the median value of this coordinate (or
+at least a good approximation of it) to keep the tree balanced. The tree is
+constructed recursively until there are not enough points at a given sub level
+to justify further splitting. After that, the main operation is retrieving the
+point who is the closest to a given input point. By looking at its coordinates,
+we can go down the tree in $O(\log n)$ time to restrict the number of points to
+look for.
 
-ball tree \autocite{BallTree89}
+Ball trees \autocite{BallTree89} are also binary trees but this time, nodes are
+hyperspheres of $\mathbb{R}^k$, or balls. The ball at each node is the smallest
+ball that contains all the balls in the corresponding subtree, and leaves are
+balls which enclosed some points of the dataset. Therefore, for a ball $S$ (of
+center $c$ and radius $r$) and a query point $q$, we know that if $q \notin S$,
+$q$ cannot be to closer to points in $S$ than $\vnorm{c - q} -r$. This fact is
+used at query time to prune part of the tree.
 
-We will also mention R-trees \autocite{Rindex84}, which are able to retrieve
-more complex geometric shape than point.
+Another data structure of interest is the R-tree \autocite{Rindex84}, which is
+able to store and retrieve non-zero size geometry such as polygon. There, nodes
+are hyperrectangles and leaves contain only one object. It is again a balanced
+search tree, but not binary. Each node can store up to $M$ entries. The idea
+behind search is the same, taking advantage of the nested box to prune part of
+the tree. The main difficulties lie in the efficient construction of the tree
+as well as fast subsequent insertions.
 
 \section{Metric}
 \label{sec:metric}
 
 \subsection{Ground metric}
 
-Instead of projecting points in a new space, we can directly modify the norm
-used to compute distance, that is replace the $L_2$ norm $\vnorm{x-y}_2^2$,
-for instance by $L_1$ norm (Manhattan distance) or $L_\infty$. Noting that
-$\vnorm{x-y}_2^2 = (x-y)^T A (x-y) = d_A(x,y)$, where $A=I$, one can also
-replace $A$ by any positive definite matrix to still define a metric. A well
-motivated choice is setting $A$ as the inverse of the covariance matrix,
-corresponding to the Mahalanobis distance \autocite{Mahalanobis36}. But $A$
-can be learned from the data in other semi-supervised ways, by specifying
-constraints between pair of points. These constraints are based on class
-labels, meaning we want points of the same class to be close and points of
-different classes to be set apart. In this work, we consider two methods that
-optimize $A$ subject to such pairwise constraints.
+Instead of projecting points in a new space as in dimensionality reduction, we
+can directly modify the norm used to compute distance, that is replacing the
+$L_2$ norm $\vnorm{x-y}_2^2$, for instance by $L_1$ norm (Manhattan distance)
+or $L_\infty$. Noting that $\vnorm{x-y}_2^2 = (x-y)^T A (x-y) = d_A(x,y)$,
+where $A=I$, one can also replace $A$ with any positive definite matrix to still
+define a metric. A well-motivated choice is setting $A$ as the inverse of the
+covariance matrix, corresponding to the Mahalanobis distance
+\autocite{Mahalanobis36}. But $A$ can be learned from the data in other
+semi-supervised ways, by specifying constraints between pair of points. These
+constraints are based on class labels, meaning we want points of the same class
+to be close and points of different classes to be set apart. In this work, we
+consider two methods that optimize $A$ subject to such pairwise constraints.
 
 The first is \methodname{Information Theoretic Metric Learning}
 \autocite{InfoMetric07}. Given a positive definite matrix $A$, we can uniquely
 associate it (up to a scaling constant) with a multivariate Gaussian
 distribution of mean $\mu$ and covariance $A^{-1}$: \[p(x; A) =
-\frac{1}{Z}\exp\left(-\frac{1}{2}d_A(x, \mu)\right)\]  We also need a reference
+\frac{1}{Z}\exp\left(-\frac{1}{2}d_A(x, \mu)\right)\] We also need a reference
 matrix $A_0$ (for instance the identity or the covariance matrix of the
 dataset), a set $S$ of similar points and a set $D$ of dissimilar points. We
 want $A$ to be close to $A_0$ in the sense of relative entropy $\KL{p(x;
@@ -180,7 +203,7 @@ original space which share the same class, called target neighbors. Closer
 points of different class are impostors (see \autoref{fig:lmnn}
 \vpageref{fig:lmnn}). The optimization pushes target neighbors close to $x_i$
 while pulling away impostors. The number of active constraints is linear
-rather than quadratic because only the neighborhood of each points contribute
+rather than quadratic because only the neighborhood of each points contributes
 to it. Thus the following semidefinite program can be solved efficiently:
 \begin{equation*}
 	\min_A \sum_{i, j\in N_i}
@@ -205,58 +228,75 @@ A more complete overview of metric learning is given in the survey of
 \subsection{Set metric}
 
 We discussed metrics between points but in this work, we also used distances
-between set of such points.
-
-geometric: For instance, the bottleneck distance \autocite{Bottleneck96} (the
-smallest distance between pairs of farthest point), the sum of the distance of
-each point to its closest neighbor, or the Hausdorff distance (the largest
-distance between pairs of closest point) and its variation
+between sets of such points. Interpreting them as geometric positions in
+$\mathbb{R}^k$, there are fast solutions. It includes for instance, the
+bottleneck distance \autocite{Bottleneck96} (the smallest distance between
+pairs of farthest points) and the Hausdorff distance (the largest distance
+between pairs of closest points) along with its variations
 \autocite{ModifiedHausdorff94}.
 
-Assignment problem and Hungarian algorithm $O(n^4)$ and $O(n^3)$
-\autocite{Hungarian57}. Transportation problem. Because these problem have min
-cost flow constraints matrix, they are totally unimodular (\ie{} every non
-singular sub square matrix has a determinant of $+1$ or $-1$) and thus admits
-a integer solution. It may be more convenient to consider non integer supply
-and demand, which leads to fractional weight and probabilistic interpretation.
-For instance the modern Kantorovitch formulation of the Transportation
-problem: $\underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}} \int_{X\times
-Y} c(x,y)\mathrm{d}\gamma(x,y)$. It is related to the Wasserstein distance of
+But such approaches are rather sensible to outliers and do not perform so well
+in high dimension, as distances tend to be more uniformly distributed there.
+Therefore, we want to involve all the points from both sets in the computation.
+One way to do this is to build a bipartite graph with edges weighted by the
+distance between points. This can be solved by the Hungarian algorithm
+\autocite{Hungarian57} in $O(n^4)$, a precursor of primal-dual method to solve
+linear program. This bound was later improved to $O(n^3)$ by considering it as
+a flow problem \autocite{HungarianN372}.
+
+Because this problem has a min cost flow constraints matrix, it is are totally
+unimodular (\ie{} every non singular sub square matrix has a determinant of
+$+1$ or $-1$) and thus admits an integer solution. Yet it may be more convenient
+to consider non integer supply and demand, which leads to fractional weight and
+probabilistic interpretation. This is then called the transportation problem
+and the modern Kantorovitch formulation makes the probabilistic aspect more
+apparent:
+\begin{equation*}
+ \underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}}
+ \int_{X\times Y} c(x,y)\mathrm{d}\gamma(x,y)
+\end{equation*}
+Here $X$ and $Y$ are two metric spaces, $c$ a measurable function between them
+which represents the cost of moving from different of parts $X$ to other parts of $Y$.
+We look for a measure $\gamma$ whose marginals on $X$ and $Y$ are $\mu$ and
+$\nu$ (the set $\Gamma(\mu, \nu)$ is called the set of all \emph{couplings} of
+$\mu$ and $\nu$).
+
+It is closely related to the Wasserstein distance of
 two probability measures $\mu$ and $\nu$ of a space $M$ with
-$p$\textsuperscript{th} finite moment $W_p(\mu, \nu) = \left( \underset{\gamma
-\in \Gamma(\mu, \nu)}{\mathrm{inf}} \int_{M\times M}
-d(x,y)^p\mathrm{d}\gamma(x,y)\right)^{\frac{1}{p}}$. $W_1$ is also called
-\methodname{Earth Mover's Distance} \autocite{EMD98}.
+$p$\textsuperscript{th} finite moments
+\begin{equation*}
+W_p(\mu, \nu) = \left( \underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}}
+\int_{M\times M} c(x,y)^p\mathrm{d}\gamma(x,y)\right)^{\frac{1}{p}}
+\end{equation*}
+$W_1$ is also called \methodname{Earth Mover's Distance} \autocite{EMD98}.
+Intuitively, it measures the {\em total amount of work} needed to transform
+(move) one set of positions (total mass) to the other. 
 
 
-An lower-complexity algorithm using L1 ground metric. Code is available and
-they claim 100x speed up for 2D histograms \autocite{Ling2007}
-
-The approximation is based on wavelet but the complexity is exponential with
-the number of dimension so it's probably infeasible for d>6
-\autocite{Shirdhonkar2008}
-
-The assumption here is that there is upper bound on the distance between
-points. They also exhibit nice speed-ups and code is available.
-\autocite{Pele2009}
-
-It computes lower and upper bounds of EMD quickly, with GPU and in parallel.
-The author also claims that the distance performs better for classification
-task. Code is available but looking at it and reading the paper, it seems to
-work only in one dimension. \autocite{FastEMD13}
-
-% ground metric learning for EMD? \autocite{LearnEMD14}
+As we used \emd{} extensively, it worth mentioning that since it was
+introduced, there have been efforts to improve its performance while preserving
+its characteristics. For instance, \textcite{Ling2007} present a lower
+complexity algorithm that uses $L_1$ ground metric. \Textcite{Shirdhonkar2008}
+propose another approximation algorithm based on wavelet decomposition but the
+complexity is exponential with the number of dimension, which makes it
+intractable when $d$ is greater than 6. \Textcite{Pele2009} show that assuming
+an upper bound over all pairwise distance, one can further simplify the
+optimization formulation, which improves running time and better match the
+human perception of colors in computer vision. Finally, the Sinkhorn distance
+\autocite{FastEMD13} is closely related to optimal transform and can be used to
+quickly obtain lower and upper bounds of \emd{}, especially when run over GPUs.
+But it also performs well on classification tasks on its own.
 
 As hinted in \emd{} by the link between distance in Euclidean spaces and
-probability spaces, we can also measure similarity between set of objects if we
+probability spaces, we can also measure similarity between sets of objects if we
 describe them by probability distributions. Information theory provides us with
-multiple tools to assess distance between distributions, the most well known
+multiple tools for assessing distance between distributions, the most well known
 being the Kullback--Leibler divergence, defined in the discrete case as
 \begin{equation*}
 	\KL{p}{q} = \sum_i p_i\log\left(\frac{p_i}{q_i}\right) 
 \end{equation*}
-However, this divergence is not a metric as it is not symmetric (nor does is
-satisfy the triangular inequality). Thus, we used a metric based on it, the
+However, this divergence is not a metric as it is not symmetric (nor does it
+satisfies the triangular inequality). Thus, we used a metric based on it, the
 \methodname{Jensen--Shannon Divergence} \autocite{JensenShannon03}, which is
 defined using the average $m=\frac{p+q}{2}$
 \begin{equation*}
