@@ -1,3 +1,5 @@
+\usepackage{tikz}
+\usetikzlibrary{shapes.misc}
 \newenvironment{comments}{\footnotesize\em}{\normalsize\normalfont\medskip}
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
@@ -48,11 +50,11 @@
 \newcommand{\itml}{{ITML}}
 \newcommand{\lmnn}{{LMNN}}
 \newcommand{\tsne}{{$t$-{SNE}}}
-\newcommand{\eucl}{{\sc Euclidean}}
+\newcommand{\eucl}{\textsc{Euclidean}}
 \newcommand{\emd}{{EMD}}
-\newcommand{\emde}{{EMD-{\sc Eucl}}}
+\newcommand{\emde}{{EMD-\textsc{Eucl}}}
 \newcommand{\emdl}{{EMD-LMNN}}
-\newcommand{\emdp}{{EMD-{\sc Partial}}}
+\newcommand{\emdp}{{EMD-\textsc{Partial}}}
 \newcommand{\jsd}{{JSD}}
 
 %% acronyms
@@ -70,6 +72,7 @@
 
 \definecolor{light-gray}{gray}{0.55}
 \newcommand{\cbest}[1]{\textbf{#1}}
+\newcommand{\mbest}[1]{\mathbf{#1}}
 \newcommand{\notbest}[1]{\textcolor{light-gray}{#1}}
 
 \newcommand{\Dratio}{relative distance}
