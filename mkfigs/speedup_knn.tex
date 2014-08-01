@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+	\begin{semilogyaxis}[xmin=0, xmax=247,
+            unit vector ratio*=1 24,
+            xlabel={Query},
+            ylabel={Speed up},
+            legend style={fill=none,draw=none},
+	    xlabel style={font=\scriptsize},
+	    ylabel style={font=\scriptsize},
+            legend
+			style={at={(0.8,1.0)},anchor=north,font=\scriptsize,cells={line
+			width=1.52pt}},
+	    legend columns=1, 
+		]
+\addplot[DodgerBlue,]table [x index=0, y index=1] {knn_time_ratio.dat};
+\addlegendentry{$k=8$}
+\addplot[FireBrick, smooth]table [x index=0, y index=2] {knn_time_ratio.dat};
+\addlegendentry{$k=25$}
+\addplot[LimeGreen, smooth]table [x index=0, y index=3] {knn_time_ratio.dat};
+\addlegendentry{$k=50$}
+\addplot[Orange, smooth]table [x index=0, y index=4] {knn_time_ratio.dat};
+\addlegendentry{$k=80$}
+\addplot[Purple, smooth]table [x index=0, y index=5] {knn_time_ratio.dat};
+\addlegendentry{$k=160$}
+\end{semilogyaxis}
+\end{tikzpicture}
