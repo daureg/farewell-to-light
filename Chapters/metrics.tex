@@ -1,6 +1,6 @@
 \chapter{Choice of metrics}
 \label{chap:metric}
-\iffalse
+
 In this chapter, we describe the various metrics we considered for measuring
 similarity between venues (\autoref{sec:venues-metrics}) and neighborhoods
 (\autoref{sec:regions-metrics}). We also present what evaluation strategy we
@@ -21,7 +21,7 @@ We evaluate a number of different approaches:
 		gradient boosted large margin nearest neighbor (\lmnn);
 	\item
 		embedding to a 2-$d$ plane via $t$-distributed stochastic neighbor
-		embedding (\tsne) dimensionality-reduction method, and computing the
+		embedding (\tsne) dimensionality reduction method, and computing the
 		Euclidean distance on the projected space; 
 	\item 
 		Euclidean distance in the original space (\eucl).
@@ -37,17 +37,17 @@ categories are so broad that two \emph{Food} venues may not have much in
 common. Second, the labeling can be noisy: for instance, imagine a museum that
 most people visit mostly for its cafeteria, and thus it is closer to
 restaurants than other museums.  However, considering the large volume of
-venues over many cities and with different types, we expect that the signal is
-stronger than the noise, and that the learning algorithms yield a robust
+venues over many cities and with different types, we expect the signal to be
+stronger than the noise, and the learning algorithms to yield a robust
 estimation. 
 
 Note also that generally, \tsne{} is not considered as a metric learning method
-per se. Yet we already argued that it can learn to uncover relationship between
+per se. Yet we already argued that it can learn to uncover relationships between
 points based on their position in the high-dimensional space. Furthermore, we
-were struck by experimental result showed in \autoref{fig:tsne}. When we hide
+were struck by the experimental result showed in \autoref{fig:tsne}. When we hide
 category information, venues of the same category are still projected in the
-same part of the space. Thus, we expect that the proximity of venues in this
-plane is a good measure of their overall similarity.
+same part of the space. Thus, we expect the proximity of venues in this
+plane to be a good measure of their overall similarity.
 
 \begin{figure}[htpb]
 	\centering
@@ -180,7 +180,7 @@ arbitrarily choose $rel_i=1$ when the sub category of two venues matches,
 $rel_i=0.4$ when only top category matches and $rel_i=0$ if they were not
 related at all. We accumulate them (or sum them) but discount results that
 came too late with \[ \mathrm{DCG} = \sum_{i=1} \frac{ 2^{rel_{i}} - 1 }{
-\log_{2}(i+1)} \] Finally we normalized by the result of a perfect ordering
+\log_{2}(i+1)} \] Finally, we normalized by the result of a perfect ordering
 to have scores between $0$ and $1$, which allow direct comparison.  The
 results, shown in \autoref{tab:metric_type}, confirm that \lmnn\ and \eucl\
 are the best measures regarding this task.  It is noteworthy that \eucl\
@@ -215,7 +215,6 @@ performs so well without any training.
 \end{table}
 
 
-\fi
 \section{Neighborhoods metrics}
 \label{sec:regions-metrics}
 
@@ -298,6 +297,7 @@ perform better.
 
 \subsection{Evaluation}
 
+\subsubsection{Methodology}
 We now describe our evaluation process for selecting the best function for
 measuring distance over feature vector sets. 
 Consider a neighborhood \region\ in a source city \city, and a target city
@@ -318,8 +318,8 @@ The higher we find a match, the better the ranking, and thus, the
 better the distance measure~$\rdist$.
 
 Since we do not have any a-priori neighborhood boundaries (and in fact
-we do not want to use any, since a neighborhood may be defined in a
-dynamic way, different than what administrative boundaries would give),
+we do not want to use any, since a neighborhood may be defined dynamically,
+different from what administrative boundaries would give),
 any subset of venues that corresponds to a closed and connected region
 is a candidate neighborhood. 
 As there are exponentially many such subsets, we restrict our
@@ -355,36 +355,15 @@ on the sets of venues of two neighborhoods.
 
 Having assigned a relevance score for each neighborhood $\region'$ in
 the ranking, we evaluate the quality of the ranking using 
-\emph{discounted cumulative gain} (\dcg).
+\emph{discounted cumulative gain} (\dcg) on the first five candidates.
 
-
-Like before, we used Discounted Cumulative Gain as a measure of quality. This
-time though, there is no normalization, as the ideal score would be the same
-for every metric and would thus not affect their relative order. Each city is
-the query city in turn. For each district, we choose a representative region
-(that have at least 20 venues within and in case of several candidates, the
-closest to 150 venues). In each target city, we retrieve gold regions $g_1,
-\ldots, g_n$.
-This gives $Q$ queries \[
-	Q \leq \underbrace{6}_{\text{target cities}} \times
-	\underbrace{8}_{\text{districts}} \]
-
-and we compute the average score \[
-\mathrm{ADCG_{m}} = \frac{1}{Q}\sum_{q=1}^Q \sum_{i=1}^m \frac{ 2^{rel_{i}} - 1 }{\log_{2}(i+1)}
-\]
-
-Starting with each of the 6 cities as a source city and for each of
-the 8 query neighborhoods,  
-we compute the most similar neighborhoods in all other cities, 
-using each of the distance measures that we want to evaluate.  
-The results are shown in \autoref{tab:distance-comparisons}. 
-Each row corresponds to a source city. 
-\dcg\ scores are averaged over all target cities and all 8 query
+\subsubsection{Results}
+Starting with each of the 6 cities as a source city and for each of the 8 query
+neighborhoods,  we compute the most similar neighborhoods in all other cities,
+using each of the distance measures that we want to evaluate.  The results are
+shown in \autoref{tab:distance-comparisons}.  Each row corresponds to a source
+city.  \dcg\ scores are averaged over all target cities and all 8 query
 neighborhoods.
-
-% The results are shown in \autoref{tab:cmp_metric}~\vpageref{tab:cmp_metric} and
-% according to them, we choose plain EMD, while noting that JSD performs rather
-% poorly.
 
 \begin{table}[t]
 	% 	\small
@@ -392,17 +371,17 @@ neighborhoods.
 	\centering
 	\begin{tabular}{lccccc}
 		\toprule
-		              & Min cost       & \emd-                  & \emd-          & \jsd           & \emd- \\
-		              & matching       & \textsc{Eucl}          & LMNN           &                & \textsc{Partial} \\
+								& Min cost        & \emd-           & \emd-           & \jsd    & \emd- \\
+								& matching        & \textsc{Eucl}   & LMNN            &         & \textsc{Partial} \\
 		\midrule
-		Barcelona     & 0.083          & 0.078                  & \cbest{0.084}  & 0.042          & 0.078 \\
-		New York      & 0.059          & \cbest{0.059}          & 0.059          & 0.057          & 0.053\\
-		Paris         & 0.061          & \cbest{0.091}          & 0.078          & 0.045          & 0.061\\
-		Rome          & 0.024          & \cbest{0.042}          & 0.039          & 0.021          & 0.029\\
-		San Francisco & \cbest{0.045}  & 0.045                  & 0.040          & 0.033          & 0.044\\
-		Washington    & \cbest{0.043}  & 0.034                  & 0.038          & 0.033          & 0.038\\
+		Barcelona               & $0.083$         & $0.078$         & $\mbest{0.084}$ & $0.042$ & $0.078$ \\
+		New York                & $0.059$         & $\mbest{0.059}$ & $0.059$         & $0.057$ & $0.053$\\
+		Paris                   & $0.061$         & $\mbest{0.091}$ & $0.078$         & $0.045$ & $0.061$\\
+		Rome                    & $0.024$         & $\mbest{0.042}$ & $0.039$         & $0.021$ & $0.029$\\
+		San Francisco           & $\mbest{0.045}$ & $0.045$         & $0.040$         & $0.033$ & $0.044$\\
+		Washington              & $\mbest{0.043}$ & $0.034$         & $0.038$         & $0.033$ & $0.038$\\
 		\midrule
-		Average       & \textit{0.052} & \textit{\cbest{0.058}} & \textit{0.056} & \textit{0.038} & \textit{0.051}\\
+		Average                 & $0.052$         & $\mbest{0.058}$ & $0.056$         & $0.038$ & $0.051$\\
 		\bottomrule
 	\end{tabular}
 	\caption[Average score of each metric]{Average score of each metric when query
@@ -411,22 +390,21 @@ neighborhoods.
 	cities.\label{tab:distance-comparisons}}
 \end{table}
 
-We see that \emde\ is the best-performing measure, 
-while \jsd\ performs rather poorly.
-\emdl\ performs only slightly worse than \emde.
-One should contrast this with the results of the previous section, 
-where \lmnn\ slightly outperformed \eucl\ for the task of finding the most
-similar venue. 
-Thus our results indicate that the nature of the similarity-search task
-is important for the choice of the distance measure.
+We see that \emde\ is the best-performing measure, while \jsd\ performs rather
+poorly.  \emdl\ performs only slightly worse than \emde.  One should contrast
+this with the results of the previous section, where \lmnn\ slightly
+outperformed \eucl\ for the task of finding the most similar venue.  Thus our
+results indicate that the nature of the similarity-search task is important for
+the choice of the distance measure.
 
-Another observation is that the absolute \dcg\ scores of all measures
-are relatively low.
-One reason for the low scores is that many neighborhoods
-in the ground truth have non-circular shapes (e.g., a long street of
-luxurious shops). 
-%% and since we are evaluating only circular neighborhoods, 
-Thus, even if our measures discover an area very close to the ground
-truth, 
-due to its circular shape it can have low overlap with the ground
-truth, and low relevance score.
+Another observation is that the absolute \dcg\ scores of all measures are
+relatively low.  One reason is that many neighborhoods in the ground truth have
+non-circular shapes (e.g., a long street of luxurious shops).  Thus, even if
+our measures discover an area very close to the ground truth, due to its
+circular shape, it can have low overlap with the ground truth, and low
+relevance score. A second unfavorable situation happens when the ground truth
+contains only one or two small regions. Because we try to find them with five
+disjoint circles, it must be the case that some these circles have no overlap
+at all with ground truth and thus have a relevance of 0.  Yet this is merely a
+comment rather than an issue as here, we are concerned by comparing measures
+and they all suffer from this fact in the same way.
