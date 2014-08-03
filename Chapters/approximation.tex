@@ -110,7 +110,6 @@ neighborhood with the smallest distance (or top-$m$ smallest distances).
 Note that although we focus on \emd{}---because we determine it is the more
 suited metric to match human judgment---our method is independent of the
 underlying metric as it plays a role only at the very end of the algorithm.
-\fi
 
 \section{Results}
 \label{sec:app-result}
@@ -227,14 +226,53 @@ solution of the optimization problem.
 	neighbors of each query venues.\label{fig:approx_by_knn}}
 \end{figure}
 
+\fi
 \subsection{How well it matches ground truth}
 
-There are two reason why it fails:
+The method we devise finds neighborhoods that generally have as good as
+similarity as those found by exhaustive search, but it takes much less time.
+Yet we also want to see if these new neighborhoods retain another
+characteristics of the exhaustive search: to be close to human ground
+truth. To answer that, we can perform the same evaluation as in
+\autoref{sub:region-evaluation}. Results showed in \autoref{tab:approx-adcg}
+indicates that if we sort obtained neighborhood by \emd{} distance, they
+perform worse than exhaustive search. Yet the last column shows that among
+the remaining neighborhoods, some are indeed overlapping with the ground truth.
+These mixed results can be explained by two problems:
 \begin{itemize}
-	\item there are too few close neighbors in the ground truth region to form
-		a cluster. Since it was the main assumption, we are screwed.
-	\item There is cluster in the ground region but some clusters elsewhere
-		have smaller EMD distance. In that case, it's a failure of EMD to
-		recognize gold region of not of the approximation itself (although it
-		would be nice to find a way to avoid those cases).
+	\item Sometime, there are too few close neighbors in the ground truth
+		region to form a cluster. Since it was our main assumption, we cannot
+		expect our approximation to return these regions.
+	\item Alternatively, there is a cluster in the ground region but some
+		clusters elsewhere have smaller \emd{} distance. But this case
+		represents more a failure of \emd{} to recognize gold region and simply
+		indicates that our approximation method cannot alleviate this
+		shortcoming.
 \end{itemize}
+
+\begin{table}[t]
+	% \small
+	% \setlength{\tabcolsep}{4pt}
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
+		              & Approximation & Exhaustive & Biased Approximation \\
+		\midrule
+		Barcelona     & $0.066$       & $0.075$       & $0.170$ \\
+		New York      & $0.029$       & $0.057$       & $0.132$ \\
+		Paris         & $0.067$       & $0.091$       & $0.191$ \\
+		Rome          & $0.023$       & $0.038$       & $0.070$ \\
+		San Francisco & $0.044$       & $0.045$       & $0.082$ \\
+		Washington    & $0.071$       & $0.035$       & $0.161$ \\
+		\midrule
+		Average       & $0.050$       & $0.057$       & $0.134$ \\
+		\bottomrule
+	\end{tabular}
+	\caption[Approximation ability to recover ground truth]{Average score when
+		query are issued from the city on the left. The last row is the average
+		score over all cities. The first column is the score obtained when
+		taking the $5$ neighborhood with the smallest distance as returned by
+		the approximation method. The second is the result of exhaustive
+		search.  In the last one, neighborhoods are ordered to maximize the
+		score. \label{tab:approx-adcg}}
+\end{table}
