@@ -1,0 +1,18 @@
+\begin{tikzpicture}
+	\begin{axis}[
+			% ymax=32.5,
+            unit vector ratio*=1 32,
+			xmin=0,
+			/pgf/number format/1000 sep={},
+			xlabel={Venues in Barcelona},
+			ylabel={Venues in query region},
+			x axis line style=-,
+			y axis line style=-,
+			axis line style={Gray,line width=0.15pt},
+		]
+		\addplot[only marks,thin,mark=x,black,mark options={mark size=1, line
+		width=0.3pt}]table [x=x, y=y]{pigalle_marks.dat};
+		\addplot[patch,shader=interp,colormap={YlOrBr}{rgb=(1.0000, 0.9608, 0.9412) rgb=(0.9966, 0.8884, 0.8378) rgb=(0.9901, 0.7686, 0.6781) rgb=(0.9882, 0.6261, 0.5085) rgb=(0.9861, 0.4870, 0.3616) rgb=(0.9629, 0.3318, 0.2367) rgb=(0.8902, 0.1856, 0.1529) rgb=(0.7598, 0.0855, 0.1061) rgb=(0.6175, 0.0517, 0.0785) rgb=(0.4039, 0.0000, 0.0510)},]
+		table[x=x,y=y,point meta=\thisrow{c}] {pigalle_patch.dat};
+	\end{axis}
+\end{tikzpicture}
