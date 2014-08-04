@@ -1,10 +1,9 @@
 \chapter{Improving search efficiency}
 \label{chap:approx}
-\iffalse
 
 We now turn our attention to the efficiency aspects of the neighborhood
 similarity-search problem, \ie{}, the Problem~\ref{problem:neighborhood-search}
-defined in \autoref{section:setup}. The approach used to solve this problem so
+defined in \autoref{sub:neigh-problem}. The approach used to solve this problem so
 far is an exhaustive search algorithm, as the one employed in the previous
 chapter for the evaluation of neighborhood distance measures. Namely, given
 neighborhood \region, consider all candidate neighborhoods $\region'$ of a
@@ -123,7 +122,7 @@ triplets $(\city, \region, \city')$ that were used in the analysis
 shown in \autoref{tab:distance-comparisons}.
 
 For each of these queries, we execute the brute-force search, as
-described in \autoref{sec:region-evaluation}; namely, 
+described in \autoref{sub:region-evaluation}; namely, 
 we compute the \emd\ for all circles $(\venue',\radius)$ centered at
 regularly spaced venues $\venue'$ of $\city'$ and with radius $\radius\in\{200,
 \allowbreak 275, \allowbreak 350, \allowbreak 425, \allowbreak 500\}$ meters.
@@ -226,7 +225,6 @@ solution of the optimization problem.
 	neighbors of each query venues.\label{fig:approx_by_knn}}
 \end{figure}
 
-\fi
 \subsection{How well it matches ground truth}
 
 The method we devise finds neighborhoods that generally have as good as
