@@ -55,8 +55,9 @@ we recover most of the venues in the ground-truth neighborhood.
 
 \begin{figure}[b]
     \centering
-    \includegraphics[width=1\linewidth]{pigalle_barca}
-    \caption{Intuition behind our pruning strategy: 
+    \includegraphics[width=1\linewidth]{pigalle_barca.pdf}
+    \caption[Ranking of target city venues by distance to query
+    venus.]{Intuition behind our pruning strategy: 
 for two neighborhoods with small \emd, 
 the venues of one neighborhood are in the $k$-NN set of the venues of
 the other.  \label{fig:pigalle_barca}}
@@ -77,10 +78,11 @@ we need another step to further reduce the search space.
 \begin{figure}[tb]
     \centering
     \includegraphics[width=1\linewidth]{coverage}
-	\caption{Recall of the $k$ nearest neighbors as a function of the fraction
-	of the total venues in the target city, for $k$ varying between $1$ and
-$256$. Each line is query from Paris to another city, indicated by its color.
-\label{fig:coverage_recall}}
+    \caption[Recall vs coverage of $k$ nearest neighbors]{Recall of the $k$
+	    nearest neighbors as a function of the fraction of the total
+	    venues in the target city, for $k$ varying between $1$ and $256$.
+	    Each line is query from Paris to another city, indicated by its
+	    color.\label{fig:coverage_recall}}
 \end{figure}
 
 
@@ -195,7 +197,9 @@ the initial regions are already relevant enough.
 	\caption[Time speed-up as $\ell$ increases]{Time speed-up for each query, in
           descending order. Note the logarithmic scale.\label{fig:time_ratio_size}}
     \end{subfigure}
-    \caption{Approximation trade off while expanding the size of the regions considered.\label{fig:approx_by_size}}
+    \caption[Approximation trade off with respect to $\ell$]{Approximation
+    trade off while expanding the size of the regions
+    considered.\label{fig:approx_by_size}}
 \end{figure}
 
 We perform the same experiment for $k \in \{8, 25, 50, 80, 160\}$ with
@@ -221,8 +225,9 @@ solution of the optimization problem.
 			\autoref{fig:time_ratio_size} but showing the effect of varying
 			$k$.\label{fig:time_ratio_knn}}
     \end{subfigure}
-    \caption{Approximation trade off while expanding $k$, the number of nearest
-	neighbors of each query venues.\label{fig:approx_by_knn}}
+    \caption[Approximation trade off with respect to $k$]{Approximation trade
+	    off while expanding $k$, the number of nearest neighbors of each
+    query venues.\label{fig:approx_by_knn}}
 \end{figure}
 
 \subsection{How well it matches ground truth}
