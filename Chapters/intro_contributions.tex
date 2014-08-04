@@ -1,6 +1,47 @@
 \section{Overview}
 \label{sec:overview}
 
+After exposing our problem in details, the rest of this work will be devoted to
+present which solutions we used to solve it and how well they perform. But let
+us first give an outline of what is to come. We start in
+\autoref{ch:background} by introducing some common techniques concerning
+similarity measure that serve as building blocks for our own methods.  Namely,
+we talk about clustering, how it relates with dimensionality reduction and say
+a few words about data structures for efficient implementation. Then we discuss
+learning metrics between single object and introduce the metrics we used to
+compare sets of such object. \autoref{chap:datasets} is dedicated to the
+datasets on which we conducted our experiments. We describe how we collected
+data from 20 cities in Europe and in the US; namely activity logs from \fs\ and
+\flickr, a \gls{lbsn} and a photo-sharing platform. We explore their
+organization in time, in space, and with respect to various measures of
+entropy, as well as the interplay between photos and check-ins. This let us
+choose a set of numeric features which accurately describes the characteristics
+and the overall activity of the venue.
+
+These careful preparations finished, we start presenting results about
+metrics in \autoref{chap:metric}. First we devised two information retrieval
+tasks based on \fs{} categories to assess the ability of several metrics to match
+venues together. We show a slight advantage of metrics whose parameters
+are learned from the data compared with simple Euclidean distance. We remark
+as well that accuracy is generally low because information as venue level is
+rather noisy, which further motivate the study of neighborhood similarity.
+Using ground truth data obtained from a user study conducted over Internet, we
+compare several metrics and show that \emph{Earth Mover's Distance} is the
+most able to agree with human perception.
+
+To select \emd{}, we perform an exhaustive search, which is rather time
+consuming. Therefore, in \autoref{chap:approx}, we describe the design of a
+faster search strategy. It relies on a pre-processing of venues in the target
+city with respect to the query in order to prune the search space. The
+remaining venues are then clustered in space to form a few candidate
+neighborhoods. We illustrate experimentally that the speedups thus obtained
+come at little accuracy cost and in some cases, even provide better results.
+Finally, we give a list of references to related works in
+\autoref{chap:related} and we conclude in \autoref{chap:discussion} by
+discussing the results we obtained and offering some directions for future
+work.
+
+\iffalse
 Our approach is briefly described as follows.  By collecting rich geo-enabled
 data from social-media platforms, and by associating this data to the different
 venues of the city, we can represent each venue by a feature vector, which
@@ -55,3 +96,4 @@ about the overall work performed, and about future directions.
 	\item Compare results with existing methods and evaluate them against
 		human judging.
 \end{itemize}
+\fi
