@@ -2,13 +2,15 @@
 \label{ch:background}
 
 In this chapter, we provide an overview of the theoretical background of many
-methods we employed to solve our problem. As \enquote{finding similar
-neighborhoods} implies, the underlying theme is measuring similarity between
-objects. This can be used to cluster them in meaningful groups
-(\autoref{sec:clustering}). An important step is to tailor general metric
-toward our goal (\autoref{sec:metric}). Indeed, \textcite{GoodSimilarity08}
-show that \enquote{good} properties of similarity functions are transferred to
-classifiers using them.
+methods we employed to solve our problem. Because it does not contribute
+directly to our solution, it can be skipped by readers already familiar with
+clustering and metric learning. Yet it introduces many concepts on which we
+rely later. As \enquote{finding similar neighborhoods} entails, the main theme
+is measuring similarity between objects. This can be used to cluster them in
+meaningful groups (\autoref{sec:clustering}). An important step is to tailor
+general metric toward our goal (\autoref{sec:metric}). Indeed,
+\textcite{GoodSimilarity08} show that \enquote{good} properties of similarity
+functions are transferred to classifiers using them.
 
 \section{Clustering}
 \label{sec:clustering}
@@ -21,7 +23,7 @@ groups based on some notion of similarity between objects}}
 $k$ centroids, an iterative process takes place, divided in two phases. First
 each point is assigned to the cluster of the closest centroid. Then centroids
 positions are updated by taking the mean of all points belonging to their
-cluster. Convergence occurred when centroids positions do not change between
+cluster. Convergence occurs when centroids positions do not change between
 iterations. In practice, the algorithm is fast but it is only guaranteed to
 find a local optimal of the within-cluster sum of squares: \[ \sum_{i=1}^{k}
 \sum_{ x_j \in S_i} \left\| x_j - \mu_i \right\|^2 \] Another drawbacks is that
@@ -33,16 +35,17 @@ may not reflect the actual data.
 Because of these limitations, numerous alternatives have been developed. A
 cluster can be defined as an area of high density surrounded by low density
 regions. This definition suggests assigning a numeric value of density to every
-point of space. A common method is \marginpar{Maybe there is a more practical
-reference, especially for multivariate estimation} \methodname{Kernel Density
-Estimation} \autocite{KDE56}. Basically, a kernel is centered around each point
+point of space. A common method is \methodname{Kernel Density
+Estimation} \autocite{KDE56}. A kernel, generally parametrized by its
+bandwidth $h$, is centered around each point
 (\ie{} a symmetrical weighting function, for instance a Multivariate Gaussian)
 and the estimation of the probability distribution $f$ is their normalized sum:
 % http://en.wikipedia.org/wiki/Multivariate_kernel_density_estimation
 \[ \hat{f}_\bold{h}(\bold{x})= \frac{1}{n} \sum_{i=1}^n K_\bold{h} (\bold{x} -
 \bold{x}_i) \]
 
-Yet this does not provide any clustering. One idea would be to find the modes of
+Although it is a useful information by itself, this density estimation does
+not directly provide a clustering. One idea would be to find the modes of
 $\hat{f}$, which is the underlying principle of Mean Shift
 \autocite{MeanShift95}. Another density based algorithm is
 \methodname{\textsc{DBSCAN}} \autocite{DBSCAN96}. It has two parameters: a
@@ -86,7 +89,7 @@ case, it often leads to dimensionality reduction.
 
 \subsection{Dimensionality reduction}
 
-Again, there are many methods, but many of them are based on the idea of
+Many methods are based on the idea of
 preserving distances between points, under the general name Multidimensional
 Scaling \autocite{MDS77}. Given points $i$ and $j$ in the original space, we
 know their separation $\delta_{i,j}$ with a weight $w_{i,j}$\footnote{that
@@ -96,7 +99,7 @@ the stress \[ S = \sum_{i,j} \sqrt{\frac{\sum w_{i,j}(\delta_{i,j} - d(y_i,
 y_j))^2}{\sum d(y_i, y_j)^2}} \] is minimized.
 
 Instead of interpreting distances in a geometrical sense, it is also possible
-to give them a probabilistic fashion. Namely, in Stochastic Neighbor Embedding
+to give them a probabilistic interpretation. Namely, in Stochastic Neighbor Embedding
 \autocite{SNE02}, starting from the dissimilarity between two points $i$ and
 $j$, $d^2_{ij} = \frac{\vnorm{x_i - x_j}^2}{2\sigma^2_i}$, we compute the
 probability of $i$ picking $j$ as a neighbor in the original space \[ p_{ij} =
