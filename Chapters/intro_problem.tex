@@ -1,10 +1,10 @@
-\section{Problem definition and notation}
-\label{sec:problem}
+\chapter{Problem definition and notation}
+\label{ch:problem}
 
-Here we describe our data and their context abstractly before articulating them
+Here we describe our data and introduce some notation before articulating them
 into a specific problem.
 
-\subsection{Cities, venues and activities}
+\section{Cities, venues and activities}
 We consider a set \cities\ of $\noc$ cities, 
 $\cities=\{\city_1, \city_2, \ldots,\city_\noc\}$.
 Each city $\city$ contains a set of \emph{venues} $\venues(\city)$.
@@ -37,7 +37,7 @@ feature vector} $\vfv(\venue)$ (see \autoref{sec:feature}
 \vpageref{sec:feature} for a complete description).
 
 
-\subsection{Distance between venues}
+\section{Distance between venues}
 Given two venues $\venue_i,\venue_j\in\allvenues$ with 
 feature vectors $\vfv_i = \vfv(\venue_i)$ and $\vfv_j = \vfv(\venue_j)$, 
 the simplest distance one can define between the two venues is
@@ -64,7 +64,7 @@ The theoretical motivation for metric learning is exposed in
 \autoref{sub:metric-learning} and our
 own results are described in \autoref{sec:venues-metrics}.
 
-\subsection{City neighborhoods}
+\section{City neighborhoods}
 Summarizing our discussion so far, each venue $\venue\in\allvenues$ is
 described by the pair $(\vloc(\venue), \vfv(\venue))$, where $\vloc(\venue)$
 and $\vfv(\venue)$ specify the location of the venue~\venue, and its feature
@@ -90,7 +90,7 @@ all the venues in \region, that is,
 \end{equation*}
 
 
-\subsection{Distance between neighborhoods}
+\section{Distance between neighborhoods}
 \label{sub:neigh-problem}
 Our objective is to define a meaningful distance measure between city
 neighborhoods.

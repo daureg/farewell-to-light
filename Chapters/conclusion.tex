@@ -14,15 +14,42 @@
 \chapter{Discussion}
 \label{chap:discussion}
 
-In this chapter, we offer some concluding remarks regarding the quality of our
-results (\autoref{sec:cquality}), the overall work performed
+In this chapter, we offer some concluding remarks regarding other applications
+of our method (\autoref{sec:cother}), the overall work performed
 (\autoref{sec:cconc}), and some future directions (\autoref{sec:cfuture}).
 
-\section{Quality of results}
-\label{sec:cquality}
+\section{Other applications}
+\label{sec:cother}
 
-It's a difficult problem because the query is not clearly defined and
-potentially convey high level semantics.
+Notice that although we define our problem in terms of cities and venues, it can
+be generalized to other settings. All we need is a set of disconnected metric
+spaces\footnote{Here two dimensional plane supporting the cities.}, points
+lying in those spaces and described by some features\footnote{Here the venues
+described by their activity.}, and some latent high-level characteristics
+associated with sets of points\footnote{For instance here, \enquote{nightlife
+neighborhood} or \enquote{tourist hotspot}.}. Here are some examples that
+can be modeled under this framework:
+\begin{itemize}
+	\label{:more-problems}
+	\item The social graph of students in several universities. The metric
+		is a distance in the graph and featured points are students.
+		Picking some of them, we posit that they are close because
+		they share the same degree program or some other demographic.
+		We want to know if the same group exists elsewhere.
+	\item Graph of twitter users in different cities or countries. They
+		are described by the topic distribution of their tweets. We
+		ask whether some community of interest exist in several places
+		in the world.
+	\item The set of all books ever written, grouped by centuries and
+		characterised by their style and main themes. Choosing all
+		pieces written during the Enlightenment, it would tell if
+		there was a similar movement in the twentieth century.
+	\item Arranged marriages: Points are children, described by their family
+		characteristics. Spaces are set of families, for instance grouped by
+		regions. In practice, one is usually concerned with individual matches
+		\marginpar{such as?} but doing it in batch may have pragmatic or social
+		benefits.
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:cconc}
@@ -31,26 +58,27 @@ In this thesis, we define the problem of matching neighborhoods across cities
 and introduce a method to solve it efficiently. We start by crawling social
 networks for traces of geo-located human activity in 20 major European and
 American cities. We collect over 8 million geo-tagged Flickr photos from the
-last six years and more than 4 million Foursquare check-ins. We conduct an
+last six years and almost 5 million Foursquare check-ins. We conduct an
 extensive exploration of this dataset to reveal pattern of human activity and
 better understand the relation between our two different sources of
 information.
 
-Selecting venues as the elementary constituents of a city, we characterize them
-by features such as time of activity, diversity of audience, popularity and
-repartition of surrounding venues. We then evaluate several measures of
+Selecting venues as the elementary constituents of a city, we characterize
+them by features such as time of activity, diversity of audience, popularity
+and repartition of surrounding venues. We then evaluate several measures of
 similarity between venues, several of them based on semi supervised metric
-learning approach and conclude that, using \fs\ categories as a proxy, \eucl{}
-and \lmnn{} are the most suitable. Next, we consider various ways of measuring
-distance between sets of venues and based on ground truth collected through a
-user study, we find out that \emd{} outperforms other candidates.
+learning approaches and conclude that, using \fs\ categories as a proxy,
+\eucl{} and \lmnn{} are the most suitable. Next, we consider various ways of
+measuring distance between sets of venues and based on neighborhoods ground
+truth collected through a user study, we find out that \emd{} outperforms
+other candidates.
 
-The exhaustive search used in this selection process is time consuming as it
-evaluates distance function for many regions.  Therefore, we develop a method
-to prune the search space, by pre-processing venues to keep only ones close to
-query venues and clustering them into promising neighborhoods. It greatly
-enhances run time while incurring only minor loss of accuracy compared with
-brute force search.
+The exhaustive search used in this selection process is time consuming because
+it evaluates distance function for many regions. Therefore, we develop a
+method to prune the search space, by pre-processing venues to keep only those
+close to query venues and clustering them into promising neighborhoods. It
+greatly enhances run time while incurring only minor loss of accuracy compared
+with brute force search.
 
 \section{Future work}
 \label{sec:cfuture}

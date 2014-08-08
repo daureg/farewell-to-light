@@ -5,19 +5,27 @@
 \chapter*{Abstract}
 
 We propose a method to match similar neighborhoods across different cities.
+That is, we give ourselves a measure of similarity between urban regions, as
+well as one region in one city. Our goal is to find the region in some other
+cities which minimize the distance with the query region. Furthermore, we
+seek to do it effienctly, as it is prohivitive to evaluate the distance of
+all possible regions.
+
 First, we collect trace of activities in 20 European and American cities from
-location aware social platforms \fs{} and \flickr{}. A thorough exploration
-of these datasets leads us to describe individual venues by relevant features.
-% Then we learned several measure of venue similarity in a semi-supervised fashion
-% and evaluate their performance on two tasks.
-After gathering human ground truth, we evaluate different metrics between sets
-of venues and find out that earth movers distance is the best suited at
-assessing neighborhood similarity. Finally, we address the computational
-efficiency problem of finding the most similar neighborhood given a query. We
-devise a heuristic search strategy and show that it provides results of
-comparable quality while being order of magnitude faster. Beside being useful
-in touristic recommendation and urban planning, these methods apply to similar
-problem setting.
+location aware social platforms \fs{} and \flickr{}. A thorough exploration of
+this dataset leads us to describe individual venues by relevant features
+including their aggregate activity across time, their visitors and overall
+popularity, and the typology of their surrounding.  Then we learned several
+measures of venue similarity in a semi-supervised setting and evaluate their
+performance on two information retrieval tasks.  After gathering human ground
+truth about neighborhoods, we evaluate different metrics between sets of
+venues and find out that earth movers distance is the best suited at assessing
+neighborhood similarity. Finally, we address the computational efficiency
+problem of finding the most similar neighborhood given a query. We devise a
+heuristic search strategy and show that it provides results of comparable
+quality while being order of magnitude faster. This work has application in
+touristic recommendation and urban planning, as it provides a similarity
+measure between urban areas.
 
 \endgroup 
 \vfill

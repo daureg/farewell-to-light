@@ -4,11 +4,11 @@
 Foursquare is the most popular \gls{lbsn} in 2014, claiming more than 50
 million users\footnote{See \href{https://foursquare.com/about/}%
 {\url{foursquare.com/about}} for more usage statistics.}. Its two main purposes
-are to enable users discover new places and let their friends or the world know
-where they are. The first activity is centered around venues. Venues have their
+are: $(i)$ enable users discover new places and $(ii)$ let their friends or the world know
+where they are. The first goal is achieved through venues. Venues have their
 own web page that displays basic facts (like name, address and type) but also
 user contributed information (such as photos, reviews, likes and tips) which
-can be used for rating or recommendation. The second possibility revolved
+can be used for rating or recommendation. The second goal revolved
 around check-in, which represents the visit of a user to a venue at a given
 time. It is also associated with a web page, potentially displaying a message
 or a photo enclosed with the check-in.
@@ -39,10 +39,10 @@ and January 2011 in these cities\footnote{a practical description of this
 Finally, we obtained more data by crawling the timeline of users that appear to
 post geo located tweets according to the public sample. We apply this approach
 in Barcelona, Helsinki, Paris, Rome, San Francisco, Stockholm and Washington,
-resulting in \numprint{1403217} additional tweets (even though a significant
+resulting in \numprint{2087227} additional tweets (even though a significant
 portion of them were located in other cities as some users travel).
 
-In total, our \fs\ data consists of almost 5 million check-ins, whose
+In total, our \fs\ data consists of more than 5 million check-ins, whose
 repartition can be found in \autoref{tab:dataset}.
 
 
@@ -50,39 +50,39 @@ repartition can be found in \autoref{tab:dataset}.
   \small
   \setlength{\tabcolsep}{5pt}
 	\centering
-	% \input{dataset_count.tex}
+	\input{dataset_count.tex}
 % City&\multicolumn{3}{c}{Check-ins}&Venues&Photos\\
 % 		\cmidrule(r){2-4}
 %    & 2010 & 2014 & Timeline &    & \\
 % \midrule
-	\pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
-	columns/City/.style={string type,column type=l},
-	% outfile=dataset_count.tex,
-	every head row/.style={before row=\toprule,after row=\midrule},
-	every last row/.style={before row=\midrule,after row=\bottomrule}]{%
-		City          & 2010 Check-ins & 2014 Check-ins & Timeline & Venues & Photos \\
-		New York      & 408584         & 369562         & 0        & 67363  & 1744890 \\
-		Los Angeles   & 165463         & 139624         & 0        & 33586  & 794537  \\
-		Chicago       & 133822         & 137119         & 0        & 26012  & 601859  \\
-		San Francisco & 104363         & 77294          & 0        & 15580  & 983723  \\
-		London        & 72674          & 112305         & 0        & 23512  & 1653489 \\
-		Washington    & 75984          & 80274          & 0        & 13168  & 650882  \\
-		Seattle       & 51574          & 32568          & 0        & 9627   & 525794  \\
-		Amsterdam     & 35339          & 24349          & 0        & 8764   & 148807  \\
-		Houston       & 41037          & 50165          & 0        & 13430  & 41827   \\
-		Atlanta       & 40798          & 42988          & 0        & 8089   & 228744  \\
-		Paris         & 32952          & 67382          & 0        & 17231  & 208895  \\
-		Stockholm     & 10501          & 8440           & 0        & 4193   & 37422   \\
-		Indianapolis  & 30955          & 27655          & 0        & 7651   & 30908   \\
-		Moscow        & 17577          & 331332         & 0        & 47937  & 69826   \\
-		Barcelona     & 21448          & 44462          & 0        & 11351  & 130039  \\
-		Berlin        & 15098          & 39772          & 0        & 11174  & 226420  \\
-		St.\ Louis    & 17491          & 15384          & 0        & 3459   & 33917   \\
-		Rome          & 9364           & 24128          & 0        & 7691   & 166537  \\
-		Prague        & 4757           & 18791          & 0        & 5698   & 51962   \\
-		Helsinki      & 6724           & 8179           & 0        & 3153   & 27849   \\
-		Total         & 1296505        & 1651773        & 0        & 338669 & 8358327 \\
-}
+% 	\pgfplotstabletypeset[col sep=&,row sep=\\,fixed, int detect,column type=r,
+% 	columns/City/.style={string type,column type=l},
+% 	outfile=dataset_count.tex,
+% 	every head row/.style={before row=\toprule,after row=\midrule},
+% 	every last row/.style={before row=\midrule,after row=\bottomrule}]{%
+% 		City          & 2010 Check-ins & 2014 Check-ins & Timeline & Venues & Photos \\
+% 		New York      & 408584         & 373005         & 362979         & 67803  & 1744890 \\
+% 		Los Angeles   & 165463         & 141393         & 119364         & 33829  & 794537  \\
+% 		Chicago       & 133822         & 138642         & 71470          & 26249  & 601859  \\
+% 		San Francisco & 104363         & 78024          & 296050         & 15641  & 983723  \\
+% 		London        & 72674          & 114008         & 89389          & 23618  & 1653489 \\
+% 		Washington    & 75984          & 81002          & 291466         & 13242  & 650882  \\
+% 		Seattle       & 51574          & 33034          & 35616          & 9685   & 525794  \\
+% 		Amsterdam     & 35339          & 24676          & 21647          & 8793   & 148807  \\
+% 		Houston       & 41037          & 50642          & 14932          & 13567  & 41827   \\
+% 		Atlanta       & 40798          & 43370          & 22797          & 8153   & 228744  \\
+% 		Paris         & 32952          & 68297          & 207895         & 17338  & 208895  \\
+% 		Stockholm     & 10501          & 8517           & 70377          & 4204   & 37422   \\
+% 		Indianapolis  & 30955          & 28006          & 9855           & 7709   & 30908   \\
+% 		Moscow        & 17577          & 334472         & 74129          & 48278  & 69826   \\
+% 		Barcelona     & 21448          & 45170          & 161122         & 11444  & 130039  \\
+% 		Berlin        & 15098          & 40259          & 120151         & 11249  & 226420  \\
+% 		St.\ Louis    & 17491          & 15548          & 7044           & 3482   & 33917   \\
+% 		Rome          & 9364           & 24409          & 74714          & 7725   & 166537  \\
+% 		Prague        & 4757           & 19010          & 8727           & 5748   & 51962   \\
+% 		Helsinki      & 6724           & 8394           & 27503          & 3213   & 27849   \\
+% 		Total         & 1296505        & 1669878        & 2087227        & 340970 & 8358327 \\
+% }
 \caption[Dataset number]{Number of check-ins, venues, and photos in each city
 Note that \fs\ usage surged in Moscow between 2010 and 2014 whereas the
 opposite happened in San Francisco.\label{tab:dataset}}
@@ -96,9 +96,3 @@ the collection process was to gather information about all of those
 appropriate Foursquare API and the obtained object is described in
 \autoref{tab:venue}. The main informations are the venue location, its category,
 the number of likes, the number of check-ins and the number of unique visitors.
-
-\begin{comments}
-link to the dataset on
-\href{http://figshare.com/authors/G\%C3\%A9raud\%20Le\%20Falher/542931}%
-{\url{figshare.com}} or \url{http://academictorrents.com}
-\end{comments}

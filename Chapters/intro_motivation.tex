@@ -42,36 +42,3 @@ to identify neighborhoods that are similar to each other, and thus can help us
 understand what is going on in each area, what are the hubs of different
 activities, how citizens are experiencing the city, and how they are utilizing
 its resources. 
-
-In the next section, we will give a more precise problem statement. Before
-that, notice that although we define it in terms of cities and venues, it can
-be generalized to other settings. All we need is a set of disconnected metric
-spaces\footnote{Here two dimensional plane supporting the cities.}, points
-lying in those spaces and described by some features\footnote{Here the venues
-described by their activity.}, and some latent high-level characteristics
-associated with sets of points\footnote{For instance here, \enquote{nightlife
-neighborhood} or \enquote{tourist hotspot}.}. Here are some examples that
-can be modeled under this framework:
-\begin{itemize}
-	\label{:more-problems}
-	\item The social graph of students in several universities. The metric
-		is a distance in the graph and featured points are students.
-		Picking some of them, we posit that they are close because
-		they share the same degree program or some other demographic.
-		We want to know if the same group exists elsewhere.
-	\item Graph of twitter users in different cities or countries. They
-		are described by the topic distribution of their tweets. We
-		ask whether some community of interest exist in several places
-		in the world.
-	\item The set of all books ever written, grouped by centuries and
-		characterised by their style and main themes. Choosing all
-		pieces written during the Enlightenment, it would tell if
-		there was a similar movement in the twentieth century.
-	\item Arranged marriages: Points are children, described by their family
-		characteristics. Spaces are set of families, for instance grouped by
-		regions. In practice, one is usually concerned with individual matches
-		\marginpar{such as?} but doing it in batch may have pragmatic or social
-		benefits.
-\end{itemize}
-
-These examples provide additional motivation to solve the problem at hand.
