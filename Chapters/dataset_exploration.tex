@@ -7,7 +7,7 @@ similar groups.
 
 \subsection{Time}
 
-The time at which check-ins occur is undoubtedly a important variable. For
+The time at which check-ins occur is undoubtedly an important variable. For
 instance, \textcite{UrbanStory12} perform topic modelling from the text of
 check-in tweets and show that various topics exhibit daily or weekly
 patterns. Likewise, \textcite{TimeCluster13} cluster cells of a rectangular
@@ -20,7 +20,7 @@ differs whether we consider New York, the city that never sleeps, or Helsinki.
 
 But these patterns do not affect all venues uniformly. Taking Paris as an
 example, we can summarize each venue's activity by an histogram with 3 or 4
-four hours bins. Then, running $k$-means algorithm with $k=5$, we obtained the
+hours bins. Then, running $k$-means algorithm with $k=5$, we obtained the
 clusters depicted in \autoref{fig:day_cluster}. We observe that they have the
 same characteristic shape with one peak during the day and relatively low
 activity the rest of the time. We repeat these in all the cities to determine
@@ -132,14 +132,13 @@ Each line in each figure is the centroid of a cluster in a city.\label{fig:time_
 \subsection{Space}
 
 The other main characteristic of every check-in is where it takes place. We
-focus on two spatial feature of venues. First, was does the surrounding looks
-like in terms of categories. For instance, if a restaurant is mainly
+focus on two spatial feature of venues. First, what does their surrounding looks
+like in terms of categories repartition. For instance, if a restaurant is mainly
 surrounded by night life places and another by education buildings, they
-probably have different customers. Second, venues are not uniformly
+probably have customers of different kind. Second, venues are not uniformly
 distributed within the city and the density of nearby locations is a
-discriminative feature as well. For instance in \autoref{fig:density_paris}
-\vpageref{fig:density_paris}, we can clearly distinguish venues belonging to
-the city center from the others.
+discriminative feature as well. For instance in \autoref{fig:density_paris}, we
+can clearly distinguish venues belonging to the city center from the others.
 
 \begin{figure}[h]
         \centering
@@ -155,16 +154,16 @@ the city center from the others.
 	\includegraphics[width=\textwidth]{paris_new_density_160.pdf}
     \end{subfigure}
 \caption[Venue density in Paris]{Estimated density of 3192 venues in Paris by
-	a Gaussian kernel, cropped to the center of the city. On the left, the
-	bandwidth is 50 meters and it looks too small: venues are isolated. In
-	the middle, $h=160$ because this value maximize the probability of
-	existing venues. On the right, $h=350$ corresponds to human
-definition of neighborhood size.\label{fig:density_paris}}
+	a Gaussian kernel, cropped to the center of the city. On the top-left, the
+	bandwidth is 50 meters and it looks too small: venue groups are isolated. In
+	the bottom, $h=160$ because this value maximize the probability of
+	existing venues. On the top-right, $h=350$ corresponds to parameter we
+	choose to define surrounding. \label{fig:density_paris}}
 \end{figure}
 
 \subsection{Location entropy}
 
-\Textcite{Entropy10} showed that \enquote{location entropy, which measures the
+\Textcite{Entropy10} show that \enquote{location entropy, which measures the
 diversity of unique visitors of a location} gives good indication of the
 sociability level of venues and therefore help predicting friendship ties within
 \gls{lbsn}.
@@ -178,9 +177,9 @@ compute the normalized entropy: \[
     H(v) = -\frac{1}{\log\left(\left| \mathcal{U}\right|\right)}
 \sum_{u\in \mathcal{U}} f_v(u) \log(f_v(u)) \]
 
-Computing this value for all venues in Paris and Barcelona shows that it is a
+Computing this value for all venues in Paris and Barcelona demonstrates it is a
 good descriptor of the \enquote{publicness} of a place. As showed in
-\autoref{tab:entropy}, touristic attractions like the Sagrada Família or the
+Table \ref{tab:entropy} \vpageref{tab:entropy}, touristic attractions like the Sagrada Família or the
 Eiffel Tower exhibit high entropy because they are visited by a large and
 diverse set of people. On the other hand, work offices and private houses have
 low entropy, as they attract a much more restricted crowd.
@@ -238,6 +237,8 @@ entropy.\label{tab:entropy}}
 	\caption{Venues entropy in Paris with respect to user population and time of check-in
 	during the day. \label{fig:two_entropies}}
 \end{subfigure}
+\caption[Two different measure of entropy]{Extreme values of user entropy, and
+its relation with time entropy.\label{fig:entropies}}
 \end{figure}
 
 Following the same idea, we also computed the entropy of locations with respect
@@ -245,7 +246,7 @@ to time of check-ins. Indeed, it distinguishes between a railway station active
 all day long and a restaurant open only during lunch hours.  We also expect a
 link between the two entropies, as places that stay open longer have more
 chance to be visited by a various set of users. But this relation, shown on
-\autoref{fig:two_entropies} \vpageref{fig:two_entropies} is weak, as some places are visited all the time by
+\autoref{fig:two_entropies} is weak, as some places are visited all the time by
 a small group of dedicated people.
 
 
@@ -255,10 +256,10 @@ a small group of dedicated people.
 Finally, one interesting aspect of this dataset is the interaction between
 check-ins and photos.  The spatial repartition of both objects can be seen as
 an indirect signal of interest within the city. Thus we were curious to see in
-which place they disagree, that is location where there is significantly more
+which place they disagree, that is location where there are significantly more
 photos taken that what we would expect by looking at the tweet concentration
 (and conversely). To answer this question, we compute the discrepancy between
-this two measure of activity \autocite{Agarwal2006spatial}. It turns out that
+these two measures of activity \autocite{Agarwal2006spatial}. It turns out that
 some places are mostly checked-in because events take place there (such as when
 people arrive in a new city via a railway station or an airport, or when a
 sport team plays a match in a stadium) whereas other are more photographed,

@@ -37,7 +37,8 @@ neighborhoods, for which we calculate the actual \emd{}.
 
 \medskip
 
-To see how this idea works, consider \autoref{fig:pigalle_barca}, 
+To see how this idea works, consider \autoref{fig:pigalle_barca}
+\vpageref{fig:pigalle_barca}, 
 where we search in Barcelona to find the neighborhood that is most
 similar to Pigalle in Paris. 
 Each row in the figure corresponds to one venue \venue\ in Pigalle, 
@@ -64,12 +65,12 @@ the other.  \label{fig:pigalle_barca}}
 \end{figure}
 
 We show the effect of varying $k$ in the experiments but first, we try to find
-a good value a priori.  The larger $k$, the more venues we retrieved,
-especially the more gold venues. But it also make the search space larger,
+a good value a priori.  The larger $k$, the more venues we retrieve,
+especially the more ground truth venues. But it also makes the search space larger,
 because it covers a larger proportion of the city. This trade off is visualized
-in \autoref{fig:coverage_recall}, where each point of each query is obtained
+in \autoref{fig:coverage_recall} \vpageref{fig:coverage_recall}, where each point of each query is obtained
 for a value of $k$ ranging from $1$ to $256$. We initially chose $k=50$
-because in most cases, it returns 50\% of the gold venues while covering 33\%
+because in most cases, it returns 50\% of the ground truth venues while covering 33\%
 of the city on average. These numbers hint that the precision is rather low and
 we need another step to further reduce the search space.
 
@@ -108,9 +109,10 @@ overall size the area. These extended areas are then treated as candidate
 neighborhoods. At the end of the process, the algorithm returns the
 neighborhood with the smallest distance (or top-$m$ smallest distances).
 
-Note that although we focus on \emd{}---because we determine it is the more
+Note that although we focus on \emd{}---because we determine it is the most
 suited metric to match human judgment---our method is independent of the
 underlying metric as it plays a role only at the very end of the algorithm.
+\clearpage
 
 \section{Results}
 \label{sec:app-result}
@@ -173,7 +175,7 @@ extend the initial regions found after clustering, while using our initial
 estimate $k=50$. 
 Intuitively, as $\ell$ increases, more \emd\ computations are required, but the
 chances to find a more similar region increase. Indeed, as we see in
-Figure~\ref{fig:distance_ratio_size}, 
+\autoref{fig:distance_ratio_size} \vpageref{fig:distance_ratio_size}, 
 the relative distance decreases as $\ell$ increases while the
 computation becomes more expensive (\autoref{fig:time_ratio_size}). 
 We also note that after $\ell=1$, the gain is small, suggesting that
@@ -203,7 +205,8 @@ the initial regions are already relevant enough.
 \end{figure}
 
 We perform the same experiment for $k \in \{8, 25, 50, 80, 160\}$ with
-$\ell=1$.  As shown in \autoref{fig:distance_ratio_knn}, the \Dratio{} is very
+$\ell=1$.  As shown in \autoref{fig:distance_ratio_knn}
+\vpageref{fig:distance_ratio_knn}, the \Dratio{} is very
 small for all values of $k$, showing the robustness of the method.  At the same
 time, the running time increases somewhat (\autoref{fig:time_ratio_knn}), but
 this is due to regions being denser and thus \emd{} taking more time to reach a
@@ -232,12 +235,14 @@ solution of the optimization problem.
 
 \subsection{How well it matches ground truth}
 
-The method we devise finds neighborhoods that generally have as good as
-similarity as those found by exhaustive search, but it takes much less time.
+The method we devise finds neighborhoods that generally have comparable
+distance to the query as those found by exhaustive search, but are obtained
+much faster.
 Yet we also want to see if these new neighborhoods retain another
 characteristics of the exhaustive search: to be close to human ground
 truth. To answer that, we can perform the same evaluation as in
 \autoref{sub:region-evaluation}. Results showed in \autoref{tab:approx-adcg}
+\vpageref{tab:approx-adcg}
 indicates that if we sort obtained neighborhood by \emd{} distance, they
 perform worse than exhaustive search. Yet the last column shows that among
 the remaining neighborhoods, some are indeed overlapping with the ground truth.
@@ -248,7 +253,7 @@ These mixed results can be explained by two problems:
 		expect our approximation to return these regions.
 	\item Alternatively, there is a cluster in the ground region but some
 		clusters elsewhere have smaller \emd{} distance. But this case
-		represents more a failure of \emd{} to recognize gold region and simply
+		represents more a failure of \emd{} to recognize ground truth region and simply
 		indicates that our approximation method cannot alleviate this
 		shortcoming.
 \end{itemize}
@@ -257,7 +262,7 @@ These mixed results can be explained by two problems:
 	% \small
 	% \setlength{\tabcolsep}{4pt}
 	\centering
-	\begin{tabular}{lrrr}
+	\begin{tabular}{lccc}
 		\toprule
 		              & Approximation & Exhaustive & Biased Approximation \\
 		\midrule

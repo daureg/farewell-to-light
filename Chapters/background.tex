@@ -22,11 +22,11 @@ groups based on some notion of similarity between objects}}
 \methodname{$k$-means algorithm} \autocite{kmeans67}. After initially choosing
 $k$ centroids, an iterative process takes place, divided in two phases. First
 each point is assigned to the cluster of the closest centroid. Then centroids
-positions are updated by taking the mean of all points belonging to their
+positions $\mu_i$ are updated by taking the mean of all points belonging to their
 cluster. Convergence occurs when centroids positions do not change between
 iterations. In practice, the algorithm is fast but it is only guaranteed to
 find a local optimal of the within-cluster sum of squares: \[ \sum_{i=1}^{k}
-\sum_{ x_j \in S_i} \left\| x_j - \mu_i \right\|^2 \] Another drawbacks is that
+\sum_{ x_j \in \mathrm{cluster}_i} \left\| x_j - \mu_i \right\|^2 \] Another drawbacks is that
 $k$, the number of clusters, has to be specified before algorithm execution,
 whereas this information is often unknown at this stage. Finally, because it
 results in a Voronoy diagram, the clusters found are linearly separable, which
@@ -64,7 +64,7 @@ an arbitrary number of clusters with arbitrary shapes. In the special case where
 points carry user identification (like photos or tweets), it can be tweaked to
 favor areas that exhibit large user diversity \autocite{PDBSCANKisilevich2010}.
 Another extension, OPTICS, can identify clusters despite data having varying
-density, but it only produces a reachability-plot, which require further
+density, but it only produces a reachability-plot, which requires further
 processing to be transformed into clusters \autocite{OPTICS99}.
 
 \iffalse
@@ -85,21 +85,22 @@ processing to be transformed into clusters \autocite{OPTICS99}.
 A major component of all clustering algorithm is the distance function, and
 the space where it operates. The default choice is the Euclidean metric in the
 original feature space but these two parameters can be changed. In the latter
-case, it often leads to dimensionality reduction, whereas the former suggest
-metric learning, which will be discused in the next section.
+case, it often leads to dimensionality reduction, whereas the former suggests
+metric learning, which will be discused in \autoref{sec:metric}.
 
 \subsection{Dimensionality reduction}
 
 Many methods are based on the idea of
 preserving distances between points, under the general name Multidimensional
 Scaling \autocite{MDS77}. Given points $i$ and $j$ in the original space, we
-know their separation $\delta_{i,j}$ with a weight $w_{i,j}$\footnote{that
-denotes confidence in the measurement or importance of the points.}. We are
+know their separation $\delta_{i,j}$ with a weight $w_{i,j}$\footnote{This
+weight denotes either confidence in the measurement or importance of the pair
+of points.}. We are
 looking for their new position $x_i$ and $x_j$ in the reduced space such that
 the stress \[ S = \sum_{i,j} \sqrt{\frac{\sum w_{i,j}(\delta_{i,j} - d(y_i,
 y_j))^2}{\sum d(y_i, y_j)^2}} \] is minimized.
 
-Instead of interpreting distances in a geometrical sense, it is also possible
+Instead of computing distances in a geometrical sense, it is also possible
 to give them a probabilistic interpretation. Namely, in Stochastic Neighbor Embedding
 \autocite{SNE02}, starting from the dissimilarity between two points $i$ and
 $j$, $d^2_{ij} = \frac{\vnorm{x_i - x_j}^2}{2\sigma^2_i}$, we compute the
@@ -109,10 +110,11 @@ probability of $i$ picking $j$ as a neighbor in the original space \[ p_{ij} =
 We do the same in the low dimensional space, where positions are denoted by
 $y_i$ \[ q_{ij} = \frac{\exp(-\vnorm{y_i - y_j}^2)}{\sum_{k \neq
 i}\exp(-\vnorm{y_i - y_k}^2)}\] and we set the $y_i$ to minimize $\sum_i
-KL(P_i || Q_i)$, which can be understood as preserving the neighborhood of each
+\KL{P_i}{Q_i}$\footnote{Here, $\mathrm{KL}$ is the Kullback--Leibler
+divergence, which will presented shortly.}, which can be understood as preserving the neighborhood of each
 point. Later was introduced \tsne{} \autocite{tSNE08}, which makes the
 optimization problem simpler and avoid the crowding problem by modeling
-distances in the low dimensional space with a heavy tail Student t-distribution
+distances in the low dimensional space with a heavy tail Student $t$-distribution
 with one degree of freedom \[ q_{ij} = \frac{\left(1+\vnorm{y_i -
 y_j}^2\right)^{-1}}{\sum_{k \neq i}\left(1+\vnorm{y_i - y_k}^2\right)^{-1}}\]
 An ingenious implementation runs in $O(n\log n)$ \autocite{BarnesHut13}.
@@ -126,8 +128,8 @@ they lie.
 \subsection{Spatial data structure}
 \label{sub:spatial-structures}
 
-A common subproblem of many methods exposed so far\footnote{and which is also
-interestingn by itself.} is to retrieve the $k$ closest neighbors of a given
+A common subproblem of many methods exposed so far\footnote{This subproblem is also
+interesting by itself.} is to retrieve the $k$ closest neighbors of a given
 point. If there are $n$ candidates in a $d$ dimensional space, a naive linear
 scan takes a prohibitive $O(n\cdot d)$ time.  Fortunately, there are data
 structure well suited to solve this problem faster, even tough they become
@@ -136,7 +138,7 @@ tree. The common idea behind them is to partition space according to points
 distribution.
 
 A $k$-d tree \autocite{kdtree75} is a binary search tree whose every node is a
-hyperplane that separates the space $\mathbb{R}^k$ in two parts and whose
+hyperplane that separates the space $\mathbb{R}^k$ in two parts, and whose
 leaves contain points lying in the region of the space define by all the
 parents hyperplanes. These hyperplanes are aligned with axes, meaning that on
 the left of a node at the $i$\textsuperscript{th} level are all points whose
@@ -155,12 +157,12 @@ ball that contains all the balls in the corresponding subtree, and leaves are
 balls which enclosed some points of the dataset. Therefore, for a ball $S$ (of
 center $c$ and radius $r$) and a query point $q$, we know that if $q \notin S$,
 $q$ cannot be to closer to points in $S$ than $\vnorm{c - q} -r$. This fact is
-used at query time to prune part of the tree.
+used at query time to prune parts of the tree.
 
 Another data structure of interest is the R-tree \autocite{Rindex84}, which is
 able to store and retrieve non-zero size geometry such as polygon. There, nodes
 are hyperrectangles and leaves contain only one object. It is again a balanced
-search tree, but not binary. Each node can store up to $M$ entries. The idea
+search tree, but not a binary one. Each node can store up to $M$ entries. The idea
 behind search is the same, taking advantage of the nested box to prune part of
 the tree. The main difficulties lie in the efficient construction of the tree
 as well as fast subsequent insertions.
@@ -171,26 +173,26 @@ as well as fast subsequent insertions.
 \subsection{Ground metric}
 \label{sub:metric-learning}
 
-As we mentioned, to improve performance of classifiers who relie on
+As we mentioned, to improve performance of classifiers who rely on
 distances\footnote{The textbook example being $k$-nearest neighbors
 classifier.}, we must change the way distances are measured. Either by
 computing  them in a new space, as in dimensionality reduction, or by
 directly modifying the underlying norm, that is replacing the
-$L_2$ norm $\vnorm{x-y}_2^2$; for instance by $L_1$ norm (Manhattan distance)
-or $L_\infty$. Noting that $\vnorm{x-y}_2^2 = (x-y)^T A (x-y) = d_A(x,y)$,
+$L_2$ norm $\vnorm{x-y}_2^2$; for instance by the $L_1$ norm (Manhattan distance)
+or the $L_\infty$. Noting that $\vnorm{x-y}_2^2 = (x-y)^T A (x-y) = d_A(x,y)$,
 where $A=I$, one can also replace $A$ with any positive definite matrix to still
 define a metric. A well-motivated choice is setting $A$ as the inverse of the
 covariance matrix, corresponding to the Mahalanobis distance
 \autocite{Mahalanobis36}. But $A$ can be learned from the data in other
-semi-supervised ways, by specifying constraints between pair of points. These
+semi-supervised ways, by specifying constraints between pairs of points. These
 constraints are based on class labels, meaning we want points of the same class
 to be close and points of different classes to be set apart. In this work, we
 consider two methods that optimize $A$ subject to such pairwise constraints.
 
 The first is \methodname{Information Theoretic Metric Learning}
-\autocite{InfoMetric07}. Given a positive definite matrix $A$, we can uniquely
-associate it (up to a scaling constant) with a multivariate Gaussian
-distribution of mean $\mu$ and covariance $A^{-1}$: \[p(x; A) =
+\autocite{InfoMetric07}. Given a positive definite matrix $A$, we can
+associate it with a multivariate Gaussian distribution of mean $\mu$ and
+covariance $A^{-1}$ (uniquely, up to a scaling constant): \[p(x; A) =
 \frac{1}{Z}\exp\left(-\frac{1}{2}d_A(x, \mu)\right)\] We also need a reference
 matrix $A_0$ (for instance the identity or the covariance matrix of the
 dataset), a set $S$ of similar points and a set $D$ of dissimilar points. We
@@ -210,9 +212,10 @@ The other one is \methodname{Large Margin Nearest Neighbor} \autocite{LMNN09}
 	\caption{Neighborhood of a point, from \autocite{LMNN09}.\label{fig:lmnn}}
 \end{figure}
 Specifically, let $N_i$ be the set of the $k$ closest neighbors of $x_i$ in the
-original space which share the same class, called target neighbors. Closer
+original space which share the same class, and called them target neighbors. Closer
 points of different class are impostors (see \autoref{fig:lmnn}
-\vpageref{fig:lmnn}). The optimization pushes target neighbors close to $x_i$
+% \vpageref{fig:lmnn}
+). The optimization pushes target neighbors close to $x_i$
 while pulling away impostors. The number of active constraints is linear
 rather than quadratic because only the neighborhood of each points contributes
 to it. Thus the following semidefinite program can be solved efficiently:
@@ -239,8 +242,8 @@ A more complete overview of metric learning is given in the survey of
 \subsection{Set metric}
 
 We discussed metrics between points but in this work, we also used distances
-between sets of such points. Interpreting them as geometric positions in
-$\mathbb{R}^k$, there are fast solutions. It includes for instance, the
+between sets of such points. If we interpreting their coordinates as geometric positions in
+$\mathbb{R}^k$, there are some easy to compute metrics. It includes, for instance, the
 bottleneck distance \autocite{Bottleneck96} (the smallest distance between
 pairs of farthest points) and the Hausdorff distance (the largest distance
 between pairs of closest points) along with its variations
@@ -250,7 +253,8 @@ But such approaches are rather sensible to outliers and do not perform so well
 in high dimension, as distances tend to be more uniformly distributed there.
 Therefore, we want to involve all the points from both sets in the computation.
 One way to do this is to build a bipartite graph with edges weighted by the
-distance between points. This can be solved by the Hungarian algorithm
+opposite distance between points and find a maximum weight matching.
+This can be solved by the Hungarian algorithm
 \autocite{Hungarian57} in $O(n^4)$, a precursor of primal-dual method to solve
 linear program. This bound was later improved to $O(n^3)$ by considering it as
 a flow problem \autocite{HungarianN372}.
@@ -267,7 +271,7 @@ apparent:
  \int_{X\times Y} c(x,y)\mathrm{d}\gamma(x,y)
 \end{equation*}
 Here $X$ and $Y$ are two metric spaces, $c$ a measurable function between them
-which represents the cost of moving from different of parts $X$ to other parts of $Y$.
+which represents the cost of moving from different parts of $X$ to some parts of $Y$.
 We look for a measure $\gamma$ whose marginals on $X$ and $Y$ are $\mu$ and
 $\nu$ (the set $\Gamma(\mu, \nu)$ is called the set of all \emph{couplings} of
 $\mu$ and $\nu$).
@@ -281,19 +285,29 @@ W_p(\mu, \nu) = \left( \underset{\gamma \in \Gamma(\mu, \nu)}{\mathrm{inf}}
 \end{equation*}
 $W_1$ is also called \methodname{Earth Mover's Distance} \autocite{EMD98}.
 Intuitively, it measures the {\em total amount of work} needed to transform
-(move) one set of positions (total mass) to the other. 
+(move) one set of positions (total mass) to the other. It can also be defined
+as the minimal cost of the following linear program
+\begin{align*}
+	&\quad \underset{f}{\min} \sum_{i,j} d_{i,j} f_{i,j} \\
+	\text{subject to} &\quad \sum_j f_{i,j} \leq w_{P,i} \\
+	&\quad \sum_i f_{i,j} \leq w_{Q,j} \\
+	&\quad \sum_{i,j} f_{i,j} = \sum_i w_{P,i} = \sum_j w_{Q,j} = 1
+\end{align*}
+where $d_{i,j}$ is the distance between the $i$\textsuperscript{th} point of
+$P$ and the $j$\textsuperscript{th} point of $Q$, and $w_P$ and $w_Q$ are the
+weights of these points, summing up to $1$.
 
 As we used \emd{} extensively, it worth mentioning that since it was
 introduced, there have been efforts to improve its performance while preserving
 its characteristics. For instance, \textcite{Ling2007} present a lower
-complexity algorithm that uses $L_1$ ground metric. \Textcite{Shirdhonkar2008}
+complexity algorithm that uses $L_1$ as the ground metric. \Textcite{Shirdhonkar2008}
 propose another approximation algorithm based on wavelet decomposition but the
 complexity is exponential with the number of dimension, which makes it
 intractable when $d$ is greater than 6. \Textcite{Pele2009} show that assuming
-an upper bound over all pairwise distance, one can further simplify the
+an upper bound over all pairwise distances, one can further simplify the
 optimization formulation, which improves running time and better match the
 human perception of colors in computer vision. Finally, the Sinkhorn distance
-\autocite{FastEMD13} is closely related to optimal transform and can be used to
+\autocite{FastEMD13} is closely related to optimal transport and can be used to
 quickly obtain lower and upper bounds of \emd{}, especially when run over GPUs.
 But it also performs well on classification tasks on its own.
 

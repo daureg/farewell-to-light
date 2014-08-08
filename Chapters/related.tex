@@ -21,7 +21,7 @@ these hotspot regions can be refined by looking at the orientation of each
 photo \autocite{Hotspots12}. Another way of identify hotspots is second order
 Ripley's K-function \autocite{TagHotspot12}. Basically, it is a statistical
 test for the hypothesis that points are distributed according to a Poisson
-process. It indicates how they \enquote{interact with each other, either
+process. It indicates how points \enquote{interact with each other, either
 \enquote{repulsively} [\dots] or \enquote{attractively}.} Furthermore, it is
 able to process regions with varying density of pictures. Besides location
 finding, analyzing photos can also lead to other applications, like
@@ -33,7 +33,7 @@ as possible \autocite{Quercia2014}.
 
 Moving from Flickr to \glspl{lbsn} allows searching for larger areas like
 neighborhoods. \Textcite{SocioMap12} collect general tweets and perform
-sentiment analysis as well as movement detection to draw a socio cognitive map
+sentiment analysis as well as movements detection to draw a socio cognitive map
 of the Kinki region in Japan which helps user to make decision regarding where
 to live. Closer to our work, \textcite{Livehoods12} analyse 18 millions
 check-ins to find so-called
@@ -49,7 +49,8 @@ described by its category, its peak time activity and a binary label:
 touristic or not. They are clustered in hotspots along each of these dimensions
 by the \textsc{OPTICS} algorithm. The city is then divided into a regular grid
 and cells are described by their hotspot density for each feature.
-\marginpar{Mention evaluation using tweets mention?} Finally, similar cells
+% \marginpar{Mention evaluation using tweets mention?}
+Finally, similar cells
 are clustered into neighborhoods. The main difference between this last two
 works and ours is that they do not explicitly mention distance between the
 neighborhoods they recover.
@@ -79,15 +80,15 @@ boundaries of
 neighborhoods\footnote{\href{http://code.flickr.net/2008/10/30/the-shape-of-alpha/}%
 {\url{code.flickr.net/2008/10/30/the-shape-of-alpha}}}. Likewise, Airbnb, a
 social lodging renting website, has accumulated a lot of spatial data as well
-as textual reviews, which can be used to rank cities by hospitality
+as textual reviews, which can be used to rank cities by hospitality%
 \footnote{\href{http://nerds.airbnb.com/most-hospitable-cities/}%
 {\url{nerds.airbnb.com/most-hospitable-cities}}} as well as discovering
-neighborhoods
+neighborhoods%
 \footnote{\href{https://www.airbnb.com/locations}{\url{airbnb.com/locations}}}.
 However, the methods and details of these commercial systems are not publicly
 available. Finally, engineers at \fs{} used 1.5 billion check-ins to compare
-activities of different part of cities in
-US\footnote{\href{http://engineering.foursquare.com/2012/03/08/a-hackday-project-what-neighborhood-is-the}%
+activities in different parts of cities in
+the US\footnote{\href{http://engineering.foursquare.com/2012/03/08/a-hackday-project-what-neighborhood-is-the}%
 {\url{engineering.foursquare.com/2012/03/08/a}}}.
 
 \paragraph{Spatio-temporal topic modeling}
@@ -111,9 +112,9 @@ precision and running time of such methods were improved by
 \textcite{NonGaussianTopicKling14}. Finally, some topics are localized in time
 as well as in space (like \texttt{earthquake}) and this calls for more specific
 methods. \Textcite{TwitterBurst13} extract keywords from twitter in a moving
-sliding windows and keep those that are bursty. Using localized tweets, they
+sliding window and keep those that are bursty. Using localized tweets, they
 estimate the topic spatial distribution but because of sparsity and noise, it
-requires a regularisation based on a co occurrences and identification of
+requires a regularisation based on a co occurrences graph and identification of
 anchor keywords. A scalable online approximate solution is described in
 \autocite{GeoScope}.
 
@@ -122,7 +123,7 @@ anchor keywords. A scalable online approximate solution is described in
 Smart cities in general are a new area which offers a lot of scientific
 challenges \autocite[Chapter 4]{Eunoia13} as well as potential benefits in
 terms of sustainability and well being by making use of Information
-Technologies \autocite{SmartCities13}. How IBM was able to tap into Helsinki
+Technologies \autocite{SmartCities13}. For instance, IBM was able to tap into Helsinki
 open data to provide a compelling narrative of citizens' engagement and promote
 the World Design Capital event in 2012 \autocite{HelsinkiSCC11}.
 
@@ -132,7 +133,7 @@ the World Design Capital event in 2012 \autocite{HelsinkiSCC11}.
 
 \paragraph{Metric learning}
 
-Some pointers we already given in \autoref{sec:metric} but the topic is
+Some pointers were already given in \autoref{sec:metric} but the topic is
 abundant. For instance, learning a Mahalanobis distance was introduced more
 than ten years ago \autocite{Xing2002}. Later, the optimization problem was
 given a simpler formulation, which has therefore a lower complexity

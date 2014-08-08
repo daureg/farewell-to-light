@@ -4,7 +4,7 @@
 Foursquare is the most popular \gls{lbsn} in 2014, claiming more than 50
 million users\footnote{See \href{https://foursquare.com/about/}%
 {\url{foursquare.com/about}} for more usage statistics.}. Its two main purposes
-are: $(i)$ enable users discover new places and $(ii)$ let their friends or the world know
+are: $(i)$ enable users discover new places, and $(ii)$ let their friends or the world know
 where they are. The first goal is achieved through venues. Venues have their
 own web page that displays basic facts (like name, address and type) but also
 user contributed information (such as photos, reviews, likes and tips) which
@@ -24,10 +24,10 @@ the Public streams API described here:
 {\url{dev.twitter.com/docs/streaming-apis/streams/public}}.},
 we collected such check-ins
 from March to July 2014 by monitoring tweets with
-\url{4sq.com} links and retaining those located in the target cities.
-Essential informations of these \numprint{1651773} particular tweets are user id, Foursquare venue,
+\texttt{4sq.com} links and retaining those located in the target cities.
+Essential informations of these \numprint{1669878} particular tweets are user id, Foursquare venue,
 local time, latitude and longitude. Yet they contain other fields, whose
-details are given in \autoref{tab:checkinfields}~\pageref{tab:checkinfields}.
+details are given in \autoref{tab:checkinfields}~\vpageref{tab:checkinfields}.
 
 In addition, we used a previously released dataset~\autocite{dataset11},
 extracting \numprint{1296505} \fs\ check-ins generated between September 2010
@@ -40,7 +40,8 @@ Finally, we obtained more data by crawling the timeline of users that appear to
 post geo located tweets according to the public sample. We apply this approach
 in Barcelona, Helsinki, Paris, Rome, San Francisco, Stockholm and Washington,
 resulting in \numprint{2087227} additional tweets (even though a significant
-portion of them were located in other cities as some users travel).
+portion of them were located in other cities because some users travel or where
+simply visiting the city).
 
 In total, our \fs\ data consists of more than 5 million check-ins, whose
 repartition can be found in \autoref{tab:dataset}.
@@ -92,7 +93,7 @@ opposite happened in San Francisco.\label{tab:dataset}}
 
 As explained, each of these check-ins is associated with a venue. Thus, the second part of
 the collection process was to gather information about all of those
-\numprint{338669} that appear in at least one check-in. This was done by calling the
+\numprint{340970} that appear in at least one check-in. This was done by calling the
 appropriate Foursquare API and the obtained object is described in
-\autoref{tab:venue}. The main informations are the venue location, its category,
+\autoref{tab:venue} \vpageref{tab:venue}. The main informations are the venue location, its category,
 the number of likes, the number of check-ins and the number of unique visitors.

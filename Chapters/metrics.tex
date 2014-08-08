@@ -3,7 +3,7 @@
 
 In this chapter, we describe the various metrics we considered for measuring
 similarity between venues (\autoref{sec:venues-metrics}) and neighborhoods
-(\autoref{sec:regions-metrics}). We also present what evaluation strategy we
+(\autoref{sec:regions-metrics}). We also present which evaluation strategies we
 devised to choose between several candidates and the final results we obtained.
 
 \section{Venues metrics}
@@ -44,7 +44,8 @@ estimation.
 Note also that generally, \tsne{} is not considered as a metric learning method
 per se. Yet we already argued that it can learn to uncover relationships between
 points based on their position in the high-dimensional space. Furthermore, we
-were struck by the experimental result showed in \autoref{fig:tsne}. When we hide
+were struck by the experimental result showed in \autoref{fig:tsne}
+\vpageref{fig:tsne}. When we hide
 category information, venues of the same category are still projected in the
 same part of the space. Thus, we expect the proximity of venues in this
 plane to be a good measure of their overall similarity.
@@ -180,9 +181,9 @@ arbitrarily choose $rel_i=1$ when the sub category of two venues matches,
 $rel_i=0.4$ when only top category matches and $rel_i=0$ if they were not
 related at all. We accumulate them (or sum them) but discount results that
 came too late with \[ \mathrm{DCG} = \sum_{i=1} \frac{ 2^{rel_{i}} - 1 }{
-\log_{2}(i+1)} \] Finally, we normalized by the result of a perfect ordering
+\log_{2}(i+1)} \] Finally, we normalized by the result of a optimal ordering
 to have scores between $0$ and $1$, which allow direct comparison.  The
-results, shown in \autoref{tab:metric_type}, confirm that \lmnn\ and \eucl\
+results, shown in \autoref{tab:metric_type} \vpageref{tab:metric_type}, confirm that \lmnn\ and \eucl\
 are the best measures regarding this task.  It is noteworthy that \eucl\
 performs so well without any training.
 
@@ -222,7 +223,8 @@ performs so well without any training.
 We proceed with addressing
 Objective~\ref{objective:neighborhood-distance-learning}, that is, selecting a
 distance measure between sets of feature vectors, in order to evaluate
-similarity between city neighborhoods.  We consider the following options.
+similarity between city neighborhoods. First we present the candidates we
+consider and next how we choose among them.
 
 \subsection{Candidates}
 
@@ -274,7 +276,7 @@ We learn the values of the coefficients $\theta_i$ using our collected
 ground-truth data (described in \autoref{sec:user-study}). We consider all
 pairs of neighborhoods obtained and label them as similar if they refer to the
 same district in Paris (showed in \autoref{tab:district}
-\pageref{tab:district}). We then compute $\theta_i$ to maximize the sum of the
+\vpageref{tab:district}). We then compute $\theta_i$ to maximize the sum of the
 \jsd\ values over similar pairs minus the sum of \jsd\ values over non similar
 pairs, subject to the normalization constraint $\sum_i |\theta_i| =1$.
 
@@ -291,8 +293,8 @@ for~$k=3$.
 
 \bigskip
 
-All these methods can accept weighted input. We consider using number of unique
-visitors and thus paying more attention to popular venues but it did not
+All these methods can accept weighted input. We consider using the number of unique
+visitors for that purpose and thus paying more attention to popular venues but it did not
 perform better.
 
 \subsection{Evaluation}
@@ -366,7 +368,7 @@ shown in \autoref{tab:distance-comparisons}.  Each row corresponds to a source
 city.  \dcg\ scores are averaged over all target cities and all 8 query
 neighborhoods.
 
-\begin{table}[t]
+\begin{table}[b]
 	% 	\small
 	% \setlength{\tabcolsep}{4pt}
 	\centering
@@ -405,7 +407,7 @@ our measures discover an area very close to the ground truth, due to its
 circular shape, it can have low overlap with the ground truth, and low
 relevance score. A second unfavorable situation happens when the ground truth
 contains only one or two small regions. Because we try to find them with five
-disjoint circles, it must be the case that some these circles have no overlap
+disjoint circles, it must be the case that some of these circles have no overlap
 at all with ground truth and thus have a relevance of 0.  Yet this is merely a
 comment rather than an issue as here, we are concerned by comparing measures
-and they all suffer from this fact in the same way.
+and they all equally suffer from this fact.

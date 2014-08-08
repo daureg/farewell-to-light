@@ -1,8 +1,9 @@
 \chapter{Problem definition and notation}
 \label{ch:problem}
 
-Here we describe our data and introduce some notation before articulating them
-into a specific problem.
+Here we introduce some notation and describe our data model before defining
+formally the two problems we want to solve: first, learn an appropriate metric
+between neighborhoods and second, use it efficiently during the search process.
 
 \section{Cities, venues and activities}
 We consider a set \cities\ of $\noc$ cities, 
@@ -16,7 +17,7 @@ Each city \city{} is also described by another subset $A_\city \subseteq
 \activities$, where \activities{} is a set of \emph{activities}.  These
 activities are user contributed discrete points in space and time that can hold
 additional attributes. Here, we exploit Flickr photos (with tags) and
-Foursquare check-ins as type of item.
+Foursquare check-ins as type of activity.
 
 In general, many other types of activity can be considered.  Geo-located tweets
 fit our model directly, as a tweet is composed by a user, has spatio-temporal

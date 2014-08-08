@@ -2,9 +2,9 @@
 % Appendix
 %*******************************************************
 % If problems with the headers: get headings in appendix etc. right
-%\markboth{\spacedlowsmallcaps{Appendix}}{\spacedlowsmallcaps{Appendix}}
+\markboth{\spacedlowsmallcaps{Appendix}}{\spacedlowsmallcaps{Appendix}}
 \clearpage
-\newgeometry{hmargin=2.1cm,vmargin=0.7cm}
+\newgeometry{hmargin=3.6cm,vmargin=0.7cm}
 \chapter{Dataset format}
 \label{chap:appendix}
 
@@ -16,7 +16,8 @@
         \midrule
         \texttt{\_id} & Check-in id and its public signature, which can be
 used to get more information using Foursquare API. &
-533bae24498eea4314f699e1?s=aDw52maNIBKg8\_vmChduwSKDm3I \\
+"533bae24498eea4314f699e1
+?s=aDw52maNIBKg8\_vmChduwSKDm3I" \\
         \texttt{lid} & Foursquare venue id & "4d56bccecff7721ea778b9f5"\\
         \texttt{uid} & Numerical Foursquare user id & 9037626\\
         \texttt{loc} & GeoJSON location of the tweet & {"type": "Point", "coordinates": [2.3979855, 48.85740119]}\\
@@ -48,9 +49,9 @@ Kingdom of Paradise) \url{http://t.co/2CFVAZL1wq}"\\
 		\texttt{tags}   & Normalized user given tags                         & ["bicycle", "lock", "chain", padlock, "locked"] \\
 		\texttt{venue}  & Foursquare venue id                                & null \\
 		\texttt{upload} & UTC time at which the photo was uploaded           & ISODate("2014-02-22T00:28:32Z") \\
-		\texttt{farm}   & Used to obtain a link to the picture file          & 6 \\
-		\texttt{server} & Used to obtain a link to the picture file          & "5506" \\
-		\texttt{secret} & Used to obtain a link to the picture file          & "74fbd5b60a" \\
+		\texttt{farm}   & Used to get photos \textsc{url}          & 6 \\
+		\texttt{server} & Used to get photos \textsc{url}          & "5506" \\
+		\texttt{secret} & Used to get photos \textsc{url}          & "74fbd5b60a" \\
 		\bottomrule
 	\end{tabularx}
 	\caption[Photo format]{Description of the fields of the photo
@@ -89,6 +90,7 @@ Kingdom of Paradise) \url{http://t.co/2CFVAZL1wq}"\\
     object.\label{tab:venue}}
 \end{table}
 \restoregeometry
+\clearpage
 
 \chapter{More acknowledgments}
 \label{chap:ack}
